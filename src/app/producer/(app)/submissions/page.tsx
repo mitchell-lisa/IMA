@@ -78,7 +78,7 @@ export default async function SubmissionsPage() {
         <table className="min-w-[1100px] text-left text-xs">
           <thead className="bg-foreground/3 text-[11px] uppercase tracking-wide text-muted">
             <tr>
-              {["Started", "Company", "Industry / niche", "Territory", "Module", "Source", "Progress", "Overall", "Conf.", "Flags", "Top findings", "Lead"].map((h) => (
+              {["Started", "Company", "Industry / niche", "State", "Module", "Source", "Progress", "Overall", "Conf.", "Flags", "Top findings", "Lead"].map((h) => (
                 <th key={h} className="whitespace-nowrap px-3 py-2 font-semibold">
                   {h}
                 </th>

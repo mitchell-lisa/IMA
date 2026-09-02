@@ -1,4 +1,4 @@
-import { classifyZip, isCoreTerritory } from "./territory";
+import { classifyZip, isKnownTerritory } from "./territory";
 import type { AssessmentProfile, Role, ScoreResult } from "./types";
 
 export interface LeadInputs {
@@ -40,7 +40,7 @@ const ROLE_SCORE: Record<Role, number> = {
 export function computeLeadScore(input: LeadInputs): LeadScoreBreakdown {
   const { profile, scores } = input;
 
-  // Company fit (25): industry focus 10, revenue band 10, territory 5.
+  // Company fit (25): industry focus 10, revenue band 10, resolvable US location 5.
   let companyFit = 0;
   if (profile.industry === "cre_owner" || profile.industry === "multifamily") companyFit += 10;
   else if (profile.industry) companyFit += 4;
@@ -58,9 +58,7 @@ export function computeLeadScore(input: LeadInputs): LeadScoreBreakdown {
       companyFit += 3;
       break;
   }
-  const territory = classifyZip(profile.zip);
-  if (isCoreTerritory(territory)) companyFit += 5;
-  else if (territory === "central_north_jersey" || territory === "delaware") companyFit += 2;
+  if (isKnownTerritory(classifyZip(profile.zip))) companyFit += 5;
 
   // Seniority (20)
   const seniority = input.role ? ROLE_SCORE[input.role] : 0;

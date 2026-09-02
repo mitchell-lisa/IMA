@@ -27,7 +27,7 @@ describe("computeLeadScore", () => {
     expect(s.engagementIntent).toBe(10);
   });
 
-  it("ranks an out-of-territory, anonymous lead low", () => {
+  it("ranks a poorly fitting, anonymous lead low", () => {
     const profile = { industry: "other" as const, revenueBand: "under_10m" as const, zip: "90210" };
     const scores = scoreAssessment(all(3), profile);
     const s = computeLeadScore({ profile, scores, role: null, emailCaptured: false, workshopRequested: false, monthsUntilRenewal: null });
@@ -37,14 +37,18 @@ describe("computeLeadScore", () => {
 });
 
 describe("classifyZip", () => {
-  it("maps launch-area prefixes", () => {
-    expect(classifyZip("08034")).toBe("south_jersey");
-    expect(classifyZip("19103")).toBe("philadelphia");
-    expect(classifyZip("19380")).toBe("pa_suburbs");
-    expect(classifyZip("07302")).toBe("central_north_jersey");
-    expect(classifyZip("19801")).toBe("delaware");
-    expect(classifyZip("10001")).toBe("outside");
-    expect(classifyZip("")).toBe("outside");
+  it("resolves any US ZIP to its state", () => {
+    expect(classifyZip("08034")).toBe("NJ");
+    expect(classifyZip("19103")).toBe("PA");
+    expect(classifyZip("10001")).toBe("NY");
+    expect(classifyZip("90210")).toBe("CA");
+    expect(classifyZip("60601")).toBe("IL");
+    expect(classifyZip("75201")).toBe("TX");
+    expect(classifyZip("33101")).toBe("FL");
+    expect(classifyZip("99501")).toBe("AK");
+    expect(classifyZip("00901")).toBe("PR");
+    expect(classifyZip("")).toBe("unknown");
+    expect(classifyZip("12")).toBe("unknown");
   });
 });
 

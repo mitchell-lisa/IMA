@@ -92,7 +92,7 @@ Strengths are the up-to-three categories scoring ≥ 75.
 
 | Component | Max | Basis |
 |---|---|---|
-| Company fit | 25 | Target industry (10), $10M–$250M revenue (10), core territory by ZIP (5) |
+| Company fit | 25 | Target industry (10), $10M–$250M revenue (10), ZIP resolves to a US state (5) |
 | Seniority | 20 | Role of the contact |
 | Renewal timing | 20 | 2–6 months out scores full marks |
 | Demonstrated pain | 20 | Stated concern, low overall score, critical flags |
