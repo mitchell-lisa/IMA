@@ -14,6 +14,12 @@ All routes validate input with zod, run server-side only, and apply per-IP rate 
 | GET | `/api/results/[token]/pdf` | – | PDF; 403 until an email has been captured |
 | POST | `/api/lead/capture` | token, email, name, role, phone, `consentReport: true`, consentMarketing, workshopRequested, notes | `{ leadId, tier, pdfPath }`; triggers prospect email + PDF, producer alert, CRM dispatch |
 
+## Health
+
+| Method | Path | Returns |
+|---|---|---|
+| GET | `/api/health` | `{ ok, storage: supabase\|memory, schemaReady, auth, appUrl, commit, environment }`; 200 when Supabase is configured and migrated, otherwise 503. No secrets. |
+
 ## Producer (requires producer session)
 
 | Method | Path | Purpose |
