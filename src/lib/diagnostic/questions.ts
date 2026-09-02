@@ -88,6 +88,14 @@ export const QUESTIONS: Question[] = [
       "Values are reconciled against financials, fixed-asset registers, and schedules, with sign-off before submission",
     ),
     weights: w(3, 3, 3),
+    variants: {
+      logistics_3pl: {
+        help: "For a 3PL this includes the value of customers' goods in your care, custody, and control, vehicle and trailer schedules, and square footage by location.",
+      },
+      light_manufacturing: {
+        help: "For a manufacturer this includes machinery and equipment values, a business-interruption worksheet, and any dependence on a single supplier or customer.",
+      },
+    },
   },
   {
     id: "mkt_business_changes",
@@ -110,9 +118,9 @@ export const QUESTIONS: Question[] = [
     help: "The underwriting story is the narrative and evidence that accompanies applications and loss runs.",
     options: ladder(
       "None; we sign applications and the broker handles the rest",
-      "We see the applications but not the narrative or which markets were approached",
+      "We submit updated information annually but have not seen how our story is told to carriers",
       "We review the submission and know which carriers quoted or declined",
-      "We co-author the underwriting narrative, review the full submission, and receive a market summary with reasons for declinations",
+      "We collaborate with our broker on how best to portray the company in the marketplace, review the full submission, and receive a market summary with reasons for declinations",
     ),
     weights: w(2, 2, 2),
   },
@@ -141,10 +149,10 @@ export const QUESTIONS: Question[] = [
     topic: "Payment & wire controls",
     prompt: "How are changes to vendor bank details and outgoing wire requests verified?",
     options: ladder(
-      "Email or phone request is usually sufficient",
-      "A second approval is required for large amounts only",
-      "Callback verification to a known number plus dual approval for all bank changes and wires",
-      "Callback verification, dual approval, documented thresholds, and periodic testing of the process",
+      "No formal protocol; an email or phone request is usually sufficient",
+      "Some combination of dual authorization and written procedures, applied inconsistently",
+      "Written procedure with callback verification to a known number and dual approval for all bank changes and wires",
+      "Formal written program with regular training: dual authorization, callback verification, destination confirmation, and receipt confirmation",
     ),
     weights: w(3, 3, 3),
     critical: {
@@ -164,6 +172,16 @@ export const QUESTIONS: Question[] = [
       "Written program with documented training, inspections, near-miss reporting, and management review of results",
     ),
     weights: w(3, 3, 2),
+    variants: {
+      logistics_3pl: {
+        prompt: "How are warehouse and dock safety (forklift certification, racking, housekeeping), fire protection (sprinkler inspections, impairment procedures, commodity storage), and driver training documented?",
+        help: "Warehouse underwriters look first at fire protection and forklift and dock injury controls.",
+      },
+      light_manufacturing: {
+        prompt: "How are machine guarding, lockout/tagout, hearing and respiratory protection, and safety training documented?",
+        help: "Machine guarding and lockout/tagout drive both workers' compensation experience and product-safety credibility with underwriters.",
+      },
+    },
   },
 
   // ------------------------------------------------------------------- Claims
@@ -217,6 +235,16 @@ export const QUESTIONS: Question[] = [
     category: "contractual_risk_transfer",
     topic: "Signed contracts",
     prompt: "Before work begins with customers, vendors, or subcontractors, how consistently are written contracts in place?",
+    variants: {
+      logistics_3pl: {
+        prompt: "Before goods are received or work begins, how consistently are written warehousing agreements, customer contracts, and carrier/vendor agreements in place?",
+        help: "Warehouse receipts and customer contracts define your legal liability for goods in your care. Unsigned or inconsistent terms are a common gap.",
+      },
+      light_manufacturing: {
+        prompt: "How consistently are written supply agreements, customer purchase terms, and vendor contracts in place before production or shipment begins?",
+        help: "Customer terms often carry product warranty, recall, and indemnity obligations that shape your liability program.",
+      },
+    },
     options: ladder(
       "Often work starts on a handshake or PO alone",
       "Contracts exist for major relationships; smaller ones vary",
@@ -230,6 +258,14 @@ export const QUESTIONS: Question[] = [
     category: "contractual_risk_transfer",
     topic: "Insurance requirements",
     prompt: "How do you determine what insurance to require from the parties you work with, and what they require from you?",
+    variants: {
+      logistics_3pl: {
+        help: "Customers commonly require warehouse legal liability, cargo, and auto limits. Carriers and subcontracted haulers should be held to defined requirements in return.",
+      },
+      light_manufacturing: {
+        help: "Large customers often specify product liability limits and vendor endorsements; suppliers should be held to defined requirements for the components they provide.",
+      },
+    },
     options: ladder(
       "We do not set requirements; we accept whatever the other party proposes",
       "We use a generic requirement list without reviewing it",
@@ -262,9 +298,10 @@ export const QUESTIONS: Question[] = [
     category: "emerging_risk",
     topic: "Annual risk review",
     prompt: "Does leadership conduct a structured risk review outside of the insurance renewal?",
+    help: "A risk review looks at operations, contracts, and controls, not just the policies being renewed.",
     options: ladder(
-      "No formal risk review",
-      "Risks are discussed informally when something happens",
+      "Never, or more than five years ago",
+      "More than 18 months ago, or only when a new broker or agent first came on board",
       "An annual risk review with a documented risk list",
       "Annual review with owners, action plans, and quarterly progress updates to leadership",
     ),
@@ -288,6 +325,14 @@ export const QUESTIONS: Question[] = [
     category: "emerging_risk",
     topic: "New activity review",
     prompt: "When you add a new location, product, service, technology, or major customer, is risk and insurance impact reviewed beforehand?",
+    variants: {
+      logistics_3pl: {
+        prompt: "When you take on a new commodity, temperature-controlled or hazardous storage, a new customer contract, or a new facility, is risk and insurance impact reviewed beforehand?",
+      },
+      light_manufacturing: {
+        prompt: "When you launch a new product, add a production line or process, or enter a new market, is product liability, recall, and business-interruption impact reviewed beforehand?",
+      },
+    },
     options: ladder(
       "Not usually; insurance catches up later",
       "Sometimes, for very large changes",
@@ -303,12 +348,13 @@ export const QUESTIONS: Question[] = [
     category: "market_readiness",
     branch: "ownsBuildings",
     topic: "Property valuation & building updates",
-    prompt: "For the buildings you own, how are replacement values, business-interruption values, flood exposure, and building updates (roof, sprinklers, electrical) documented?",
+    prompt: "For the buildings you own, how are replacement values, business-interruption values, flood exposure, building updates (roof, sprinklers, electrical), and carrier loss-control recommendations documented and tracked?",
+    help: "Carriers issue recommendations after inspections. How you respond to them is part of the underwriting story.",
     options: ladder(
-      "Values are carried forward; we have not documented building updates",
-      "Values were reviewed a few years ago; updates are partially documented",
-      "Replacement and BI values are reviewed annually; update history is documented",
-      "Professional valuation within three years, BI worksheet, flood zone determination, and documented update history with dates",
+      "Values are carried forward; building updates and carrier recommendations are not tracked",
+      "Values were reviewed a few years ago; we do the minimum needed to stay compliant with carrier recommendations",
+      "Replacement and BI values are reviewed annually; update history and recommendation responses are documented",
+      "Professional valuation within three years, BI worksheet, flood zone determination, documented inspections and update history, and an active protocol for responding to and tracking every carrier recommendation",
     ),
     weights: w(3, 3, 2),
   },
@@ -412,6 +458,18 @@ export const BRANCH_QUESTIONS = QUESTIONS.filter((q) => !!q.branch);
 /** Returns the questions that apply to a given profile, in display order. */
 export function getApplicableQuestions(profile: Pick<AssessmentProfile, import("./types").BranchTrigger>): Question[] {
   return QUESTIONS.filter((q) => !q.branch || profile[q.branch] === true);
+}
+
+/** Applies industry-specific wording, if any. Scoring metadata is untouched. */
+export function resolveQuestion(question: Question, industry: IndustryId): Question {
+  const v = question.variants?.[industry];
+  if (!v) return question;
+  return {
+    ...question,
+    prompt: v.prompt ?? question.prompt,
+    help: v.help ?? question.help,
+    options: v.options ?? question.options,
+  };
 }
 
 export function isQuestionApplicable(question: Question, profile: Partial<AssessmentProfile>): boolean {

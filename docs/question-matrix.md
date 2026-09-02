@@ -76,6 +76,16 @@ How are exposure values (payroll, revenue, property values, vehicle schedules, i
 - **3** — Values are reconciled against financials, fixed-asset registers, and schedules, with sign-off before submission
 - **unknown** — Not sure / someone else owns this
 
+**logistics_3pl variant**
+
+_For a 3PL this includes the value of customers' goods in your care, custody, and control, vehicle and trailer schedules, and square footage by location._
+
+
+**light_manufacturing variant**
+
+_For a manufacturer this includes machinery and equipment values, a business-interruption worksheet, and any dependence on a single supplier or customer._
+
+
 ### Business change documentation (`mkt_business_changes`)
 
 How are operational changes (new services, locations, equipment, customers, headcount) communicated to your insurance program during the year?
@@ -93,9 +103,9 @@ How much visibility do you have into what is actually sent to carriers about you
 _The underwriting story is the narrative and evidence that accompanies applications and loss runs._
 
 - **0** — None; we sign applications and the broker handles the rest
-- **1** — We see the applications but not the narrative or which markets were approached
+- **1** — We submit updated information annually but have not seen how our story is told to carriers
 - **2** — We review the submission and know which carriers quoted or declined
-- **3** — We co-author the underwriting narrative, review the full submission, and receive a market summary with reasons for declinations
+- **3** — We collaborate with our broker on how best to portray the company in the marketplace, review the full submission, and receive a market summary with reasons for declinations
 - **unknown** — Not sure / someone else owns this
 
 ### Cyber controls (`ops_cyber_controls`)
@@ -112,10 +122,10 @@ Which of the following best describes your cyber controls (MFA, backups, endpoin
 
 How are changes to vendor bank details and outgoing wire requests verified?
 
-- **0** — Email or phone request is usually sufficient
-- **1** — A second approval is required for large amounts only
-- **2** — Callback verification to a known number plus dual approval for all bank changes and wires
-- **3** — Callback verification, dual approval, documented thresholds, and periodic testing of the process
+- **0** — No formal protocol; an email or phone request is usually sufficient
+- **1** — Some combination of dual authorization and written procedures, applied inconsistently
+- **2** — Written procedure with callback verification to a known number and dual approval for all bank changes and wires
+- **3** — Formal written program with regular training: dual authorization, callback verification, destination confirmation, and receipt confirmation
 - **unknown** — Not sure / someone else owns this
 
 ### Safety & training (`ops_safety_training`)
@@ -127,6 +137,20 @@ How are safety programs, training, and inspections documented?
 - **2** — Written safety program, documented training, and periodic inspections
 - **3** — Written program with documented training, inspections, near-miss reporting, and management review of results
 - **unknown** — Not sure / someone else owns this
+
+**logistics_3pl variant**
+
+Prompt: How are warehouse and dock safety (forklift certification, racking, housekeeping), fire protection (sprinkler inspections, impairment procedures, commodity storage), and driver training documented?
+
+_Warehouse underwriters look first at fire protection and forklift and dock injury controls._
+
+
+**light_manufacturing variant**
+
+Prompt: How are machine guarding, lockout/tagout, hearing and respiratory protection, and safety training documented?
+
+_Machine guarding and lockout/tagout drive both workers' compensation experience and product-safety credibility with underwriters._
+
 
 ### Incident reporting (`clm_reporting_protocol`)
 
@@ -168,6 +192,20 @@ Before work begins with customers, vendors, or subcontractors, how consistently 
 - **3** — Signed contracts required, with standard indemnity and insurance language reviewed by counsel and tracked centrally
 - **unknown** — Not sure / someone else owns this
 
+**logistics_3pl variant**
+
+Prompt: Before goods are received or work begins, how consistently are written warehousing agreements, customer contracts, and carrier/vendor agreements in place?
+
+_Warehouse receipts and customer contracts define your legal liability for goods in your care. Unsigned or inconsistent terms are a common gap._
+
+
+**light_manufacturing variant**
+
+Prompt: How consistently are written supply agreements, customer purchase terms, and vendor contracts in place before production or shipment begins?
+
+_Customer terms often carry product warranty, recall, and indemnity obligations that shape your liability program._
+
+
 ### Insurance requirements (`crt_insurance_requirements`)
 
 How do you determine what insurance to require from the parties you work with, and what they require from you?
@@ -177,6 +215,16 @@ How do you determine what insurance to require from the parties you work with, a
 - **2** — Requirements are defined by relationship type and reviewed by broker or counsel
 - **3** — Requirements are defined, reviewed annually, and cross-checked against our own policies and customer demands
 - **unknown** — Not sure / someone else owns this
+
+**logistics_3pl variant**
+
+_Customers commonly require warehouse legal liability, cargo, and auto limits. Carriers and subcontracted haulers should be held to defined requirements in return._
+
+
+**light_manufacturing variant**
+
+_Large customers often specify product liability limits and vendor endorsements; suppliers should be held to defined requirements for the components they provide._
+
 
 ### Certificate verification (`crt_coi_verification`)
 
@@ -192,8 +240,10 @@ How are certificates of insurance and endorsements (additional insured, waiver o
 
 Does leadership conduct a structured risk review outside of the insurance renewal?
 
-- **0** — No formal risk review
-- **1** — Risks are discussed informally when something happens
+_A risk review looks at operations, contracts, and controls, not just the policies being renewed._
+
+- **0** — Never, or more than five years ago
+- **1** — More than 18 months ago, or only when a new broker or agent first came on board
 - **2** — An annual risk review with a documented risk list
 - **3** — Annual review with owners, action plans, and quarterly progress updates to leadership
 - **unknown** — Not sure / someone else owns this
@@ -218,14 +268,26 @@ When you add a new location, product, service, technology, or major customer, is
 - **3** — Documented pre-launch review with operations, finance, broker input, and follow-up after launch
 - **unknown** — Not sure / someone else owns this
 
+**logistics_3pl variant**
+
+Prompt: When you take on a new commodity, temperature-controlled or hazardous storage, a new customer contract, or a new facility, is risk and insurance impact reviewed beforehand?
+
+
+**light_manufacturing variant**
+
+Prompt: When you launch a new product, add a production line or process, or enter a new market, is product liability, recall, and business-interruption impact reviewed beforehand?
+
+
 ### Property valuation & building updates (`br_property_valuation`)
 
-For the buildings you own, how are replacement values, business-interruption values, flood exposure, and building updates (roof, sprinklers, electrical) documented?
+For the buildings you own, how are replacement values, business-interruption values, flood exposure, building updates (roof, sprinklers, electrical), and carrier loss-control recommendations documented and tracked?
 
-- **0** — Values are carried forward; we have not documented building updates
-- **1** — Values were reviewed a few years ago; updates are partially documented
-- **2** — Replacement and BI values are reviewed annually; update history is documented
-- **3** — Professional valuation within three years, BI worksheet, flood zone determination, and documented update history with dates
+_Carriers issue recommendations after inspections. How you respond to them is part of the underwriting story._
+
+- **0** — Values are carried forward; building updates and carrier recommendations are not tracked
+- **1** — Values were reviewed a few years ago; we do the minimum needed to stay compliant with carrier recommendations
+- **2** — Replacement and BI values are reviewed annually; update history and recommendation responses are documented
+- **3** — Professional valuation within three years, BI worksheet, flood zone determination, documented inspections and update history, and an active protocol for responding to and tracking every carrier recommendation
 - **unknown** — Not sure / someone else owns this
 
 ### Fleet & driver controls (`br_fleet_controls`)

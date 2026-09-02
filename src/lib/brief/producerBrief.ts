@@ -50,6 +50,15 @@ export interface ProducerBrief {
   specialists: string[];
   agenda: Array<{ minutes: number; item: string }>;
   leadQuality: LeadRecord["leadScore"];
+  /**
+   * Maps diagnostic categories onto the six categories used in IMA's
+   * Risk Workshop spreadsheet so results carry straight into the session.
+   */
+  workshopCrosswalk: WorkshopCrosswalkRow[];
+  /** The seven-step workshop path from the IMA workshop deck. */
+  workshopPath: Array<{ step: number; title: string; who: "IMA" | "IMA + client"; detail: string }>;
+  /** Year-round service-plan themes suggested by the findings. */
+  servicePlanThemes: string[];
   scores: {
     overall: number | null;
     confidence: number;
@@ -65,6 +74,81 @@ export interface ProducerBrief {
   summary: string;
   aiSummary?: string | null;
 }
+
+export interface WorkshopCrosswalkRow {
+  workshopCategory: string;
+  diagnosticCategories: CategoryId[];
+  /** Weighted average of the mapped diagnostic scores, or null. */
+  score: number | null;
+  /** Practices the workshop evaluates that the diagnostic deliberately leaves to licensed review. */
+  reservedForWorkshop: string[];
+}
+
+const WORKSHOP_CROSSWALK: Array<Omit<WorkshopCrosswalkRow, "score">> = [
+  {
+    workshopCategory: "Insurance",
+    diagnosticCategories: ["governance", "market_readiness"],
+    reservedForWorkshop: [
+      "Replacement-cost methodology against actual schedules",
+      "Policy exclusions and whether all legal entities are scheduled as named insureds",
+      "Liability limit adequacy against contracts, balance sheet, and defensibility",
+    ],
+  },
+  {
+    workshopCategory: "Operational Risk",
+    diagnosticCategories: ["operational_controls"],
+    reservedForWorkshop: ["Technology systems and third-party oversight in detail", "Employment-practices exposure and training records"],
+  },
+  {
+    workshopCategory: "Maintenance",
+    diagnosticCategories: ["market_readiness"],
+    reservedForWorkshop: [
+      "Carrier recommendation history and responses",
+      "Documented inspections, security, snow and ice, and emerging equipment exposures (lithium batteries, EV charging)",
+    ],
+  },
+  {
+    workshopCategory: "Claims",
+    diagnosticCategories: ["claims"],
+    reservedForWorkshop: ["Loss-run review and open-claim reserves", "Carrier-assigned counsel and public-adjuster experience", "Uncovered or disputed claims"],
+  },
+  {
+    workshopCategory: "Evolving Risk",
+    diagnosticCategories: ["emerging_risk"],
+    reservedForWorkshop: ["Environmental exposures and lender environmental conditions", "Cyber/privacy program and coverage alignment"],
+  },
+  {
+    workshopCategory: "Contractual Risk Transfer",
+    diagnosticCategories: ["contractual_risk_transfer"],
+    reservedForWorkshop: ["Review of actual contracts, certificates, and endorsements", "Management, landlord, and lender agreement requirements"],
+  },
+];
+
+const WORKSHOP_PATH: ProducerBrief["workshopPath"] = [
+  { step: 1, title: "Introductory conversation", who: "IMA", detail: "Initial meeting with the primary contact; confirm what the diagnostic surfaced and what they want to learn." },
+  { step: 2, title: "Stakeholder alignment", who: "IMA + client", detail: "Identify workshop participants (finance, operations, HR/safety, board where relevant)." },
+  { step: 3, title: "Risk workshop", who: "IMA + client", detail: "Full session covering program, operations, claims, and contracts using the workshop question set." },
+  { step: 4, title: "Program review", who: "IMA", detail: "Analyze policies, limits, exclusions, and carrier relationships (licensed review)." },
+  { step: 5, title: "Story development", who: "IMA", detail: "Build the underwriting narrative from actual strengths and controls." },
+  { step: 6, title: "Findings and opportunities", who: "IMA + client", detail: "Present gaps, positioning options, and a proposed year-round service plan." },
+  { step: 7, title: "Next-step decision", who: "IMA + client", detail: "Determine the path forward together, with no obligation to proceed." },
+];
+
+const SERVICE_PLAN_BY_CATEGORY: Record<CategoryId, string> = {
+  governance: "Pre-renewal strategy meeting 120+ days out, renewal calendar with named owners, and a documented limit and deductible rationale",
+  market_readiness: "Exposure-data reconciliation and submission review before marketing; quarterly business-change check-ins",
+  operational_controls: "Risk-control review (cyber controls, funds-transfer procedures, safety documentation) with carrier-creditable evidence",
+  claims: "Claims advocacy: contact adjusters on open claims, scheduled claim reviews, reporting protocol, and loss-run reconciliation before renewal",
+  contractual_risk_transfer: "Build a contractual risk transfer program: review contracts in force, requirement templates, and certificate tracking",
+  emerging_risk: "Annual risk assessment outside the renewal cycle, regulatory calendar, and a new-activity review checkpoint",
+};
+
+const DECK_DIALOGUE_STARTERS = [
+  "Who is involved in insurance decisions today: CFO, ownership, operations, a board, or outside advisors?",
+  "Do you use one broker or several advisors across different lines?",
+  "What do you value most about the current broker relationship, and what could be better?",
+  "Is the current broker proactive throughout the year, or primarily engaged around renewal?",
+];
 
 const SPECIALIST_BY_CATEGORY: Record<CategoryId, string> = {
   governance: "Account executive / program lead",
@@ -139,10 +223,8 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
     .map((f) => OPENING_QUESTION_BY_FINDING[f.id])
     .filter((q): q is string => Boolean(q));
   for (const note of scores?.consistencyNotes ?? []) openingQuestions.push(note.message.replace(/\.$/, "") + " — can you walk me through that?");
-  if (openingQuestions.length < 3) {
-    openingQuestions.push("What would make the next renewal feel like a success to you?");
-    openingQuestions.push("What would you want a carrier to know about the business that they probably do not know today?");
-  }
+  for (const q of DECK_DIALOGUE_STARTERS) if (openingQuestions.length < 6) openingQuestions.push(q);
+  openingQuestions.push("What would you want a carrier to know about the business that they probably do not know today?");
 
   const specialists = new Set<string>();
   for (const f of findings) if (f.category !== "overall") specialists.add(SPECIALIST_BY_CATEGORY[f.category]);
@@ -159,6 +241,23 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
     { minutes: 10, item: "Renewal timeline, incumbent relationship, and what a documented submission would include" },
     { minutes: 5, item: "Agree on document requests and next steps (licensed review of policies and loss runs)" },
   ];
+
+  const workshopCrosswalk: WorkshopCrosswalkRow[] = WORKSHOP_CROSSWALK.map((row) => {
+    const vals = row.diagnosticCategories
+      .map((c) => scores?.categories.find((x) => x.category === c)?.score ?? null)
+      .filter((v): v is number => v !== null);
+    const score = vals.length ? Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10 : null;
+    return { ...row, score };
+  });
+
+  const servicePlanThemes = Array.from(
+    new Set(
+      [...findings.map((f) => f.category), ...(scores?.criticalFlags ?? []).map((f) => f.category)]
+        .filter((c): c is CategoryId => c !== "overall")
+        .map((c) => SERVICE_PLAN_BY_CATEGORY[c]),
+    ),
+  );
+  servicePlanThemes.push("Quarterly stewardship meeting covering market developments, claims, and pre-renewal planning");
 
   const summary = [
     `${p.companyName} is a ${industry.label} company (${REVENUE_BAND_LABELS[p.revenueBand]} revenue, ${EMPLOYEE_BAND_LABELS[p.employeeBand]} employees)${assessment.enrichment?.territoryLabel ? ` in ${assessment.enrichment.territoryLabel}` : ""}.`,
@@ -203,6 +302,9 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
     specialists: Array.from(specialists),
     agenda,
     leadQuality: lead.leadScore,
+    workshopCrosswalk,
+    workshopPath: WORKSHOP_PATH,
+    servicePlanThemes,
     scores: {
       overall: scores?.overall ?? null,
       confidence: scores?.confidence ?? 0,
@@ -250,6 +352,8 @@ export function briefToMarkdown(b: ProducerBrief): string {
   lines.push(`## 7. Recommended opening questions`, ...b.openingQuestions.map((q) => `- ${q}`), "");
   lines.push(`## 8. Suggested specialist participants`, ...b.specialists.map((s) => `- ${s}`), "");
   lines.push(`## 9. Proposed 45-minute workshop agenda`, ...b.agenda.map((a) => `- ${a.minutes} min: ${a.item}`), "");
+  lines.push(`### Workshop path`, ...b.workshopPath.map((p) => `${p.step}. **${p.title}** (${p.who}) — ${p.detail}`), "");
+  lines.push(`### Service-plan themes suggested by the findings`, ...b.servicePlanThemes.map((t) => `- ${t}`), "");
   lines.push(`## 10. Lead quality score`);
   const q = b.leadQuality;
   lines.push(`**${q.total}/100 (Tier ${q.tier})** — company fit ${q.companyFit}/25, seniority ${q.seniority}/20, renewal timing ${q.renewalTiming}/20, demonstrated pain ${q.demonstratedPain}/20, engagement ${q.engagementIntent}/10, completeness ${q.dataCompleteness}/5.`);
@@ -257,6 +361,8 @@ export function briefToMarkdown(b: ProducerBrief): string {
   lines.push(`## Diagnostic scores`);
   lines.push(`- Overall: ${b.scores.overall ?? "n/a"} (confidence ${b.scores.confidence}%)`);
   for (const c of b.scores.categories) lines.push(`- ${c.label}: ${c.score ?? "insufficient data"}${c.band ? ` (${c.band})` : ""}`);
+  lines.push("", `## Workshop crosswalk`, `| Workshop category | Diagnostic score | Reserved for licensed review in the workshop |`, `|---|---|---|`);
+  for (const row of b.workshopCrosswalk) lines.push(`| ${row.workshopCategory} | ${row.score ?? "n/a"} | ${row.reservedForWorkshop.join("; ")} |`);
   if (b.scores.criticalFlags.length) lines.push("", `**Critical flags**`, ...b.scores.criticalFlags.map((f) => `- ${f}`));
   if (b.scores.consistencyNotes.length) lines.push("", `**Consistency notes**`, ...b.scores.consistencyNotes.map((n) => `- ${n}`));
   lines.push("", `## Summary`, b.summary);

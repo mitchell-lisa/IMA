@@ -135,6 +135,13 @@ export interface QuestionOption {
   label: string;
 }
 
+/** Industry-specific overrides for a question's wording. */
+export interface QuestionVariant {
+  prompt?: string;
+  help?: string;
+  options?: QuestionOption[];
+}
+
 export interface Question {
   id: string;
   category: CategoryId;
@@ -145,6 +152,12 @@ export interface Question {
   options: QuestionOption[];
   /** Weight by industry, 1-3. */
   weights: Record<IndustryId, QuestionWeight>;
+  /**
+   * Optional industry-specific wording. Scoring is unaffected; only the
+   * prompt, help, or option labels change so the question speaks to the
+   * exposures that matter in that industry (the "dynamic module").
+   */
+  variants?: Partial<Record<IndustryId, QuestionVariant>>;
   /** When present, the question is only shown if the profile flag is true. */
   branch?: BranchTrigger;
   /**

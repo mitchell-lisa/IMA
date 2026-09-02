@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadReviewForm } from "@/components/LeadReviewForm";
 import { Badge, Card, ScoreMeter } from "@/components/ui";
-import { QUESTION_BY_ID } from "@/lib/diagnostic/questions";
+import { QUESTION_BY_ID, resolveQuestion } from "@/lib/diagnostic/questions";
 import { CATEGORY_LABELS } from "@/lib/diagnostic/labels";
 import type { ScoreBand } from "@/lib/diagnostic/types";
 import { aiSummariesAvailable } from "@/lib/server/ai";
@@ -127,6 +127,44 @@ export default async function LeadDetailPage({ params, searchParams }: { params:
         </div>
 
         <Card>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">Workshop crosswalk</h2>
+          <p className="mt-1 text-xs text-muted">Diagnostic scores mapped to the six Risk Workshop categories. The right column is what the workshop still has to cover with licensed review.</p>
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="text-left text-xs uppercase tracking-wide text-muted">
+                <tr>
+                  <th className="py-1 pr-3">Workshop category</th>
+                  <th className="py-1 pr-3">Diagnostic score</th>
+                  <th className="py-1">Reserved for the workshop</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line align-top">
+                {brief.workshopCrosswalk.map((row) => (
+                  <tr key={row.workshopCategory}>
+                    <td className="py-2 pr-3 font-semibold">{row.workshopCategory}</td>
+                    <td className="py-2 pr-3 tabular-nums">{row.score ?? "n/a"}</td>
+                    <td className="py-2 text-muted">{row.reservedForWorkshop.join("; ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <h3 className="mt-5 text-xs font-semibold uppercase tracking-wide text-muted">Workshop path</h3>
+          <ol className="mt-2 space-y-1 text-sm">
+            {brief.workshopPath.map((p) => (
+              <li key={p.step} className="flex gap-2">
+                <span className="w-5 flex-none tabular-nums text-muted">{p.step}.</span>
+                <span>
+                  <span className="font-semibold">{p.title}</span> <span className="text-xs text-muted">({p.who})</span> — {p.detail}
+                </span>
+              </li>
+            ))}
+          </ol>
+          <h3 className="mt-5 text-xs font-semibold uppercase tracking-wide text-muted">Service-plan themes suggested by the findings</h3>
+          <List items={brief.servicePlanThemes} />
+        </Card>
+
+        <Card>
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">10. Lead quality score</h2>
           <p className="mt-2 text-sm">
             <span className="font-semibold">
@@ -193,7 +231,7 @@ export default async function LeadDetailPage({ params, searchParams }: { params:
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">All answers</h2>
           <ul className="mt-3 space-y-2 text-xs">
             {assessment.result?.scores.applicableQuestionIds.map((qid) => {
-              const question = QUESTION_BY_ID[qid];
+              const question = resolveQuestion(QUESTION_BY_ID[qid], assessment.profile.industry);
               const v = assessment.answers[qid];
               const label = v === undefined ? "Unanswered" : v === "unknown" ? "Not sure" : question.options.find((o) => o.value === v)?.label;
               return (

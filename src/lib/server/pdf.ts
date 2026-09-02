@@ -142,8 +142,9 @@ export async function renderResultsPdf(assessment: AssessmentRecord, opts: { res
   const r = assessment.result;
   const industry = getIndustry(p.industry);
 
+  const brand = process.env.NEXT_PUBLIC_BRAND_NAME?.trim();
   w.text("MarketReady Risk Diagnostic", { size: 20, bold: true, color: NAVY, gap: 0 });
-  w.text("Confidential self-assessment report", { size: 11, color: MUTED, gap: 10 });
+  w.text(`${brand ? `${brand} | ` : ""}Confidential self-assessment report | For discussion purposes only`, { size: 11, color: MUTED, gap: 10 });
   w.text(`${p.companyName}`, { size: 14, bold: true, gap: 0 });
   w.text(
     `${industry.label} · ${EMPLOYEE_BAND_LABELS[p.employeeBand]} employees · ${REVENUE_BAND_LABELS[p.revenueBand]} revenue · ZIP ${p.zip}`,

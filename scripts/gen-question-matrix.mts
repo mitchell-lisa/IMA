@@ -13,5 +13,14 @@ for (const q of QUESTIONS) {
   if (q.help) lines.push(`_${q.help}_`, "");
   for (const o of q.options) lines.push(`- **${o.value}** — ${o.label}`);
   lines.push(`- **unknown** — Not sure / someone else owns this`, "");
+  if (q.variants) {
+    for (const [industry, v] of Object.entries(q.variants)) {
+      lines.push(`**${industry} variant**`, "");
+      if (v.prompt) lines.push(`Prompt: ${v.prompt}`, "");
+      if (v.help) lines.push(`_${v.help}_`, "");
+      if (v.options) for (const o of v.options) lines.push(`- **${o.value}** — ${o.label}`);
+      lines.push("");
+    }
+  }
 }
 process.stdout.write(lines.join("\n") + "\n");

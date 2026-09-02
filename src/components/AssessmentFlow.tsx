@@ -14,7 +14,7 @@ import {
   PRIMARY_CONCERN_LABELS,
   REVENUE_BAND_LABELS,
 } from "@/lib/diagnostic/labels";
-import { QUESTIONS } from "@/lib/diagnostic/questions";
+import { QUESTIONS, resolveQuestion } from "@/lib/diagnostic/questions";
 import { CATEGORY_IDS, BRANCH_TRIGGERS } from "@/lib/diagnostic/types";
 import type {
   AnswerValue,
@@ -128,8 +128,8 @@ export function AssessmentFlow() {
   const stepIndex = steps.indexOf(step);
 
   const applicableQuestions = useMemo(
-    () => QUESTIONS.filter((q) => !q.branch || extras[q.branch] === true),
-    [extras],
+    () => QUESTIONS.filter((q) => !q.branch || extras[q.branch] === true).map((q) => resolveQuestion(q, start.industry)),
+    [extras, start.industry],
   );
 
   async function post<T>(path: string, body: unknown): Promise<T> {
