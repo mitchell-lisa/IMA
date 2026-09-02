@@ -25,7 +25,10 @@ export default async function ProducerLayout({ children }: { children: React.Rea
                 All submissions
               </Link>
               <Link href="/api/producer/leads/export" prefetch={false} className="hover:text-white">
-                Export CSV
+                Export leads CSV
+              </Link>
+              <Link href="/api/producer/export/answers" prefetch={false} className="hover:text-white">
+                Export answers CSV
               </Link>
               <Link href="/" className="hover:text-white">
                 Public site

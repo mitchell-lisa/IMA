@@ -52,6 +52,22 @@ Mapped to the plan's four-week roadmap. "Built" means it is in this repository a
 | Feedback interviews | **Needs IMA** | |
 | Scoring revisions | Ready | Weights and thresholds are data in `questions.ts` and `industries.ts`; tests guard the invariants |
 
+## Copilot agent roles (plan section 8) and what the repo provides
+
+| Agent / tool | Category | What the repo gives it |
+|---|---|---|
+| Researcher | A | `docs/industry-roadmap.md` lists the questions each niche would adapt; findings and questions carry ids for citation |
+| Analyst | A | `/api/producer/export/answers` anonymized CSV (one row per assessment, one column per question, category scores, captured flag, module, partner) |
+| Excel | A | `npm run docs:bank` exports `docs/marketready-question-bank.xlsx` (questions, options, variants, weights, findings, modules, niches, test cases) with editable wording cells highlighted; the code stays the master |
+| PowerPoint | A | Producer Brief Markdown via `/api/producer/brief` as source for specialist decks |
+| Surveys / App Builder | A only / prototype | Not used for the public product, per the plan |
+| Workflows | B | Teams Adaptive Card on qualified lead via `TEAMS_WEBHOOK_URL`; CRM webhook payload for Planner/SharePoint flows |
+| Sales | B, conditional | CRM payload fields map to Salesforce/Dynamics; brief JSON for meeting prep |
+| HubSpot | C | Not integrated |
+| Zywave | B later | Not integrated; enrichment provider slot exists |
+| Prompt Coach | A | Runtime prompts are reproduced verbatim in `docs/agent-knowledge-pack.md` section 8 |
+| Custom Agent (Producer Brief Agent) | B later | `docs/agent-knowledge-pack.md` bundles approved question logic, findings language, scoring rules, and workshop methodology as grounding |
+
 ## Launch checklist
 
 1. Create the Supabase project, run the migration, add producers, set `PRODUCER_ALLOWED_EMAIL_DOMAINS`.

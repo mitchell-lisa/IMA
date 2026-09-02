@@ -29,7 +29,11 @@ It is the MVP lead-generation system described in the product plan for South Jer
 | Analytics events for every funnel step | ✅ `events` table |
 | Optional AI plain-English summary for the brief (structured findings only) | ✅ off by default, `src/lib/server/ai.ts` |
 | Public-data enrichment, opt-in per source: FEMA NRI, EPA ECHO (no keys), Census CBP, FMCSA (keyed), website summary | ✅ `src/lib/server/enrichment/`, producer-facing only |
-| Unit tests for scoring, findings, lead score, territory | ✅ `tests/` |
+| Microsoft Teams alert on qualified lead (incoming webhook) | ✅ optional, `src/lib/server/teams.ts` |
+| Anonymized per-question CSV export for scoring-distribution analysis | ✅ `/api/producer/export/answers` |
+| Excel workbook and JSON export of the question bank, findings, modules, niches (for the Copilot Excel agent) | ✅ `npm run docs:bank` → `docs/marketready-question-bank.xlsx` |
+| Agent knowledge pack: approved question logic, findings language, scoring, workshop methodology, runtime prompts | ✅ `npm run docs:pack` → `docs/agent-knowledge-pack.md` |
+| Unit tests for scoring, findings, lead score, territory, brief, enrichment parsers | ✅ `tests/` |
 
 Not built, by design (see the plan's "Do not build" list): quotes, "you are overpaying" conclusions, carrier comparisons, AI policy interpretation, coverage recommendations, public enforcement risk grades, prospect accounts, document upload, chatbot.
 
@@ -44,8 +48,9 @@ npm run dev
 With no environment variables the app uses an in-memory store, logs emails to the console, and skips CRM dispatch. To open the producer dashboard locally set `PRODUCER_DEV_PASSCODE=anything` and sign in at `/producer/login` with any email plus that passcode.
 
 ```bash
-npm run check   # typecheck + lint + unit tests
+npm run check     # typecheck + lint + unit tests
 npm run build
+npm run docs:all  # regenerate question matrix, Excel workbook + JSON, agent knowledge pack (workbook step needs python3 + openpyxl)
 ```
 
 ## Architecture

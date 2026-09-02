@@ -1,8 +1,10 @@
 import "server-only";
 import { cookies, headers } from "next/headers";
 import {
+  CATEGORY_IDS,
   CATEGORY_LABELS,
   MONTH_LABELS,
+  QUESTIONS,
   computeLeadScore,
   computeRenewalContext,
   getIndustry,
@@ -21,6 +23,7 @@ import { enrichCompany, enrichExternal } from "./enrichment";
 import { env } from "./env";
 import { renderResultsPdf } from "./pdf";
 import { getRepository } from "./repo";
+import { postTeamsLeadAlert } from "./teams";
 import type { AssessmentRecord, Attribution, LeadListItem, LeadRecord } from "./repo/types";
 
 export const CONSENT_TEXT_VERSION = "2026-09-v1";
@@ -289,7 +292,7 @@ export async function captureLead(input: LeadCaptureInput): Promise<{ leadId: st
 
   // Side effects: prospect email with PDF, producer alert, CRM dispatch.
   // Failures are recorded but never block the prospect.
-  await Promise.all([sendProspectResult(lead, rec), notifyProducer(lead, rec), syncToCrm(lead, rec)]);
+  await Promise.all([sendProspectResult(lead, rec), notifyProducer(lead, rec), syncToCrm(lead, rec), notifyTeams(lead, rec)]);
 
   return { leadId: lead.id, tier: leadScore.tier };
 }
@@ -332,6 +335,24 @@ async function notifyProducer(lead: LeadRecord, rec: AssessmentRecord) {
     workshopRequested: lead.workshopRequested,
   });
   await sendEmail({ to: env.producerAlertEmail, ...msg });
+}
+
+async function notifyTeams(lead: LeadRecord, rec: AssessmentRecord) {
+  const result = rec.result!;
+  const status = await postTeamsLeadAlert({
+    companyName: rec.profile.companyName,
+    industry: getIndustry(rec.profile.industry).shortLabel,
+    leadTier: lead.leadScore.tier,
+    leadScore: lead.leadScore.total,
+    overall: result.scores.overall,
+    criticalFlags: result.scores.criticalFlags.length,
+    renewal: rec.profile.renewalMonth ? `${MONTH_LABELS[rec.profile.renewalMonth - 1]} (${result.renewal.monthsUntilRenewal} months out)` : "not provided",
+    workshopRequested: lead.workshopRequested,
+    partner: rec.attribution.partnerCode ?? null,
+    module: rec.attribution.module ?? "marketready",
+    briefUrl: briefUrl(lead.id),
+  });
+  if (status !== "skipped") await track("teams_alert", { status }, { assessmentId: rec.id, leadId: lead.id });
 }
 
 async function syncToCrm(lead: LeadRecord, rec: AssessmentRecord) {
@@ -610,6 +631,66 @@ export async function updateLeadReview(leadId: string, patch: LeadUpdateInput, r
 export async function exportLeadsCsv(): Promise<string> {
   const items = await getRepository().listLeads({ limit: 1000 });
   return payloadsToCsv(items.map(({ lead, assessment }) => buildCrmPayload(lead, assessment, briefUrl(lead.id))));
+}
+
+/**
+ * Anonymized per-question export for scoring-distribution analysis (Analyst
+ * agent). No company names, contacts, or free text; one row per assessment.
+ */
+export async function exportAnswersCsv(): Promise<string> {
+  const assessments = await getRepository().listAssessments({ limit: 5000 });
+  const leads = await getRepository().listLeads({ limit: 5000 });
+  const captured = new Set(leads.map((l) => l.assessment.id));
+  const questionIds = QUESTIONS.map((q) => q.id);
+  const header = [
+    "assessment_id",
+    "created_at",
+    "status",
+    "industry",
+    "niche",
+    "employee_band",
+    "revenue_band",
+    "territory",
+    "module",
+    "partner",
+    "captured",
+    "workshop_requested",
+    "overall",
+    "confidence",
+    "critical_flags",
+    ...CATEGORY_IDS.map((c) => `score_${c}`),
+    ...questionIds,
+  ];
+  const cell = (v: unknown) => {
+    if (v === null || v === undefined) return "";
+    const s = String(v);
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const lines = [header.join(",")];
+  for (const a of assessments) {
+    const lead = leads.find((l) => l.assessment.id === a.id)?.lead;
+    const row = [
+      a.id,
+      a.createdAt,
+      a.status,
+      a.profile.industry,
+      a.profile.niche ?? "",
+      a.profile.employeeBand,
+      a.profile.revenueBand,
+      a.enrichment?.territory ?? "",
+      a.attribution.module ?? "marketready",
+      a.attribution.partnerCode ?? "",
+      captured.has(a.id) ? 1 : 0,
+      lead?.workshopRequested ? 1 : 0,
+      a.result?.scores.overall ?? "",
+      a.result?.scores.confidence ?? "",
+      a.result?.scores.criticalFlags.length ?? "",
+      ...CATEGORY_IDS.map((c) => a.result?.scores.categories.find((x) => x.category === c)?.score ?? ""),
+      ...questionIds.map((id) => (id in a.answers ? a.answers[id] : "")),
+    ];
+    lines.push(row.map(cell).join(","));
+  }
+  return lines.join("\n");
 }
 
 export async function retryCrmSync(leadId: string): Promise<string> {

@@ -24,6 +24,11 @@ All routes validate input with zod, run server-side only, and apply per-IP rate 
 | PATCH | `/api/producer/leads/[id]` | disposition, followUpOwner, reviewNotes, licensedReviewCompleted |
 | POST | `/api/producer/leads/[id]` | Re-send CRM payload |
 | GET | `/api/producer/leads/export` | CSV of CRM-ready payloads |
+| GET | `/api/producer/export/answers` | Anonymized per-question CSV (no names, contacts, or free text) for scoring-distribution and cohort analysis |
+
+## Outbound notifications
+
+On lead capture, in parallel and never blocking the prospect: prospect email with PDF (Resend), producer alert email (`PRODUCER_ALERT_EMAIL`), CRM webhook (`CRM_WEBHOOK_URL`), and a Microsoft Teams Adaptive Card (`TEAMS_WEBHOOK_URL`). Each records an event with its status.
 
 ## Webhooks
 

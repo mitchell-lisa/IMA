@@ -11,7 +11,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "docs:matrix": "tsx scripts/gen-question-matrix.mts > docs/question-matrix.md",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "docs:bank": "tsx scripts/export-bank.mts docs/question-bank.json && python3 scripts/build-workbook.py docs/question-bank.json docs/marketready-question-bank.xlsx",
+    "docs:pack": "tsx scripts/gen-knowledge-pack.mts > docs/agent-knowledge-pack.md",
+    "docs:all": "npm run docs:matrix && npm run docs:bank && npm run docs:pack"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.123.0",
