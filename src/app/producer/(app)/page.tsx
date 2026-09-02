@@ -100,6 +100,7 @@ export default async function ProducerDashboard() {
                   </td>
                   <td className="px-3 py-2">
                     {r.industry}
+                    {r.niche ? <div>{r.niche}</div> : null}
                     <div className="text-muted">{r.naics}</div>
                   </td>
                   <td className="px-3 py-2">

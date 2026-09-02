@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { QUESTION_BY_ID } from "@/lib/diagnostic/questions";
+import { NICHE_IDS } from "@/lib/diagnostic/niches";
 
 export const industrySchema = z.enum(["logistics_3pl", "light_manufacturing", "other"]);
 export const revenueBandSchema = z.enum(["under_10m", "10m_25m", "25m_50m", "50m_100m", "100m_250m", "over_250m"]);
@@ -42,6 +43,7 @@ export const startProfileSchema = z.object({
     .trim()
     .regex(/^\d{5}(-\d{4})?$/, "Enter a 5-digit ZIP code"),
   industry: industrySchema,
+  niche: z.enum(NICHE_IDS).optional(),
   employeeBand: employeeBandSchema,
   revenueBand: revenueBandSchema,
   // Anti-bot: honeypot must be empty; form must have been open for a minimum time.

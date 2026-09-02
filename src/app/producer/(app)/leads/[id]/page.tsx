@@ -49,7 +49,7 @@ export default async function LeadDetailPage({ params, searchParams }: { params:
         <Card>
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">1. Account snapshot</h2>
           <dl className="mt-3 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
-            <Row k="Industry" v={`${brief.snapshot.industry}${brief.snapshot.naics.length ? ` (NAICS ${brief.snapshot.naics.join(", ")})` : ""}`} />
+            <Row k="Industry" v={`${brief.snapshot.industry}${brief.snapshot.niche ? ` · ${brief.snapshot.niche}` : ""}${brief.snapshot.naics.length ? ` (NAICS ${brief.snapshot.naics.join(", ")})` : ""}`} />
             <Row k="Website" v={brief.snapshot.website ?? "n/a"} />
             <Row k="Location" v={`ZIP ${brief.snapshot.zip}${brief.snapshot.territory ? ` · ${brief.snapshot.territory}` : ""}`} />
             <Row k="Size" v={`${brief.snapshot.employees} employees · ${brief.snapshot.revenue}`} />

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Card, Field, inputClass } from "@/components/ui";
 import { INDUSTRIES, INDUSTRY_IDS } from "@/lib/diagnostic/industries";
+import { NICHES, NICHE_BY_ID } from "@/lib/diagnostic/niches";
+import type { NicheId } from "@/lib/diagnostic/niches";
 import {
   CATEGORY_LABELS,
   EMPLOYEE_BAND_LABELS,
@@ -38,6 +40,7 @@ interface StartForm {
   website: string;
   zip: string;
   industry: IndustryId;
+  niche: NicheId | "";
   employeeBand: EmployeeBand | "";
   revenueBand: RevenueBand | "";
   website_confirm: string;
@@ -83,6 +86,7 @@ export function AssessmentFlow() {
     website: "",
     zip: "",
     industry: "logistics_3pl",
+    niche: "",
     employeeBand: "",
     revenueBand: "",
     website_confirm: "",
@@ -153,6 +157,7 @@ export function AssessmentFlow() {
     try {
       const s = await post<Session & { profile: AssessmentProfile }>("/api/assessment/start", {
         ...start,
+        niche: start.niche || undefined,
         startedAt: openedAt.current,
       });
       setSession({ assessmentId: s.assessmentId, resultsToken: s.resultsToken });
@@ -242,7 +247,26 @@ export function AssessmentFlow() {
               <input className={inputClass} required inputMode="numeric" pattern="\d{5}(-\d{4})?" placeholder="08034" value={start.zip} onChange={(e) => setStart({ ...start, zip: e.target.value })} />
             </Field>
             <div className="sm:col-span-2">
-              <Field label="Industry" required>
+              <Field label="Which best describes your business?" hint="Optional. Helps us tailor follow-up; it does not change your score.">
+                <select
+                  className={inputClass}
+                  value={start.niche}
+                  onChange={(e) => {
+                    const niche = e.target.value as NicheId | "";
+                    setStart({ ...start, niche, industry: niche ? NICHE_BY_ID[niche].industry : start.industry });
+                  }}
+                >
+                  <option value="">Select…</option>
+                  {NICHES.map((n) => (
+                    <option key={n.id} value={n.id}>
+                      {n.label}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            </div>
+            <div className="sm:col-span-2">
+              <Field label="Assessment version" required hint="Chosen from your answer above; change it if another fits better.">
                 <div className="grid gap-2 sm:grid-cols-3">
                   {INDUSTRY_IDS.map((id) => (
                     <label key={id} className={`cursor-pointer rounded-md border px-3 py-2.5 text-sm ${start.industry === id ? "border-navy bg-navy/5" : "border-line hover:border-navy/40"}`}>

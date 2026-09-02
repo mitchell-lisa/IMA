@@ -110,6 +110,8 @@ export interface AssessmentProfile {
   website?: string;
   zip: string;
   industry: IndustryId;
+  /** Self-identified niche from the plan's target-industry table (optional). */
+  niche?: string;
   employeeBand: EmployeeBand;
   revenueBand: RevenueBand;
   /** 1-12 */

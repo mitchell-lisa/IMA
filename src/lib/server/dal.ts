@@ -6,6 +6,7 @@ import {
   computeLeadScore,
   computeRenewalContext,
   getIndustry,
+  nicheLabel,
   runDiagnostic,
 } from "@/lib/diagnostic";
 import type { Answers, AssessmentProfile, DiagnosticResult } from "@/lib/diagnostic";
@@ -120,6 +121,7 @@ export async function startAssessment(input: StartProfileInput): Promise<Assessm
     website: input.website || undefined,
     zip: input.zip,
     industry: input.industry,
+    niche: input.niche,
     employeeBand: input.employeeBand,
     revenueBand: input.revenueBand,
     employeesAboveThreshold: employeesAbove(input.employeeBand, getIndustry(input.industry).employeeThreshold),
@@ -137,7 +139,7 @@ export async function startAssessment(input: StartProfileInput): Promise<Assessm
     userAgent: meta.userAgent,
     completedAt: null,
   });
-  await track("assessment_started", { industry: input.industry, partner: attribution.partnerCode ?? null, module: attribution.module ?? "marketready" }, { assessmentId: rec.id });
+  await track("assessment_started", { industry: input.industry, niche: input.niche ?? null, partner: attribution.partnerCode ?? null, module: attribution.module ?? "marketready" }, { assessmentId: rec.id });
   return toSession(rec);
 }
 
@@ -343,6 +345,7 @@ export interface DashboardRow {
   company: string;
   website: string | null;
   industry: string;
+  niche: string | null;
   naics: string;
   territory: string | null;
   zip: string;
@@ -403,6 +406,7 @@ function toDashboardRow({ lead, assessment }: LeadListItem): DashboardRow {
     company: p.companyName,
     website: assessment.enrichment?.domain ?? p.website ?? null,
     industry: industry.shortLabel,
+    niche: nicheLabel(p.niche),
     naics: industry.naics.join(", "),
     territory: assessment.enrichment?.territoryLabel ?? null,
     zip: p.zip,

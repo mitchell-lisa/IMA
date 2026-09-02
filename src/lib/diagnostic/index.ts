@@ -32,3 +32,4 @@ export * from "./industries";
 export * from "./labels";
 export * from "./disclaimers";
 export * from "./modules";
+export * from "./niches";

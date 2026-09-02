@@ -11,6 +11,7 @@ import {
   REVENUE_BAND_LABELS,
   ROLE_LABELS,
   getIndustry,
+  nicheLabel,
 } from "@/lib/diagnostic";
 import type { CategoryId, Finding, MajorLine } from "@/lib/diagnostic";
 import type { AssessmentRecord, LeadRecord } from "@/lib/server/repo/types";
@@ -25,6 +26,7 @@ export interface ProducerBrief {
     company: string;
     website: string | null;
     industry: string;
+    niche: string | null;
     naics: string[];
     territory: string | null;
     zip: string;
@@ -308,6 +310,7 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
       company: p.companyName,
       website: assessment.enrichment?.domain ?? p.website ?? null,
       industry: industry.label,
+      niche: nicheLabel(p.niche),
       naics: industry.naics,
       territory: assessment.enrichment?.territoryLabel ?? null,
       zip: p.zip,
@@ -361,7 +364,7 @@ export function briefToMarkdown(b: ProducerBrief): string {
   lines.push(`# Producer Brief: ${b.snapshot.company}`);
   lines.push(`_Generated ${b.generatedAt}. Internal use. Requires licensed review before any coverage discussion._`, "");
   lines.push(`## 1. Account snapshot`);
-  lines.push(`- Industry: ${b.snapshot.industry}${b.snapshot.naics.length ? ` (NAICS ${b.snapshot.naics.join(", ")})` : ""}`);
+  lines.push(`- Industry: ${b.snapshot.industry}${b.snapshot.niche ? ` · ${b.snapshot.niche}` : ""}${b.snapshot.naics.length ? ` (NAICS ${b.snapshot.naics.join(", ")})` : ""}`);
   lines.push(`- Website: ${b.snapshot.website ?? "n/a"}`);
   lines.push(`- Location: ZIP ${b.snapshot.zip}${b.snapshot.territory ? `, ${b.snapshot.territory}` : ""}`);
   lines.push(`- Size: ${b.snapshot.employees} employees, ${b.snapshot.revenue} revenue`);

@@ -56,7 +56,7 @@ npm run build
 - **Auth**: no prospect accounts. Producers sign in with Supabase magic link (email-domain allowlist, must be in the `producers` table) or, for local development only, a signed passcode cookie.
 - **AI**: optional and off by default. It only writes a 3–5 sentence summary from already-computed findings. It never scores, interprets policies, or estimates premium.
 
-Architecture diagram and box-to-code map: [`docs/architecture.md`](docs/architecture.md). Route map and payloads: [`docs/api.md`](docs/api.md). Scoring rules: [`docs/scoring-spec.md`](docs/scoring-spec.md). Question bank: [`docs/question-matrix.md`](docs/question-matrix.md). Data inventory: [`docs/privacy-data-map.md`](docs/privacy-data-map.md). Relationship to the in-person workshop: [`docs/workshop-crosswalk.md`](docs/workshop-crosswalk.md).
+Architecture diagram and box-to-code map: [`docs/architecture.md`](docs/architecture.md). Route map and payloads: [`docs/api.md`](docs/api.md). Scoring rules: [`docs/scoring-spec.md`](docs/scoring-spec.md). Question bank: [`docs/question-matrix.md`](docs/question-matrix.md). Data inventory: [`docs/privacy-data-map.md`](docs/privacy-data-map.md). Relationship to the in-person workshop: [`docs/workshop-crosswalk.md`](docs/workshop-crosswalk.md). Adding industries: [`docs/industry-roadmap.md`](docs/industry-roadmap.md).
 
 ## Configuration
 

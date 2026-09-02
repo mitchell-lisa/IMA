@@ -11,6 +11,7 @@ import {
   REVENUE_BAND_LABELS,
   ROLE_LABELS,
   getIndustry,
+  nicheLabel,
 } from "@/lib/diagnostic";
 import { env } from "./env";
 import { hmacSign } from "./crypto";
@@ -39,6 +40,7 @@ export function buildCrmPayload(lead: LeadRecord, assessment: AssessmentRecord, 
     website: assessment.enrichment?.domain ?? p.website ?? null,
     industry: industry.label,
     industry_code: industry.id,
+    niche: nicheLabel(p.niche),
     naics_candidates: industry.naics.join(";"),
     zip: p.zip,
     territory: assessment.enrichment?.territoryLabel ?? null,
