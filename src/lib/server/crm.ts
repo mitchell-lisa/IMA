@@ -97,7 +97,7 @@ export async function dispatchToCrm(payload: CrmPayload): Promise<"sent" | "fail
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (env.crmWebhookSecret) headers["X-MarketReady-Signature"] = hmacSign(body, env.crmWebhookSecret);
   try {
-    const res = await fetch(env.crmWebhookUrl, { method: "POST", headers, body });
+    const res = await fetch(env.crmWebhookUrl, { method: "POST", headers, body, signal: AbortSignal.timeout(10_000) });
     if (!res.ok) {
       console.error(`[crm:failed] ${res.status}`);
       return "failed";

@@ -107,6 +107,13 @@ export interface Repository {
   updateLead(id: string, patch: Partial<LeadRecord>): Promise<LeadRecord>;
   listLeads(opts?: { limit?: number }): Promise<LeadListItem[]>;
 
+  /**
+   * Whether this authenticated user is an active producer. The memory
+   * repository (local development) returns true; Supabase checks
+   * public.producers.is_active by user id or email.
+   */
+  isActiveProducer(user: { id: string; email: string }): Promise<boolean>;
+
   recordEvent(input: Omit<EventRecord, "id" | "createdAt">): Promise<void>;
   listEvents(assessmentId: string): Promise<EventRecord[]>;
 }

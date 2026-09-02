@@ -235,6 +235,20 @@ export class SupabaseRepository implements Repository {
       .map((r) => ({ lead: leadFromRow(r), assessment: assessmentFromRow(r.assessments!) }));
   }
 
+  async isActiveProducer(user: { id: string; email: string }) {
+    const { data, error } = await this.client
+      .from("producers")
+      .select("user_id, is_active")
+      .or(`user_id.eq.${user.id},email.eq.${user.email.toLowerCase()}`)
+      .eq("is_active", true)
+      .limit(1);
+    if (error) {
+      console.error("[supabase] isActiveProducer failed", error.message);
+      return false;
+    }
+    return (data?.length ?? 0) > 0;
+  }
+
   async recordEvent(input: Omit<EventRecord, "id" | "createdAt">) {
     const { error } = await this.client.from("events").insert({
       assessment_id: input.assessmentId,

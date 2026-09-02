@@ -83,6 +83,10 @@ export class MemoryRepository implements Repository {
     return items.slice(0, opts?.limit ?? 200);
   }
 
+  async isActiveProducer() {
+    return true;
+  }
+
   async recordEvent(input: Omit<EventRecord, "id" | "createdAt">) {
     this.store.events.push({ ...input, id: randomUUID(), createdAt: new Date().toISOString() });
     if (this.store.events.length > 5000) this.store.events.splice(0, this.store.events.length - 5000);

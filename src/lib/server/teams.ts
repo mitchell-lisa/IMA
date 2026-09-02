@@ -1,5 +1,4 @@
 import "server-only";
-import { env } from "./env";
 
 /**
  * Optional Microsoft Teams notification via an incoming webhook (Workflows
@@ -53,7 +52,7 @@ export async function postTeamsLeadAlert(a: TeamsLeadAlert): Promise<"sent" | "s
     ],
   };
   try {
-    const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(card) });
+    const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(card), signal: AbortSignal.timeout(8_000) });
     if (!res.ok) {
       console.error(`[teams:failed] ${res.status}`);
       return "failed";
@@ -61,7 +60,6 @@ export async function postTeamsLeadAlert(a: TeamsLeadAlert): Promise<"sent" | "s
     return "sent";
   } catch (err) {
     console.error("[teams:failed]", err);
-    console.info(`[teams] ${env.appUrl}`);
     return "failed";
   }
 }

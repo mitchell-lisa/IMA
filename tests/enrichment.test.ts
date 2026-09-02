@@ -3,7 +3,7 @@ import { parseCbp } from "@/lib/server/enrichment/providers/census";
 import { parseFmcsa } from "@/lib/server/enrichment/providers/fmcsa";
 import { echoFacilityToSignal, echoNameQuery, parseEchoFacilities } from "@/lib/server/enrichment/providers/echo";
 import { NRI_FIELDS, nriToSignals, parseNri } from "@/lib/server/enrichment/providers/nri";
-import { htmlToText, safePublicUrl } from "@/lib/server/enrichment/providers/website";
+import { assertPublicDestination, htmlToText, isPrivateIp, safePublicUrl } from "@/lib/server/enrichment/providers/website";
 import { PUBLIC_RECORD_NOTE } from "@/lib/diagnostic";
 
 describe("Census CBP parser", () => {
@@ -86,6 +86,19 @@ describe("website provider helpers", () => {
     expect(safePublicUrl("192.168.1.1")).toBeNull();
     expect(safePublicUrl("not a host")).toBeNull();
     expect(safePublicUrl(null)).toBeNull();
+  });
+  it("classifies private and public addresses", () => {
+    for (const ip of ["127.0.0.1", "10.1.2.3", "172.16.0.1", "172.31.255.255", "192.168.0.1", "169.254.169.254", "0.0.0.0", "100.64.0.1", "224.0.0.1", "::1", "fe80::1", "fd00::1", "::ffff:10.0.0.1"]) {
+      expect(isPrivateIp(ip), ip).toBe(true);
+    }
+    for (const ip of ["8.8.8.8", "172.32.0.1", "104.18.0.1", "2606:4700::1111"]) expect(isPrivateIp(ip), ip).toBe(false);
+    expect(isPrivateIp("not-an-ip")).toBe(true);
+  });
+  it("rejects redirect destinations that are not public", async () => {
+    expect(await assertPublicDestination(new URL("http://169.254.169.254/latest/meta-data"))).toBe(false);
+    expect(await assertPublicDestination(new URL("http://localhost:3000/"))).toBe(false);
+    expect(await assertPublicDestination(new URL("ftp://example.com/"))).toBe(false);
+    expect(await assertPublicDestination(new URL("http://[::1]/"))).toBe(false);
   });
   it("strips scripts, styles, and tags", () => {
     const t = htmlToText("<html><head><style>a{}</style><script>x()</script></head><body><h1>Acme</h1><p>We ship &amp; store.</p></body></html>");

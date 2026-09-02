@@ -47,7 +47,7 @@ cp .env.example .env.local   # optional; the app runs with zero configuration
 npm run dev
 ```
 
-With no environment variables the app uses an in-memory store, logs emails to the console, and skips CRM dispatch. To open the producer dashboard locally set `PRODUCER_DEV_PASSCODE=anything` and sign in at `/producer/login` with any email plus that passcode.
+With no environment variables the app uses an in-memory store, logs emails to the console, and skips CRM dispatch. A production build (`next start`, or a Vercel production deployment) refuses to start on the in-memory store unless `ALLOW_MEMORY_STORE=true` is set, because serverless instances would lose assessments between requests. To open the producer dashboard locally set `PRODUCER_DEV_PASSCODE=anything` and sign in at `/producer/login` with any email plus that passcode.
 
 ```bash
 npm run check     # typecheck + lint + unit tests
@@ -61,7 +61,9 @@ npm run docs:all  # regenerate question matrix, Excel workbook + JSON, agent kno
 - **Browser**: question rendering, branching, progress, local draft state, accessible results.
 - **Server** (`src/lib/server`, all `server-only`): zod validation, deterministic scoring, enrichment, consent logging, database writes, email, PDF generation, CRM dispatch, rate limiting, producer authorization. Public DTOs never include raw answers, IP hashes, or attribution.
 - **Data**: Supabase Postgres via a `Repository` interface (`src/lib/server/repo`). `SupabaseRepository` is used when `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set; otherwise `MemoryRepository`.
-- **Auth**: no prospect accounts. Producers sign in with Supabase magic link (email-domain allowlist, must be in the `producers` table) or, for local development only, a signed passcode cookie.
+- **Auth**: no prospect accounts. Producers sign in with Supabase magic link; the email-domain allowlist is a coarse filter and active membership in the `producers` table is the actual authorization (producer pages read through the service-role client, so RLS is not a second check there). A signed passcode cookie exists for local development and demos only.
+- **Post-response work**: prospect email with PDF, CRM dispatch, Teams alert, and public-data enrichment run in Next.js `after()` with bounded timeouts, so the prospect's response never waits on a third party.
+- **Lead updates**: the results URL is shareable, so a token alone cannot replace a lead's email or grant consent. Updates are accepted only for the same email and only move flags from off to on.
 - **AI**: optional and off by default. It only writes a 3–5 sentence summary from already-computed findings. It never scores, interprets policies, or estimates premium.
 
 Architecture diagram and box-to-code map: [`docs/architecture.md`](docs/architecture.md). Route map and payloads: [`docs/api.md`](docs/api.md). Scoring rules: [`docs/scoring-spec.md`](docs/scoring-spec.md). Question bank: [`docs/question-matrix.md`](docs/question-matrix.md). Data inventory: [`docs/privacy-data-map.md`](docs/privacy-data-map.md). Relationship to the in-person workshop: [`docs/workshop-crosswalk.md`](docs/workshop-crosswalk.md). Adding industries: [`docs/industry-roadmap.md`](docs/industry-roadmap.md). 30-day roadmap status and launch checklist: [`docs/roadmap-status.md`](docs/roadmap-status.md).

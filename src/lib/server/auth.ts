@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { env } from "./env";
 import { hmacSign, hmacVerify } from "./crypto";
+import { getRepository } from "./repo";
 
 export const PRODUCER_COOKIE = "mr_producer";
 
@@ -38,8 +39,9 @@ function verifyPasscodeSession(value: string | undefined): ProducerSession | nul
 
 /**
  * Returns the current producer session or null. Supabase Auth (magic link)
- * is preferred; a signed passcode cookie is available for local development
- * and is refused in production unless explicitly configured.
+ * plus active membership in public.producers is the production path; a
+ * signed passcode cookie is available only when PRODUCER_DEV_PASSCODE is
+ * set (local development and demos).
  */
 export async function getProducerSession(): Promise<ProducerSession | null> {
   const store = await cookies();
@@ -55,7 +57,13 @@ export async function getProducerSession(): Promise<ProducerSession | null> {
     });
     const { data } = await supabase.auth.getUser();
     const email = data.user?.email;
-    if (email && emailAllowed(email)) return { email, method: "supabase" };
+    // Domain allowlist is a coarse filter; membership in public.producers
+    // (is_active) is the actual authorization, because producer pages read
+    // through the service-role repository where RLS does not apply.
+    if (data.user && email && emailAllowed(email)) {
+      const member = await getRepository().isActiveProducer({ id: data.user.id, email });
+      if (member) return { email, method: "supabase" };
+    }
   }
 
   const passcodeSession = verifyPasscodeSession(store.get(PRODUCER_COOKIE)?.value);

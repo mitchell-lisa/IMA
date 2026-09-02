@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies, headers } from "next/headers";
+import { after } from "next/server";
 import {
   CATEGORY_IDS,
   CATEGORY_LABELS,
@@ -22,6 +23,7 @@ import { prospectResultEmail, producerAlertEmail, sendEmail } from "./email";
 import { enrichCompany, enrichExternal } from "./enrichment";
 import { env } from "./env";
 import { renderResultsPdf } from "./pdf";
+import { decideLeadUpdate } from "./leadPolicy";
 import { getRepository } from "./repo";
 import { postTeamsLeadAlert } from "./teams";
 import type { AssessmentRecord, Attribution, LeadListItem, LeadRecord } from "./repo/types";
@@ -51,6 +53,13 @@ export interface AssessmentSessionDto {
   status: AssessmentRecord["status"];
   profile: AssessmentProfile;
   answers: Answers;
+}
+
+export class ConflictError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ConflictError";
+  }
 }
 
 export class NotFoundError extends Error {
@@ -178,9 +187,10 @@ export async function completeAssessment(assessmentId: string, answers?: Answers
     status: "completed",
     completedAt: new Date().toISOString(),
   });
-  // External public-data enrichment runs after the result is stored so a slow
-  // or failing source never delays the prospect's results page.
-  void enrichAfterCompletion(assessmentId, rec.enrichment, finalProfile);
+  // External public-data enrichment runs after the response is sent (Next.js
+  // `after()` keeps the serverless invocation alive) so a slow or failing
+  // source never delays the prospect's results page.
+  after(() => enrichAfterCompletion(assessmentId, rec.enrichment, finalProfile));
   await track(
     "assessment_completed",
     { overall: result.scores.overall, confidence: result.scores.confidence, criticalFlags: result.scores.criticalFlags.length, findings: result.findings.map((f) => f.id) },
@@ -240,6 +250,8 @@ export async function captureLead(input: LeadCaptureInput): Promise<{ leadId: st
   if (!rec || rec.status !== "completed" || !rec.result) throw new NotFoundError("Results not found");
 
   const existing = await repo.getLeadByAssessment(rec.id);
+  const decision = decideLeadUpdate(existing, input);
+  if (decision.kind === "reject") throw new ConflictError(decision.reason);
   const renewal = computeRenewalContext(rec.profile.renewalMonth);
   const leadScore = computeLeadScore({
     profile: rec.profile,
@@ -251,18 +263,9 @@ export async function captureLead(input: LeadCaptureInput): Promise<{ leadId: st
   });
 
   let lead: LeadRecord;
-  if (existing) {
-    lead = await repo.updateLead(existing.id, {
-      email: input.email,
-      name: input.name ?? existing.name,
-      role: input.role ?? existing.role,
-      phone: input.phone || existing.phone,
-      consentMarketing: existing.consentMarketing || input.consentMarketing,
-      workshopRequested: existing.workshopRequested || input.workshopRequested,
-      preferredContact: input.preferredContact ?? existing.preferredContact,
-      prospectNotes: input.notes ?? existing.prospectNotes,
-      leadScore,
-    });
+  if (existing && decision.kind === "update") {
+    // Same email as the existing lead: refine details, flags only move to true.
+    lead = await repo.updateLead(existing.id, { ...decision.patch, leadScore });
   } else {
     lead = await repo.createLead({
       assessmentId: rec.id,
@@ -288,11 +291,20 @@ export async function captureLead(input: LeadCaptureInput): Promise<{ leadId: st
     });
   }
 
-  await track(existing ? "lead_updated" : "lead_captured", { tier: leadScore.tier, workshop: lead.workshopRequested, consentMarketing: lead.consentMarketing }, { assessmentId: rec.id, leadId: lead.id });
+  const isNew = !existing;
+  await track(isNew ? "lead_captured" : "lead_updated", { tier: leadScore.tier, workshop: lead.workshopRequested, consentMarketing: lead.consentMarketing }, { assessmentId: rec.id, leadId: lead.id });
 
-  // Side effects: prospect email with PDF, producer alert, CRM dispatch.
-  // Failures are recorded but never block the prospect.
-  await Promise.all([sendProspectResult(lead, rec), notifyProducer(lead, rec), syncToCrm(lead, rec), notifyTeams(lead, rec)]);
+  // Side effects run after the response is sent so a slow provider never
+  // holds the prospect's unlock. Producer alert and Teams fire once, on
+  // first capture; the prospect email and CRM sync run on every capture.
+  const newlyRequestedWorkshop = !isNew && lead.workshopRequested && !existing?.workshopRequested;
+  after(async () => {
+    await Promise.allSettled([
+      sendProspectResult(lead, rec),
+      syncToCrm(lead, rec),
+      ...(isNew || newlyRequestedWorkshop ? [notifyProducer(lead, rec), notifyTeams(lead, rec)] : []),
+    ]);
+  });
 
   return { leadId: lead.id, tier: leadScore.tier };
 }

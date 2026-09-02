@@ -14,12 +14,19 @@ export function getRepository(): Repository {
   if (instance) return instance;
   if (env.hasSupabase) {
     instance = new SupabaseRepository(env.supabaseUrl!, env.supabaseServiceRoleKey!);
-  } else {
-    if (env.nodeEnv === "production") {
-      console.warn("[repo] Supabase is not configured; using in-memory storage. Data will not persist.");
-    }
-    instance = new MemoryRepository();
+    return instance;
   }
+  // Production must not accept submissions into process-local memory: on a
+  // serverless host assessments would vanish between requests and captured
+  // leads would be lost. Preview deployments and local development may opt in.
+  const isProductionTarget = process.env.VERCEL_ENV ? process.env.VERCEL_ENV === "production" : env.nodeEnv === "production";
+  if (isProductionTarget && process.env.ALLOW_MEMORY_STORE !== "true") {
+    throw new Error(
+      "Persistent storage is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, or set ALLOW_MEMORY_STORE=true for a throwaway demo.",
+    );
+  }
+  if (isProductionTarget) console.warn("[repo] ALLOW_MEMORY_STORE=true: using in-memory storage in production. Data will not persist.");
+  instance = new MemoryRepository();
   return instance;
 }
 

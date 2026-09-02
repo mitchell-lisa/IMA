@@ -34,7 +34,8 @@ Working document for compliance review. Describes every data element the MVP sto
 
 - Postgres (Supabase) with encryption at rest; TLS in transit.
 - Row-level security: anonymous role has no access. Prospect traffic is server-mediated using the service-role key inside Next.js route handlers only.
-- Producers authenticate with Supabase magic link (email-domain allowlist) and must exist in `producers`. They can read leads/assessments and update review fields only; a trigger prevents changes to prospect-supplied columns.
+- Producers authenticate with Supabase magic link (email-domain allowlist) and must be active in `producers`; the app checks membership on every request. They can read leads/assessments and update review fields only; a trigger prevents changes to prospect-supplied columns. Reporting views are `security_invoker`, so the same policies apply to analysts.
+- A results link cannot be used to change the lead's email or grant marketing consent; updates require the same email and only add flags.
 - Secrets live in server environment variables. Nothing sensitive is exposed to the browser.
 
 ## Consent

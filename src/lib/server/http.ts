@@ -2,7 +2,7 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { ZodError, type ZodType } from "zod";
 import { UnauthorizedError } from "./auth";
-import { NotFoundError } from "./dal";
+import { ConflictError, NotFoundError } from "./dal";
 import { clientIp, rateLimit } from "./ratelimit";
 import { hashIp } from "./crypto";
 
@@ -34,6 +34,7 @@ export function handleError(err: unknown): NextResponse {
   if (err instanceof ZodError) return jsonError(400, "Invalid request", err.issues.map((i) => ({ path: i.path.join("."), message: i.message })));
   if (err instanceof UnauthorizedError) return jsonError(401, "Unauthorized");
   if (err instanceof NotFoundError) return jsonError(404, err.message);
+  if (err instanceof ConflictError) return jsonError(409, err.message);
   console.error("[api] unhandled", err);
   return jsonError(500, "Something went wrong");
 }
