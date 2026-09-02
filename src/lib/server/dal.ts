@@ -17,7 +17,7 @@ import { aiSummariesAvailable, generateAiSummary } from "./ai";
 import { buildCrmPayload, dispatchToCrm, payloadsToCsv } from "./crm";
 import { hashIp, randomToken } from "./crypto";
 import { prospectResultEmail, producerAlertEmail, sendEmail } from "./email";
-import { enrichCompany } from "./enrichment";
+import { enrichCompany, enrichExternal } from "./enrichment";
 import { env } from "./env";
 import { renderResultsPdf } from "./pdf";
 import { getRepository } from "./repo";
@@ -175,12 +175,34 @@ export async function completeAssessment(assessmentId: string, answers?: Answers
     status: "completed",
     completedAt: new Date().toISOString(),
   });
+  // External public-data enrichment runs after the result is stored so a slow
+  // or failing source never delays the prospect's results page.
+  void enrichAfterCompletion(assessmentId, rec.enrichment, finalProfile);
   await track(
     "assessment_completed",
     { overall: result.scores.overall, confidence: result.scores.confidence, criticalFlags: result.scores.criticalFlags.length, findings: result.findings.map((f) => f.id) },
     { assessmentId },
   );
   return { token: rec.resultsToken };
+}
+
+async function enrichAfterCompletion(assessmentId: string, base: AssessmentRecord["enrichment"], profile: AssessmentProfile) {
+  try {
+    const start = base ?? (await enrichCompany({ website: profile.website, zip: profile.zip, industry: profile.industry, companyName: profile.companyName }));
+    const enriched = await enrichExternal(start, {
+      website: profile.website,
+      zip: profile.zip,
+      industry: profile.industry,
+      companyName: profile.companyName,
+      hasVehicles: profile.hasVehicles,
+    });
+    if (enriched !== start) {
+      await getRepository().updateAssessment(assessmentId, { enrichment: enriched });
+      await track("enrichment_completed", { providers: enriched.providersRun ?? [], signals: enriched.signals.length }, { assessmentId });
+    }
+  } catch (err) {
+    console.error("[dal] external enrichment failed", err);
+  }
 }
 
 export async function getPublicResult(token: string): Promise<PublicResultDto | null> {

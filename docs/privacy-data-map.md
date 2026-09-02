@@ -13,6 +13,7 @@ Working document for compliance review. Describes every data element the MVP sto
 | Answers (0–3 / unknown) | `assessments.answers` | Scoring | Business | Same |
 | Computed result (scores, findings, checklist) | `assessments.result` | Display, PDF, brief | Derived | Same |
 | Enrichment (domain, territory, NAICS) | `assessments.enrichment` | Dashboard, CRM payload | Derived | Same |
+| External enrichment (opt-in): ZIP centroid, FEMA county hazard context, EPA facility matches by name + ZIP, Census business patterns for the ZIP/NAICS, FMCSA carrier registration by name, AI website summary | `assessments.enrichment.signals` | Producer Brief context only; never shown to the prospect; never a risk grade | Public record / derived | Same |
 | Attribution (partner code, UTM, referrer, landing path) | `assessments.attribution` | Partner attribution | Low | Same |
 | Hashed IP, user agent | `assessments.ip_hash`, `user_agent` | Abuse prevention, audit | Pseudonymous | Same |
 | Contact email, name, role, phone | `leads.*` | Deliver report, follow-up | Personal | Per records policy |
@@ -54,4 +55,4 @@ Working document for compliance review. Describes every data element the MVP sto
 - Results page, PDF, and email: "Educational self-assessment; not a coverage opinion, audit, quotation, binder, or recommendation."
 - Pricing note: pricing cannot be assessed from the questionnaire.
 - No percentile or benchmark language until a defensible dataset exists.
-- Any public-record enrichment (build later) must carry the "verify identity and context" caveat and never a risk grade.
+- Public-record enrichment is opt-in per source (`ENRICHMENT_PROVIDERS`), runs after completion, is shown to producers only, links to the public source, and carries the "verify identity and context" caveat. It is never turned into a risk grade or shown to the prospect.

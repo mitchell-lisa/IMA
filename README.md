@@ -28,6 +28,7 @@ It is the MVP lead-generation system described in the product plan for South Jer
 | Supabase schema with RLS, retention purge, deletion function | ✅ `supabase/migrations/0001_init.sql` |
 | Analytics events for every funnel step | ✅ `events` table |
 | Optional AI plain-English summary for the brief (structured findings only) | ✅ off by default, `src/lib/server/ai.ts` |
+| Public-data enrichment, opt-in per source: FEMA NRI, EPA ECHO (no keys), Census CBP, FMCSA (keyed), website summary | ✅ `src/lib/server/enrichment/`, producer-facing only |
 | Unit tests for scoring, findings, lead score, territory | ✅ `tests/` |
 
 Not built, by design (see the plan's "Do not build" list): quotes, "you are overpaying" conclusions, carrier comparisons, AI policy interpretation, coverage recommendations, public enforcement risk grades, prospect accounts, document upload, chatbot.

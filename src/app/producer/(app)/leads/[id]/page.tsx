@@ -256,10 +256,22 @@ export default async function LeadDetailPage({ params, searchParams }: { params:
           {assessment.enrichment?.signals.length ? (
             <>
               <h3 className="mt-4 text-xs font-semibold uppercase tracking-wide text-muted">Enrichment signals</h3>
-              <ul className="mt-2 space-y-1 text-xs">
-                {assessment.enrichment.signals.map((s) => (
-                  <li key={`${s.source}-${s.label}`}>
+              <p className="mt-1 text-[11px] text-muted">
+                Public-record matches are by name and location. Verify identity and context before drawing any conclusion; nothing here is a risk grade.
+                {assessment.enrichment.providersRun?.length ? ` Sources run: ${assessment.enrichment.providersRun.join(", ")}.` : ""}
+              </p>
+              <ul className="mt-2 space-y-2 text-xs">
+                {assessment.enrichment.signals.map((s, i) => (
+                  <li key={`${s.source}-${i}`}>
                     <span className="font-semibold">{s.label}:</span> {s.value}
+                    {s.sourceUrl ? (
+                      <>
+                        {" "}
+                        <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="underline text-navy">
+                          source
+                        </a>
+                      </>
+                    ) : null}
                     {s.caveat ? <span className="block text-muted">{s.caveat}</span> : null}
                   </li>
                 ))}

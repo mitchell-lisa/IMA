@@ -37,6 +37,10 @@ export interface EnrichmentRecord {
   territoryLabel: string;
   naics: string[];
   signals: EnrichmentSignal[];
+  /** ZIP centroid used for location-context lookups. */
+  geo?: { lat: number; lon: number; city: string | null; state: string | null } | null;
+  /** External providers that ran successfully at completion. */
+  providersRun?: string[];
   computedAt: string;
 }
 
@@ -46,6 +50,8 @@ export interface EnrichmentSignal {
   value: string;
   /** Always shown next to public-record matches. */
   caveat?: string;
+  /** Link to the public source so matches are transparent and verifiable. */
+  sourceUrl?: string;
 }
 
 export interface LeadRecord {
