@@ -87,10 +87,19 @@ describe("buildProducerBrief", () => {
     const brief = buildProducerBrief(lead, assessment);
     expect(brief.opportunities).toHaveLength(3);
     expect(brief.workshopCrosswalk).toHaveLength(6);
-    expect(brief.workshopCrosswalk.map((r) => r.workshopCategory)).toContain("Contractual Risk Transfer");
-    // Insurance maps governance + market readiness; both scored 33.3 -> 33.3
-    const ins = brief.workshopCrosswalk.find((r) => r.workshopCategory === "Insurance")!;
+    expect(brief.workshopCrosswalk.map((r) => r.workshopCategory)).toContain("Contractual risk transfer");
+    // Every core answer is 1/3 -> 33.3 on any dimension made of core questions only.
+    const ins = brief.workshopCrosswalk.find((r) => r.workshopCategory === "Insurance-program design")!;
     expect(ins.score).toBeCloseTo(33.3, 1);
+    expect(ins.applicable).toBe(6); // br_property_valuation not applicable (no owned buildings)
+    // Claims has one answer at 0 (reporting protocol, weight 3 of 9 total) -> (0+3+3)/27 = 22.2
+    const claims = brief.workshopCrosswalk.find((r) => r.workshopCategory === "Claims")!;
+    expect(claims.score).toBeCloseTo(22.2, 1);
+    expect(claims.answered).toBe(3);
+    // Property/maintenance falls back to the safety question when no buildings are owned.
+    const maint = brief.workshopCrosswalk.find((r) => r.workshopCategory === "Property/maintenance")!;
+    expect(maint.applicable).toBe(1);
+    expect(maint.score).toBeCloseTo(33.3, 1);
     expect(brief.workshopPath).toHaveLength(7);
     expect(brief.servicePlanThemes.length).toBeGreaterThan(1);
     expect(brief.openingQuestions.length).toBeGreaterThanOrEqual(3);

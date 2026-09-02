@@ -128,21 +128,29 @@ export default async function LeadDetailPage({ params, searchParams }: { params:
 
         <Card>
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">Workshop crosswalk</h2>
-          <p className="mt-1 text-xs text-muted">Diagnostic scores mapped to the six Risk Workshop categories. The right column is what the workshop still has to cover with licensed review.</p>
+          <p className="mt-1 text-xs text-muted">Diagnostic answers mapped question-by-question onto the six Risk Workshop dimensions. The right column is what the workshop still has to cover with licensed review.</p>
           <div className="mt-3 overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="text-left text-xs uppercase tracking-wide text-muted">
                 <tr>
-                  <th className="py-1 pr-3">Workshop category</th>
-                  <th className="py-1 pr-3">Diagnostic score</th>
+                  <th className="py-1 pr-3">Workshop dimension</th>
+                  <th className="py-1 pr-3">Score</th>
                   <th className="py-1">Reserved for the workshop</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line align-top">
                 {brief.workshopCrosswalk.map((row) => (
                   <tr key={row.workshopCategory}>
-                    <td className="py-2 pr-3 font-semibold">{row.workshopCategory}</td>
-                    <td className="py-2 pr-3 tabular-nums">{row.score ?? "n/a"}</td>
+                    <td className="py-2 pr-3">
+                      <div className="font-semibold">{row.workshopCategory}</div>
+                      <div className="text-xs text-muted">{row.evaluates}</div>
+                    </td>
+                    <td className="py-2 pr-3 tabular-nums">
+                      {row.score ?? "n/a"}
+                      <div className="text-xs text-muted">
+                        {row.answered}/{row.applicable}
+                      </div>
+                    </td>
                     <td className="py-2 text-muted">{row.reservedForWorkshop.join("; ")}</td>
                   </tr>
                 ))}

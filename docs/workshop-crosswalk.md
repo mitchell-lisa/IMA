@@ -12,16 +12,18 @@ How the digital diagnostic relates to IMA's in-person Risk Workshop, based on th
 
 ## How the diagnostic maps
 
-| Workshop category | Diagnostic category | Automated in the diagnostic | Reserved for the workshop (licensed review) |
-|---|---|---|---|
-| Insurance | Program governance + Data & market readiness | Renewal lead time, program owner, limit *rationale process*, exposure-data validation, business-change capture, submission visibility ("how is your story told") | Replacement-cost methodology, policy exclusions, named-insured completeness, limit adequacy |
-| Operational Risk | Operational controls | Cyber controls, funds-transfer procedures, safety and training documentation, data handling, workforce programs | Technology systems, third-party oversight, EPLI/discrimination exposure detail |
-| Maintenance | (folded into Data & market readiness via the owned-buildings branch) | Carrier recommendation tracking, inspections, building updates, valuation cadence | Recommendation history, security, snow and ice, emerging equipment exposures |
-| Claims | Claims discipline | Reporting protocol, open-claim review cadence, root-cause tracking | Loss runs and reserves, assigned counsel, public adjusters, uncovered claims |
-| Evolving Risk | Emerging risk | Annual risk review cadence, regulatory monitoring, new-activity review | Environmental exposures, lender conditions, cyber coverage alignment |
-| Contractual Risk Transfer | Contractual risk transfer | Signed contracts, insurance requirements, certificate verification, subcontractor transfer | Review of actual contracts, certificates, endorsements; management/landlord/lender agreements |
+The mapping is question-level, following the plan's dimension table ("what is evaluated"). A question can inform more than one dimension.
 
-The Producer Brief renders this crosswalk with the mapped diagnostic score per workshop category so the producer can pre-fill expectations before the session and focus the workshop on the reserved items.
+| Workshop dimension | What the workshop evaluates | Diagnostic questions that inform it | Reserved for the workshop (licensed review) |
+|---|---|---|---|
+| Insurance-program design | Replacement-cost methodology, carrier-submission quality, named-insured completeness, policy exclusions, liability-limit rationale, underwriting narrative | Renewal lead time, program owner, limit rationale, exposure data, business changes, submission visibility, owned-property valuation (branch) | Replacement-cost methodology, policy exclusions, named-insured completeness, limit adequacy |
+| Operational controls | Information security, wire-transfer procedures, technology systems, training, leasing/customer processes, third-party oversight | Cyber controls, payment & wire controls, safety & training, sensitive data (branch), fleet (branch), workforce programs (branch) | Technology systems, third-party oversight, customer-facing processes, EPLI detail |
+| Property/maintenance | Carrier recommendations, documented inspections, snow and ice, security, emerging equipment exposures | Owned-property valuation & carrier recommendations (branch), safety & training (documented inspections) | Recommendation history, security, snow and ice, emerging equipment exposures |
+| Claims | Intake protocols, reporting, adjuster management, counsel strategy, broker advocacy, public-adjuster use | Incident reporting, open-claim review, root cause | Loss runs and reserves, assigned counsel, public adjusters, uncovered claims |
+| Emerging risk | Cyber/privacy, environmental issues, regulatory developments, frequency of formal risk assessments | Annual risk review, regulatory monitoring, new-activity review, cyber controls, regulated materials (branch) | Environmental exposures, lender conditions, cyber coverage alignment |
+| Contractual risk transfer | Signed contracts, indemnification, additional-insured requirements, COIs, vendor and management agreements | Signed contracts, insurance requirements, certificate verification, subcontractor transfer (branch) | Review of actual contracts, certificates, endorsements; management/landlord/lender agreements |
+
+Each dimension's score is the weighted maturity (0–100) over the mapped questions that were applicable and answered, with the answered/applicable count shown beside it. The Producer Brief renders this so the producer can pre-fill expectations before the session and focus the workshop on the reserved items.
 
 ## Scale differences, on purpose
 

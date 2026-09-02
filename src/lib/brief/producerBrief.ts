@@ -76,18 +76,31 @@ export interface ProducerBrief {
 }
 
 export interface WorkshopCrosswalkRow {
+  /** Workshop dimension name as used in the product plan. */
   workshopCategory: string;
-  diagnosticCategories: CategoryId[];
-  /** Weighted average of the mapped diagnostic scores, or null. */
+  /** What the workshop evaluates in this dimension (from the plan's dimension table). */
+  evaluates: string;
+  /** Diagnostic questions that inform this dimension. */
+  questionIds: string[];
+  /** Weighted maturity (0-100) over the answered, non-unknown questions above, or null. */
   score: number | null;
+  /** How many of the mapped questions were applicable and answered with a known value. */
+  answered: number;
+  applicable: number;
   /** Practices the workshop evaluates that the diagnostic deliberately leaves to licensed review. */
   reservedForWorkshop: string[];
 }
 
-const WORKSHOP_CROSSWALK: Array<Omit<WorkshopCrosswalkRow, "score">> = [
+/**
+ * Question-level mapping onto the six workshop dimensions. A question may
+ * inform more than one dimension (e.g. cyber controls are an operational
+ * control and, in the workshop's framing, an emerging risk).
+ */
+const WORKSHOP_CROSSWALK: Array<Pick<WorkshopCrosswalkRow, "workshopCategory" | "evaluates" | "questionIds" | "reservedForWorkshop">> = [
   {
-    workshopCategory: "Insurance",
-    diagnosticCategories: ["governance", "market_readiness"],
+    workshopCategory: "Insurance-program design",
+    evaluates: "Replacement-cost methodology, carrier-submission quality, named-insured completeness, policy exclusions, liability-limit rationale, underwriting narrative",
+    questionIds: ["gov_renewal_lead_time", "gov_internal_owner", "gov_limit_rationale", "mkt_exposure_data", "mkt_business_changes", "mkt_submission_visibility", "br_property_valuation"],
     reservedForWorkshop: [
       "Replacement-cost methodology against actual schedules",
       "Policy exclusions and whether all legal entities are scheduled as named insureds",
@@ -95,31 +108,36 @@ const WORKSHOP_CROSSWALK: Array<Omit<WorkshopCrosswalkRow, "score">> = [
     ],
   },
   {
-    workshopCategory: "Operational Risk",
-    diagnosticCategories: ["operational_controls"],
-    reservedForWorkshop: ["Technology systems and third-party oversight in detail", "Employment-practices exposure and training records"],
+    workshopCategory: "Operational controls",
+    evaluates: "Information security, wire-transfer procedures, technology systems, training, leasing/customer processes, third-party oversight",
+    questionIds: ["ops_cyber_controls", "ops_payment_authorization", "ops_safety_training", "br_data_security", "br_fleet_controls", "br_workforce_programs"],
+    reservedForWorkshop: ["Technology systems and third-party oversight in detail", "Customer-facing processes and employment-practices exposure"],
   },
   {
-    workshopCategory: "Maintenance",
-    diagnosticCategories: ["market_readiness"],
+    workshopCategory: "Property/maintenance",
+    evaluates: "Carrier recommendations, documented inspections, snow and ice, security, emerging equipment exposures",
+    questionIds: ["br_property_valuation", "ops_safety_training"],
     reservedForWorkshop: [
       "Carrier recommendation history and responses",
-      "Documented inspections, security, snow and ice, and emerging equipment exposures (lithium batteries, EV charging)",
+      "Security, snow and ice procedures, and emerging equipment exposures (lithium batteries, EV charging)",
     ],
   },
   {
     workshopCategory: "Claims",
-    diagnosticCategories: ["claims"],
+    evaluates: "Intake protocols, reporting, adjuster management, counsel strategy, broker advocacy, public-adjuster use",
+    questionIds: ["clm_reporting_protocol", "clm_open_claim_review", "clm_root_cause"],
     reservedForWorkshop: ["Loss-run review and open-claim reserves", "Carrier-assigned counsel and public-adjuster experience", "Uncovered or disputed claims"],
   },
   {
-    workshopCategory: "Evolving Risk",
-    diagnosticCategories: ["emerging_risk"],
-    reservedForWorkshop: ["Environmental exposures and lender environmental conditions", "Cyber/privacy program and coverage alignment"],
+    workshopCategory: "Emerging risk",
+    evaluates: "Cyber/privacy, environmental issues, regulatory developments, frequency of formal risk assessments",
+    questionIds: ["emr_annual_review", "emr_regulatory", "emr_new_activity_review", "ops_cyber_controls", "br_regulated_materials"],
+    reservedForWorkshop: ["Environmental exposures and lender environmental conditions", "Cyber/privacy coverage alignment"],
   },
   {
-    workshopCategory: "Contractual Risk Transfer",
-    diagnosticCategories: ["contractual_risk_transfer"],
+    workshopCategory: "Contractual risk transfer",
+    evaluates: "Signed contracts, indemnification, additional-insured requirements, COIs, vendor and management agreements",
+    questionIds: ["crt_signed_contracts", "crt_insurance_requirements", "crt_coi_verification", "br_subcontractor_transfer"],
     reservedForWorkshop: ["Review of actual contracts, certificates, and endorsements", "Management, landlord, and lender agreement requirements"],
   },
 ];
@@ -242,12 +260,24 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
     { minutes: 5, item: "Agree on document requests and next steps (licensed review of policies and loss runs)" },
   ];
 
+  const applicableIds = new Set(scores?.applicableQuestionIds ?? []);
   const workshopCrosswalk: WorkshopCrosswalkRow[] = WORKSHOP_CROSSWALK.map((row) => {
-    const vals = row.diagnosticCategories
-      .map((c) => scores?.categories.find((x) => x.category === c)?.score ?? null)
-      .filter((v): v is number => v !== null);
-    const score = vals.length ? Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10 : null;
-    return { ...row, score };
+    let earned = 0;
+    let available = 0;
+    let answered = 0;
+    let applicable = 0;
+    for (const id of row.questionIds) {
+      if (!applicableIds.has(id)) continue;
+      applicable += 1;
+      const v = assessment.answers[id];
+      if (typeof v !== "number") continue;
+      const weight = QUESTION_BY_ID[id]?.weights[industry.id] ?? 1;
+      answered += 1;
+      earned += v * weight;
+      available += 3 * weight;
+    }
+    const score = available > 0 ? Math.round((earned / available) * 1000) / 10 : null;
+    return { ...row, score, answered, applicable };
   });
 
   const servicePlanThemes = Array.from(
@@ -361,8 +391,8 @@ export function briefToMarkdown(b: ProducerBrief): string {
   lines.push(`## Diagnostic scores`);
   lines.push(`- Overall: ${b.scores.overall ?? "n/a"} (confidence ${b.scores.confidence}%)`);
   for (const c of b.scores.categories) lines.push(`- ${c.label}: ${c.score ?? "insufficient data"}${c.band ? ` (${c.band})` : ""}`);
-  lines.push("", `## Workshop crosswalk`, `| Workshop category | Diagnostic score | Reserved for licensed review in the workshop |`, `|---|---|---|`);
-  for (const row of b.workshopCrosswalk) lines.push(`| ${row.workshopCategory} | ${row.score ?? "n/a"} | ${row.reservedForWorkshop.join("; ")} |`);
+  lines.push("", `## Workshop crosswalk`, `| Workshop dimension | What the workshop evaluates | Diagnostic score (answered/applicable) | Reserved for licensed review |`, `|---|---|---|---|`);
+  for (const row of b.workshopCrosswalk) lines.push(`| ${row.workshopCategory} | ${row.evaluates} | ${row.score ?? "n/a"} (${row.answered}/${row.applicable}) | ${row.reservedForWorkshop.join("; ")} |`);
   if (b.scores.criticalFlags.length) lines.push("", `**Critical flags**`, ...b.scores.criticalFlags.map((f) => `- ${f}`));
   if (b.scores.consistencyNotes.length) lines.push("", `**Consistency notes**`, ...b.scores.consistencyNotes.map((n) => `- ${n}`));
   lines.push("", `## Summary`, b.summary);
