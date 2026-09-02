@@ -4,6 +4,7 @@ import { ZodError, type ZodType } from "zod";
 import { UnauthorizedError } from "./auth";
 import { ConflictError, NotFoundError } from "./dal";
 import { clientIp, rateLimit } from "./ratelimit";
+import { StorageNotConfiguredError } from "./repo";
 import { hashIp } from "./crypto";
 
 export function jsonError(status: number, message: string, details?: unknown) {
@@ -34,6 +35,10 @@ export function handleError(err: unknown): NextResponse {
   if (err instanceof ZodError) return jsonError(400, "Invalid request", err.issues.map((i) => ({ path: i.path.join("."), message: i.message })));
   if (err instanceof UnauthorizedError) return jsonError(401, "Unauthorized");
   if (err instanceof NotFoundError) return jsonError(404, err.message);
+  if (err instanceof StorageNotConfiguredError) {
+    console.error("[api] storage not configured:", err.message);
+    return jsonError(503, "The assessment is not available yet: the service is still being configured. Please try again later.");
+  }
   if (err instanceof ConflictError) return jsonError(409, err.message);
   console.error("[api] unhandled", err);
   return jsonError(500, "Something went wrong");

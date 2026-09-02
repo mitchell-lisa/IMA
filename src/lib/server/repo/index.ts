@@ -6,6 +6,14 @@ import type { Repository } from "./types";
 
 let instance: Repository | null = null;
 
+/** Thrown when production has no persistent storage configured. Mapped to HTTP 503. */
+export class StorageNotConfiguredError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "StorageNotConfiguredError";
+  }
+}
+
 /**
  * Returns the configured repository. Supabase when credentials are present,
  * otherwise an in-memory store so the app runs with zero configuration.
@@ -21,7 +29,7 @@ export function getRepository(): Repository {
   // leads would be lost. Preview deployments and local development may opt in.
   const isProductionTarget = process.env.VERCEL_ENV ? process.env.VERCEL_ENV === "production" : env.nodeEnv === "production";
   if (isProductionTarget && process.env.ALLOW_MEMORY_STORE !== "true") {
-    throw new Error(
+    throw new StorageNotConfiguredError(
       "Persistent storage is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SECRET_KEY (or the legacy SUPABASE_SERVICE_ROLE_KEY), or set ALLOW_MEMORY_STORE=true for a throwaway demo.",
     );
   }
