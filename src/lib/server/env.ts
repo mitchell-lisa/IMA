@@ -15,8 +15,10 @@ export const env = {
   nodeEnv: process.env.NODE_ENV ?? "development",
 
   supabaseUrl: opt("NEXT_PUBLIC_SUPABASE_URL"),
-  supabaseAnonKey: opt("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
-  supabaseServiceRoleKey: opt("SUPABASE_SERVICE_ROLE_KEY"),
+  // Supabase's current key format is sb_publishable_... (browser/auth) and
+  // sb_secret_... (server). The legacy anon / service_role JWTs still work.
+  supabaseAnonKey: opt("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY") ?? opt("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
+  supabaseServiceRoleKey: opt("SUPABASE_SECRET_KEY") ?? opt("SUPABASE_SERVICE_ROLE_KEY"),
 
   sessionSecret: opt("SESSION_SECRET"),
   producerDevPasscode: opt("PRODUCER_DEV_PASSCODE"),

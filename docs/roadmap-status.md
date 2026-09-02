@@ -71,7 +71,7 @@ Mapped to the plan's four-week roadmap. "Built" means it is in this repository a
 ## Launch checklist
 
 1. Create the Supabase project, run the migrations and seed, add producers to `public.producers` (required to sign in), set `PRODUCER_ALLOWED_EMAIL_DOMAINS`. Until then a Vercel deployment needs `ALLOW_MEMORY_STORE=true` and `PRODUCER_DEV_PASSCODE` to run as a throwaway demo.
-2. Set `SESSION_SECRET`, `IP_HASH_SALT`, `NEXT_PUBLIC_APP_URL`.
+2. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`, `SESSION_SECRET`, `IP_HASH_SALT`, `NEXT_PUBLIC_APP_URL`.
 3. Configure email (`RESEND_API_KEY`, `EMAIL_FROM`, `PRODUCER_ALERT_EMAIL`).
 4. Decide on CRM: webhook now, or CSV export until Salesforce is approved.
 5. Choose enrichment providers (`ENRICHMENT_PROVIDERS=nri,echo` needs no keys).
