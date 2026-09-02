@@ -6,7 +6,7 @@ const all = (v: 0 | 1 | 2 | 3) => Object.fromEntries(CORE_QUESTIONS.map((q) => [
 describe("computeLeadScore", () => {
   it("ranks a well-fit, senior, renewal-timed lead as tier A", () => {
     const profile = {
-      industry: "logistics_3pl" as const,
+      industry: "cre_owner" as const,
       revenueBand: "25m_50m" as const,
       zip: "08034",
       primaryConcern: "premium_increases" as const,

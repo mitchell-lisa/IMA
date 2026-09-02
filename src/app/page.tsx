@@ -29,7 +29,7 @@ export default async function LandingPage({ searchParams }: { searchParams: Prom
                 </Button>
               </div>
               <ul className="mt-8 grid gap-2 text-sm text-foreground sm:grid-cols-2">
-                {["No quote request.", "No obligation.", "Preliminary findings shown immediately.", "Built for 3PL, warehousing, and light manufacturing."].map((t) => (
+                {["No quote request.", "No obligation.", "Preliminary findings shown immediately.", "Built for commercial and multifamily real estate."].map((t) => (
                   <li key={t} className="flex items-start gap-2">
                     <span aria-hidden="true" className="mt-0.5 text-good">
                       ✓
@@ -43,9 +43,9 @@ export default async function LandingPage({ searchParams }: { searchParams: Prom
               <h2 className="text-base font-semibold text-navy">What you get right away</h2>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>An overall readiness score with a confidence indicator.</li>
-                <li>Scores across six categories that underwriters actually evaluate.</li>
+                <li>Scores across six categories that property underwriters actually evaluate.</li>
                 <li>Three specific areas worth investigating before your next renewal.</li>
-                <li>Your strengths, and whether they are making it into carrier submissions.</li>
+                <li>Your portfolio&apos;s strengths, and whether they are making it into carrier submissions.</li>
               </ul>
               <p className="mt-4 text-xs text-muted">
                 Optional: enter a work email afterwards to receive the detailed PDF report and a personalized preparation checklist.
@@ -74,7 +74,7 @@ export default async function LandingPage({ searchParams }: { searchParams: Prom
         <section id="how-it-works" className="mx-auto max-w-6xl px-5 py-16">
           <h2 className="text-2xl font-semibold text-navy">Six things the market looks at</h2>
           <p className="mt-2 max-w-2xl text-muted">
-            The diagnostic asks three core questions in each category, plus a handful of follow-ups based on how your business operates.
+            The diagnostic asks three core questions in each category, plus a handful of follow-ups based on how the portfolio operates: owned or managed, residential tenants, site vendors, investors and lenders, environmental history.
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {CATEGORY_IDS.map((c) => (
@@ -88,7 +88,7 @@ export default async function LandingPage({ searchParams }: { searchParams: Prom
 
         <section className="bg-surface">
           <div className="mx-auto max-w-6xl px-5 py-16">
-            <h2 className="text-2xl font-semibold text-navy">Industry-specific by design</h2>
+            <h2 className="text-2xl font-semibold text-navy">Built for real estate owners and operators</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               {INDUSTRY_IDS.filter((id) => id !== "other").map((id) => (
                 <Card key={id} as="div">

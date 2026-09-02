@@ -7,8 +7,8 @@ const all = (v: 0 | 1 | 2 | 3): Answers => Object.fromEntries(CORE_QUESTIONS.map
 describe("generateFindings", () => {
   it("always returns three investigation areas for a weak profile", () => {
     const answers = all(0);
-    const scores = scoreAssessment(answers, { industry: "light_manufacturing" });
-    const { findings } = generateFindings({ answers, profile: { industry: "light_manufacturing" }, scores });
+    const scores = scoreAssessment(answers, { industry: "multifamily" });
+    const { findings } = generateFindings({ answers, profile: { industry: "multifamily" }, scores });
     expect(findings).toHaveLength(3);
     // Category diversity in the top three.
     expect(new Set(findings.map((f) => f.category)).size).toBe(3);
@@ -16,20 +16,20 @@ describe("generateFindings", () => {
 
   it("surfaces the late-renewal finding when lead time is short and strengths exist", () => {
     const answers = { ...all(3), gov_renewal_lead_time: 0 as const };
-    const scores = scoreAssessment(answers, { industry: "logistics_3pl" });
-    const { findings, strengths } = generateFindings({ answers, profile: { industry: "logistics_3pl" }, scores });
+    const scores = scoreAssessment(answers, { industry: "cre_owner" });
+    const { findings, strengths } = generateFindings({ answers, profile: { industry: "cre_owner" }, scores });
     expect(findings.map((f) => f.id)).toContain("renewal_starts_late");
     expect(strengths.length).toBeGreaterThan(0);
   });
 
   it("surfaces the business-change finding only when the profile reports change", () => {
     const answers = { ...all(3), mkt_business_changes: 0 as const };
-    const scores = scoreAssessment(answers, { industry: "logistics_3pl" });
-    const without = generateFindings({ answers, profile: { industry: "logistics_3pl" }, scores });
+    const scores = scoreAssessment(answers, { industry: "cre_owner" });
+    const without = generateFindings({ answers, profile: { industry: "cre_owner" }, scores });
     expect(without.findings.map((f) => f.id)).not.toContain("business_outpaced_governance");
     const withChange = generateFindings({
       answers,
-      profile: { industry: "logistics_3pl", recentAcquisitionOrNewLocation: true },
+      profile: { industry: "cre_owner", recentAcquisitionOrNewLocation: true },
       scores,
     });
     expect(withChange.findings.map((f) => f.id)).toContain("business_outpaced_governance");
@@ -46,7 +46,7 @@ describe("generateFindings", () => {
 
 describe("runDiagnostic", () => {
   it("produces a checklist and renewal context", () => {
-    const result = runDiagnostic(all(1), { industry: "logistics_3pl", renewalMonth: 6 }, new Date("2026-01-15"));
+    const result = runDiagnostic(all(1), { industry: "cre_owner", renewalMonth: 6 }, new Date("2026-01-15"));
     expect(result.checklist.length).toBeGreaterThan(3);
     expect(result.renewal.monthsUntilRenewal).toBe(5);
     expect(result.renewal.status).toBe("approaching");

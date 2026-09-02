@@ -16,7 +16,7 @@ Every question uses the same four-level ladder so scores are comparable across c
 
 ## Question weights
 
-Each question carries a weight of 1–3 per industry (`weights` in `src/lib/diagnostic/questions.ts`). Example: renewal lead time is weight 3 in every industry; regulatory monitoring is weight 3 for manufacturing and 2 elsewhere.
+Each question carries a weight of 1–3 per industry (`weights` in `src/lib/diagnostic/questions.ts`). Example: renewal lead time is weight 3 in every industry; regulatory monitoring (fair housing, habitability, lead and mold, short-term rental rules) is weight 3 for multifamily and 2 elsewhere.
 
 ## Category score
 
@@ -32,14 +32,14 @@ category  = earned / available × 100           (rounded to 0.1)
 
 Weighted mean of category scores using the industry's `categoryWeights` (`src/lib/diagnostic/industries.ts`). Categories with `null` scores are excluded.
 
-| Category | 3PL / Warehousing | Light manufacturing | Other |
+| Category | Commercial real estate owner | Multifamily owner / manager | Other |
 |---|---|---|---|
 | Governance | 1.00 | 1.00 | 1 |
-| Data & market readiness | 1.25 | 1.25 | 1 |
-| Operational controls | 1.25 | 1.50 | 1 |
-| Claims | 1.25 | 1.25 | 1 |
-| Contractual risk transfer | 1.50 | 1.00 | 1 |
-| Emerging risk | 0.75 | 1.00 | 1 |
+| Data & market readiness | 1.50 | 1.25 | 1 |
+| Operational controls | 1.00 | 1.50 | 1 |
+| Claims | 1.00 | 1.25 | 1 |
+| Contractual risk transfer | 1.25 | 1.25 | 1 |
+| Emerging risk | 1.00 | 1.00 | 1 |
 
 ## Confidence score
 

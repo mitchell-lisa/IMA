@@ -167,7 +167,7 @@ export function detectInconsistencies(answers: Answers): ConsistencyNote[] {
       b: "crt_insurance_requirements",
       test: (a, b) => a >= 2 && b <= 0,
       message:
-        "Certificates are verified, but insurance requirements are not defined. Confirm what the certificates are being verified against.",
+        "Vendor certificates are verified, but insurance requirements are not defined. Confirm what the certificates are being verified against.",
     },
     {
       id: "requirements_without_coi",
@@ -175,7 +175,7 @@ export function detectInconsistencies(answers: Answers): ConsistencyNote[] {
       b: "crt_coi_verification",
       test: (a, b) => a >= 2 && b <= 0,
       message:
-        "Insurance requirements are defined, but certificates are not reviewed. Requirements that are never verified may not transfer risk.",
+        "Lease and contract insurance requirements are defined, but certificates are not reviewed. Requirements that are never verified may not transfer risk.",
     },
     {
       id: "root_cause_without_reporting",
@@ -191,7 +191,7 @@ export function detectInconsistencies(answers: Answers): ConsistencyNote[] {
       b: "mkt_exposure_data",
       test: (a, b) => a >= 3 && b <= 0,
       message:
-        "You co-author the underwriting narrative, but exposure values are carried forward without validation. Confirm the data behind the narrative.",
+        "You collaborate on how the portfolio is portrayed, but replacement values are dictated or carried forward. Confirm the statement of values behind the narrative.",
     },
     {
       id: "risk_review_without_change_capture",
@@ -199,7 +199,7 @@ export function detectInconsistencies(answers: Answers): ConsistencyNote[] {
       b: "mkt_business_changes",
       test: (a, b) => a >= 2 && b <= 0,
       message:
-        "A structured risk review exists, but operational changes reach the insurance program only at renewal. Confirm whether review outputs feed the program.",
+        "A structured risk review exists, but acquisitions and renovations reach the insurance program only at renewal. Confirm whether review outputs feed the program.",
     },
   ];
 

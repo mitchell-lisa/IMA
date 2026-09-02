@@ -35,8 +35,8 @@ Question wording adapts by industry without changing scoring:
 
 | Industry | Adapted questions |
 |---|---|
-| 3PL / warehousing | Exposure data (goods in care, custody, control), safety (forklift, dock, fire protection, sprinkler impairment), contracts (warehousing agreements, warehouse receipts), insurance requirements (warehouse legal liability, cargo, auto), new activity (commodities, temperature-controlled storage, new facilities) |
-| Light manufacturing | Exposure data (machinery values, BI worksheet, supplier dependence), safety (machine guarding, lockout/tagout), contracts (supply agreements, warranty and recall terms), insurance requirements (product liability, vendor endorsements), new activity (new products, lines, markets) |
+| Commercial real estate owner | Exposure data (statement of values, roof and sprinkler ages, tenant improvements, rental income for BI), property programs (roof, sprinkler, electrical, boiler inspections), insurance requirements (lease insurance clauses, lender requirements, vendor certificates), regulatory monitoring (fire code, ADA, environmental) |
+| Multifamily owner / manager | Exposure data (unit counts, occupancy, renters insurance participation), property programs (unit and common-area inspections, smoke and CO detectors, pools, playgrounds), insurance requirements (lease and renters insurance clauses, vendor certificates), regulatory monitoring (fair housing, habitability, lead and mold, short-term rental rules) |
 
 ## Workshop language carried into the diagnostic
 

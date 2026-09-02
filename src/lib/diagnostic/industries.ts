@@ -16,50 +16,50 @@ export interface IndustryDefinition {
 }
 
 export const INDUSTRIES: Record<IndustryId, IndustryDefinition> = {
-  logistics_3pl: {
-    id: "logistics_3pl",
-    label: "3PL, warehousing & distribution",
-    shortLabel: "3PL / Warehousing",
+  cre_owner: {
+    id: "cre_owner",
+    label: "Commercial real estate owner / investor",
+    shortLabel: "Commercial RE",
     description:
-      "Third-party logistics, public and contract warehousing, cold chain, fulfillment, and regional distribution.",
-    naics: ["493110", "493120", "484110", "484121", "488510"],
+      "Office, industrial and flex, retail, mixed-use, and net-lease portfolios, whether self-managed or with a third-party manager.",
+    naics: ["531110", "531120", "531190", "531390"],
     categoryWeights: {
       governance: 1,
-      market_readiness: 1.25,
-      operational_controls: 1.25,
-      claims: 1.25,
-      contractual_risk_transfer: 1.5,
-      emerging_risk: 0.75,
+      market_readiness: 1.5,
+      operational_controls: 1,
+      claims: 1,
+      contractual_risk_transfer: 1.25,
+      emerging_risk: 1,
     },
-    employeeThreshold: 50,
+    employeeThreshold: 25,
     marketNote:
-      "Carriers evaluating warehousing and 3PL accounts look closely at warehouse legal liability, cargo and customer contracts, fleet controls, fire protection, and how consistently incidents are reported.",
+      "Property underwriters price commercial portfolios on the quality of the statement of values, construction and protection data, roof and building-system updates, how carrier recommendations were handled, and how lease and vendor requirements transfer risk.",
   },
-  light_manufacturing: {
-    id: "light_manufacturing",
-    label: "Light manufacturing",
-    shortLabel: "Manufacturing",
+  multifamily: {
+    id: "multifamily",
+    label: "Multifamily owner / property manager",
+    shortLabel: "Multifamily",
     description:
-      "Fabrication, assembly, food and beverage, plastics, packaging, electronics, and other light industrial operations.",
-    naics: ["332", "333", "335", "311", "326", "339"],
+      "Apartment communities, student and workforce housing, and third-party residential management.",
+    naics: ["531110", "531311", "531390"],
     categoryWeights: {
       governance: 1,
       market_readiness: 1.25,
       operational_controls: 1.5,
       claims: 1.25,
-      contractual_risk_transfer: 1,
+      contractual_risk_transfer: 1.25,
       emerging_risk: 1,
     },
-    employeeThreshold: 50,
+    employeeThreshold: 25,
     marketNote:
-      "Underwriters reviewing manufacturers focus on product liability and recall exposure, machine guarding and workers' compensation history, property valuation, business interruption, and supplier and customer contract terms.",
+      "Multifamily carriers look closely at habitability and life-safety practices, renters insurance enforcement, fair-housing training, vendor certificates for snow and ice and contractors, claim frequency, and how quickly incidents are reported.",
   },
   other: {
     id: "other",
-    label: "Other middle-market business",
-    shortLabel: "Other",
-    description: "Any other commercial operation. Uses generic weighting.",
-    naics: [],
+    label: "Other real estate operator",
+    shortLabel: "Other RE",
+    description: "Self-storage, hospitality assets, senior housing, associations, land, or a mixed portfolio. Uses generic weighting.",
+    naics: ["531"],
     categoryWeights: {
       governance: 1,
       market_readiness: 1,
@@ -68,13 +68,13 @@ export const INDUSTRIES: Record<IndustryId, IndustryDefinition> = {
       contractual_risk_transfer: 1,
       emerging_risk: 1,
     },
-    employeeThreshold: 50,
+    employeeThreshold: 25,
     marketNote:
-      "Carriers evaluate every account on the quality of its exposure data, controls, claims history, and the clarity of the story that accompanies the submission.",
+      "Carriers evaluate every real estate account on the quality of its property data, the controls at each location, claims history, and the clarity of the story that accompanies the submission.",
   },
 };
 
-export const INDUSTRY_IDS: IndustryId[] = ["logistics_3pl", "light_manufacturing", "other"];
+export const INDUSTRY_IDS: IndustryId[] = ["cre_owner", "multifamily", "other"];
 
 export function getIndustry(id: IndustryId): IndustryDefinition {
   return INDUSTRIES[id] ?? INDUSTRIES.other;

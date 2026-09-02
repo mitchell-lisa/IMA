@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { parseCbp } from "@/lib/server/enrichment/providers/census";
-import { parseFmcsa } from "@/lib/server/enrichment/providers/fmcsa";
 import { echoFacilityToSignal, echoNameQuery, parseEchoFacilities } from "@/lib/server/enrichment/providers/echo";
 import { NRI_FIELDS, nriToSignals, parseNri } from "@/lib/server/enrichment/providers/nri";
 import { assertPublicDestination, htmlToText, isPrivateIp, safePublicUrl } from "@/lib/server/enrichment/providers/website";
@@ -10,29 +9,12 @@ describe("Census CBP parser", () => {
   it("reads header-indexed rows", () => {
     const rows = [
       ["ESTAB", "EMP", "NAICS2017_LABEL", "NAICS2017", "zip code"],
-      ["12", "540", "Warehousing and storage", "493", "08034"],
+      ["12", "540", "Lessors of real estate", "5311", "08034"],
     ];
     const out = parseCbp(rows);
     expect(out).toHaveLength(1);
-    expect(out[0]).toMatchObject({ naics: "493", establishments: 12, employment: 540 });
+    expect(out[0]).toMatchObject({ naics: "5311", establishments: 12, employment: 540 });
     expect(parseCbp([])).toEqual([]);
-  });
-});
-
-describe("FMCSA parser", () => {
-  it("prefers same-ZIP carriers and caps at three", () => {
-    const json = {
-      content: [
-        { carrier: { legalName: "A", phyZipcode: "19103", dotNumber: 1 } },
-        { carrier: { legalName: "B", phyZipcode: "08034", dotNumber: 2 } },
-        { carrier: { legalName: "C", phyZipcode: "08034", dotNumber: 3 } },
-        { carrier: { legalName: "D", phyZipcode: "08034", dotNumber: 4 } },
-        { carrier: { legalName: "E", phyZipcode: "08034", dotNumber: 5 } },
-      ],
-    };
-    expect(parseFmcsa(json, "08034").map((c) => c.legalName)).toEqual(["B", "C", "D"]);
-    expect(parseFmcsa(json, "99999").map((c) => c.legalName)).toEqual(["A", "B", "C"]);
-    expect(parseFmcsa({}, "08034")).toEqual([]);
   });
 });
 

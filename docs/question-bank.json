@@ -1,97 +1,95 @@
 {
-  "generatedAt": "2026-09-02T19:41:41.367Z",
+  "generatedAt": "2026-09-02T21:30:54.262Z",
   "categories": [
     {
       "id": "governance",
       "label": "Program governance",
       "short": "Governance",
-      "description": "Who owns the insurance program, when renewal work begins, and how limits are decided."
+      "description": "Who owns the insurance program across the portfolio, when renewal work begins, and how limits and deductibles are decided."
     },
     {
       "id": "market_readiness",
-      "label": "Data & market readiness",
+      "label": "Property data & market readiness",
       "short": "Market readiness",
-      "description": "How well exposure data and business changes are documented and presented to carriers."
+      "description": "How well the statement of values, acquisitions and dispositions, and building updates are documented and presented to carriers."
     },
     {
       "id": "operational_controls",
       "label": "Operational controls",
       "short": "Controls",
-      "description": "Cyber, payment authorization, safety, and training practices that underwriters ask about."
+      "description": "Tenant and applicant data, rent and vendor payment controls, and property inspection and life-safety practices."
     },
     {
       "id": "claims",
       "label": "Claims discipline",
       "short": "Claims",
-      "description": "How incidents are reported, open claims are reviewed, and root causes are tracked."
+      "description": "How incidents at the properties are reported, open claims are reviewed, and corrective actions are tracked."
     },
     {
       "id": "contractual_risk_transfer",
       "label": "Contractual risk transfer",
       "short": "Contracts",
-      "description": "Whether contracts, insurance requirements, and certificate verification work as one system."
+      "description": "Whether leases, vendor agreements, insurance requirements, and certificate verification work as one system."
     },
     {
       "id": "emerging_risk",
       "label": "Emerging risk",
       "short": "Emerging risk",
-      "description": "How new locations, products, technology, and regulations are reviewed for risk impact."
+      "description": "How acquisitions, new property types, regulations, and new exposures like EV charging are reviewed for risk impact."
     }
   ],
   "industries": [
     {
-      "id": "logistics_3pl",
-      "label": "3PL, warehousing & distribution",
-      "shortLabel": "3PL / Warehousing",
-      "description": "Third-party logistics, public and contract warehousing, cold chain, fulfillment, and regional distribution.",
+      "id": "cre_owner",
+      "label": "Commercial real estate owner / investor",
+      "shortLabel": "Commercial RE",
+      "description": "Office, industrial and flex, retail, mixed-use, and net-lease portfolios, whether self-managed or with a third-party manager.",
       "naics": [
-        "493110",
-        "493120",
-        "484110",
-        "484121",
-        "488510"
+        "531110",
+        "531120",
+        "531190",
+        "531390"
       ],
       "categoryWeights": {
         "governance": 1,
-        "market_readiness": 1.25,
-        "operational_controls": 1.25,
-        "claims": 1.25,
-        "contractual_risk_transfer": 1.5,
-        "emerging_risk": 0.75
+        "market_readiness": 1.5,
+        "operational_controls": 1,
+        "claims": 1,
+        "contractual_risk_transfer": 1.25,
+        "emerging_risk": 1
       },
-      "employeeThreshold": 50,
-      "marketNote": "Carriers evaluating warehousing and 3PL accounts look closely at warehouse legal liability, cargo and customer contracts, fleet controls, fire protection, and how consistently incidents are reported."
+      "employeeThreshold": 25,
+      "marketNote": "Property underwriters price commercial portfolios on the quality of the statement of values, construction and protection data, roof and building-system updates, how carrier recommendations were handled, and how lease and vendor requirements transfer risk."
     },
     {
-      "id": "light_manufacturing",
-      "label": "Light manufacturing",
-      "shortLabel": "Manufacturing",
-      "description": "Fabrication, assembly, food and beverage, plastics, packaging, electronics, and other light industrial operations.",
+      "id": "multifamily",
+      "label": "Multifamily owner / property manager",
+      "shortLabel": "Multifamily",
+      "description": "Apartment communities, student and workforce housing, and third-party residential management.",
       "naics": [
-        "332",
-        "333",
-        "335",
-        "311",
-        "326",
-        "339"
+        "531110",
+        "531311",
+        "531390"
       ],
       "categoryWeights": {
         "governance": 1,
         "market_readiness": 1.25,
         "operational_controls": 1.5,
         "claims": 1.25,
-        "contractual_risk_transfer": 1,
+        "contractual_risk_transfer": 1.25,
         "emerging_risk": 1
       },
-      "employeeThreshold": 50,
-      "marketNote": "Underwriters reviewing manufacturers focus on product liability and recall exposure, machine guarding and workers' compensation history, property valuation, business interruption, and supplier and customer contract terms."
+      "employeeThreshold": 25,
+      "marketNote": "Multifamily carriers look closely at habitability and life-safety practices, renters insurance enforcement, fair-housing training, vendor certificates for snow and ice and contractors, claim frequency, and how quickly incidents are reported."
     },
     {
       "id": "other",
-      "label": "Other middle-market business",
-      "shortLabel": "Other",
-      "description": "Any other commercial operation. Uses generic weighting.",
-      "naics": [],
+      "label": "Other real estate operator",
+      "shortLabel": "Other RE",
+      "description": "Self-storage, hospitality assets, senior housing, associations, land, or a mixed portfolio. Uses generic weighting.",
+      "naics": [
+        "531"
+      ],
       "categoryWeights": {
         "governance": 1,
         "market_readiness": 1,
@@ -100,8 +98,8 @@
         "contractual_risk_transfer": 1,
         "emerging_risk": 1
       },
-      "employeeThreshold": 50,
-      "marketNote": "Carriers evaluate every account on the quality of its exposure data, controls, claims history, and the clarity of the story that accompanies the submission."
+      "employeeThreshold": 25,
+      "marketNote": "Carriers evaluate every real estate account on the quality of its property data, the controls at each location, claims history, and the clarity of the story that accompanies the submission."
     }
   ],
   "questions": [
@@ -109,8 +107,8 @@
       "id": "gov_renewal_lead_time",
       "category": "governance",
       "topic": "Renewal lead time",
-      "prompt": "When does renewal preparation typically begin relative to your policy expiration?",
-      "help": "Carriers reward complete submissions delivered early. Late starts compress negotiation time.",
+      "prompt": "When does renewal preparation for the portfolio typically begin relative to policy expiration?",
+      "help": "Property markets reward complete, early submissions. A late start means values and building updates never make it into the story carriers see.",
       "options": [
         {
           "value": 0,
@@ -118,36 +116,37 @@
         },
         {
           "value": 1,
-          "label": "About 60 days out, but it varies year to year"
+          "label": "About 60 days out; we ask brokers to market and follow up 30 days out"
         },
         {
           "value": 2,
-          "label": "90+ days out with a written timeline"
+          "label": "90+ days out with a written timeline and an updated statement of values"
         },
         {
           "value": 3,
-          "label": "120+ days out with a documented calendar, owners, and a pre-renewal strategy meeting"
+          "label": "120+ days out with a documented calendar, owners, a pre-renewal strategy meeting, and a reconciled statement of values"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 3,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 3
       },
       "critical": {
         "atOrBelow": 0,
-        "message": "Renewal preparation appears to begin inside 30 days of expiration, which limits the ability to document controls and approach alternative markets."
+        "message": "Renewal preparation appears to begin inside 30 days of expiration, which limits the ability to update values, document building improvements, and approach alternative markets."
       }
     },
     {
       "id": "gov_internal_owner",
       "category": "governance",
       "topic": "Program ownership",
-      "prompt": "Who owns the insurance program internally, and how is that responsibility defined?",
+      "prompt": "Who owns the insurance program for the portfolio, and how is that responsibility defined?",
+      "help": "In many real estate organizations this sits between ownership, an asset manager, a controller, and the property manager.",
       "options": [
         {
           "value": 0,
-          "label": "No single owner; whoever the broker contacts handles it"
+          "label": "No single owner; whoever the broker contacts handles it, or the property manager decides"
         },
         {
           "value": 1,
@@ -155,91 +154,89 @@
         },
         {
           "value": 2,
-          "label": "A named owner with defined responsibilities"
+          "label": "A named owner with defined responsibilities, including certificates and mid-term changes"
         },
         {
           "value": 3,
-          "label": "A named owner, a backup, and a cross-functional review (finance, operations, HR/safety)"
+          "label": "A named owner, a backup, and a defined split of duties with the property manager, asset management, and finance"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 2,
         "other": 2
       }
     },
     {
       "id": "gov_limit_rationale",
       "category": "governance",
-      "topic": "Limit rationale",
-      "prompt": "How are policy limits and deductibles decided each year?",
-      "help": "This question asks about your decision process, not whether the limits are adequate.",
+      "topic": "Limit and deductible rationale",
+      "prompt": "How are liability limits, property deductibles, and umbrella limits decided each year?",
+      "help": "This asks about your decision process, not whether the limits are adequate.",
       "options": [
         {
           "value": 0,
-          "label": "We renew the same limits without discussion"
+          "label": "We trust the agent or go with past numbers; limits follow the premium budget"
         },
         {
           "value": 1,
-          "label": "The broker recommends and we generally accept"
+          "label": "We have discussed limits with the agent but never worked through examples or lender requirements in detail"
         },
         {
           "value": 2,
-          "label": "We review limits against contracts, assets, and revenue annually"
+          "label": "We review limits annually against lender and lease requirements, asset values, and revenue"
         },
         {
           "value": 3,
-          "label": "We document the rationale for each limit and deductible and revisit it when the business changes"
+          "label": "A formal annual process considers industry trends, risk tolerance, balance sheet, defensibility, lender covenants, and documents the rationale for each limit and deductible"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 2,
         "other": 2
       }
     },
     {
       "id": "mkt_exposure_data",
       "category": "market_readiness",
-      "topic": "Exposure data",
-      "prompt": "How are exposure values (payroll, revenue, property values, vehicle schedules, inventory) validated before submission?",
+      "topic": "Statement of values",
+      "prompt": "How is the statement of values (replacement cost, construction and protection details, occupancy, square footage, year built, updates) maintained and validated before submission?",
+      "help": "Replacement cost that is dictated by the insurer, or carried forward, is the most common reason a property submission is discounted.",
       "options": [
         {
           "value": 0,
-          "label": "We use last year's numbers unless someone flags a change"
+          "label": "We don't analyze replacement cost; the insurer dictates it and values are carried forward"
         },
         {
           "value": 1,
-          "label": "We update the big items but rarely reconcile schedules"
+          "label": "We reviewed values a few years ago but do not update often and are not confident in the process"
         },
         {
           "value": 2,
-          "label": "Finance validates values annually against records"
+          "label": "Values and building details are updated annually and checked against recent construction costs"
         },
         {
           "value": 3,
-          "label": "Values are reconciled against financials, fixed-asset registers, and schedules, with sign-off before submission"
+          "label": "Values are updated annually, reconciled against rebuilds, appraisals, and recent claims, with construction, protection, and update history documented per building"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 3,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 3
       },
       "variants": {
-        "logistics_3pl": {
-          "help": "For a 3PL this includes the value of customers' goods in your care, custody, and control, vehicle and trailer schedules, and square footage by location."
-        },
-        "light_manufacturing": {
-          "help": "For a manufacturer this includes machinery and equipment values, a business-interruption worksheet, and any dependence on a single supplier or customer."
+        "multifamily": {
+          "help": "Include unit counts, rent roll and business-income values, and any building improvements since the last valuation."
         }
       }
     },
     {
       "id": "mkt_business_changes",
       "category": "market_readiness",
-      "topic": "Business change documentation",
-      "prompt": "How are operational changes (new services, locations, equipment, customers, headcount) communicated to your insurance program during the year?",
+      "topic": "Portfolio changes",
+      "prompt": "How are acquisitions, dispositions, renovations, new leases, and occupancy changes communicated to your insurance program during the year?",
       "options": [
         {
           "value": 0,
@@ -247,95 +244,96 @@
         },
         {
           "value": 1,
-          "label": "We mention major changes when we remember"
+          "label": "We mention major acquisitions or sales when we remember"
         },
         {
           "value": 2,
-          "label": "A defined process captures changes and shares them with the broker"
+          "label": "A defined process reports each acquisition, disposition, and major renovation to the broker with values and lender requirements"
         },
         {
           "value": 3,
-          "label": "Changes are logged, reviewed quarterly for insurance impact, and reflected in mid-term endorsements when needed"
+          "label": "Changes are logged, reviewed quarterly for insurance impact, and reflected in schedules and endorsements when they happen"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 2,
+        "cre_owner": 3,
+        "multifamily": 2,
         "other": 2
       }
     },
     {
       "id": "mkt_submission_visibility",
       "category": "market_readiness",
-      "topic": "Submission visibility",
-      "prompt": "How much visibility do you have into what is actually sent to carriers about your company?",
-      "help": "The underwriting story is the narrative and evidence that accompanies applications and loss runs.",
+      "topic": "Your risk profile in the market",
+      "prompt": "Do you know how your story is being told in the marketplace, and do you see what is sent to insurance companies about the portfolio?",
+      "help": "Brokers who never saw your environmental consultant's report, your capital plan, or your maintenance program cannot present them.",
       "options": [
         {
           "value": 0,
-          "label": "None; we sign applications and the broker handles the rest"
+          "label": "I don't know; we have never seen what brokers present to market"
         },
         {
           "value": 1,
-          "label": "We submit updated information annually but have not seen how our story is told to carriers"
+          "label": "We submit updated information annually and confirm the broker understands changes to the portfolio"
         },
         {
           "value": 2,
-          "label": "We review the submission and know which carriers quoted or declined"
+          "label": "We review the submission and know which carriers quoted or declined and why"
         },
         {
           "value": 3,
-          "label": "We collaborate with our broker on how best to portray the company in the marketplace, review the full submission, and receive a market summary with reasons for declinations"
+          "label": "We collaborate with our broker to determine how best to portray the portfolio, review the full submission and narrative, and receive a market summary with reasons for declinations"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 2,
         "other": 2
       }
     },
     {
       "id": "ops_cyber_controls",
       "category": "operational_controls",
-      "topic": "Cyber controls",
-      "prompt": "Which of the following best describes your cyber controls (MFA, backups, endpoint protection, incident response)?",
+      "topic": "Data security",
+      "prompt": "What data do you hold on tenants, applicants, and investors, how is it stored and shared, and how is it protected?",
+      "help": "Applications, background checks, banking details, and investor reporting are all sensitive. Property-management software vendors should be part of the answer.",
       "options": [
         {
           "value": 0,
-          "label": "Basic antivirus; MFA and tested backups are not consistently in place"
+          "label": "No data security program or process; information is stored locally and not encrypted"
         },
         {
           "value": 1,
-          "label": "MFA on email; backups exist but are not tested regularly"
+          "label": "Some form of data security, such as limited access, encryption, or occasional employee education"
         },
         {
           "value": 2,
-          "label": "MFA on email and remote access, tested offline backups, endpoint detection, and a written incident plan"
+          "label": "A formal data security program: MFA, encryption, limited access, regular training, and a written incident plan"
         },
         {
           "value": 3,
-          "label": "All of the prior plus annual testing, vendor security review, and executive reporting"
+          "label": "Formal program plus vendor security review of property-management and payment platforms, tested backups, and annual review with the broker"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 3,
         "other": 2
       },
       "critical": {
         "atOrBelow": 0,
-        "message": "Multi-factor authentication and tested backups do not appear to be consistently in place. Most cyber carriers now treat these as minimum requirements."
+        "message": "Tenant, applicant, or investor data appears to be held without a data security program. Cyber carriers treat MFA and encryption as minimum requirements."
       }
     },
     {
       "id": "ops_payment_authorization",
       "category": "operational_controls",
-      "topic": "Payment & wire controls",
-      "prompt": "How are changes to vendor bank details and outgoing wire requests verified?",
+      "topic": "Funds transfer security",
+      "prompt": "How is the flow of funds controlled: rent collection, security deposits, vendor payments, wires, and changes to vendor bank details?",
       "options": [
         {
           "value": 0,
-          "label": "No formal protocol; an email or phone request is usually sufficient"
+          "label": "No formal protocols; an email or phone request is usually sufficient"
         },
         {
           "value": 1,
@@ -343,121 +341,123 @@
         },
         {
           "value": 2,
-          "label": "Written procedure with callback verification to a known number and dual approval for all bank changes and wires"
+          "label": "Written procedures with callback verification to a known number and dual approval for wires and bank-detail changes"
         },
         {
           "value": 3,
-          "label": "Formal written program with regular training: dual authorization, callback verification, destination confirmation, and receipt confirmation"
+          "label": "Formal written program with regular training: dual authorization, calls to verify, destination-detail confirmation, receipt confirmation, and periodic consultation with the bank on best practices"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 3,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 3
       },
       "critical": {
         "atOrBelow": 0,
-        "message": "Vendor bank-detail changes and wires may be released on an email or phone request alone, which is the most common path for social-engineering losses."
+        "message": "Wires and vendor bank-detail changes may be released on an email or phone request alone, which is the most common path for social-engineering losses in property operations."
       }
     },
     {
       "id": "ops_safety_training",
       "category": "operational_controls",
-      "topic": "Safety & training",
-      "prompt": "How are safety programs, training, and inspections documented?",
+      "topic": "Inspections, life safety & maintenance",
+      "prompt": "How are property inspections, life-safety systems, lighting, and preventive maintenance documented across the portfolio?",
+      "help": "Documented inspections and maintenance logs are what carriers credit; practices that exist only in the property manager's head do not count.",
       "options": [
         {
           "value": 0,
-          "label": "Training happens on the job; little is written down"
+          "label": "Inspections happen when something breaks; little is written down"
         },
         {
           "value": 1,
-          "label": "Some written procedures; training records are incomplete"
+          "label": "Some written procedures; inspection and maintenance records are incomplete or live only with the manager"
         },
         {
           "value": 2,
-          "label": "Written safety program, documented training, and periodic inspections"
+          "label": "Written inspection schedule, life-safety testing records, and a preventive maintenance plan per property"
         },
         {
           "value": 3,
-          "label": "Written program with documented training, inspections, near-miss reporting, and management review of results"
+          "label": "Written program with documented inspections, life-safety testing, lighting and security logs, preventive maintenance plans, and ownership review of results"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 3,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 2
       },
       "variants": {
-        "logistics_3pl": {
-          "prompt": "How are warehouse and dock safety (forklift certification, racking, housekeeping), fire protection (sprinkler inspections, impairment procedures, commodity storage), and driver training documented?",
-          "help": "Warehouse underwriters look first at fire protection and forklift and dock injury controls."
+        "multifamily": {
+          "prompt": "How are unit and common-area inspections, life-safety systems (smoke and CO detectors, sprinklers, egress), lighting, and preventive maintenance documented across the communities?",
+          "help": "Habitability claims turn on documentation: inspection logs, work-order completion, and life-safety testing records."
         },
-        "light_manufacturing": {
-          "prompt": "How are machine guarding, lockout/tagout, hearing and respiratory protection, and safety training documented?",
-          "help": "Machine guarding and lockout/tagout drive both workers' compensation experience and product-safety credibility with underwriters."
+        "cre_owner": {
+          "prompt": "How are roof, sprinkler, electrical, and boiler inspections, life-safety systems, and preventive maintenance documented across the buildings?",
+          "help": "Roof age, sprinkler impairments, aluminum wiring, and boiler condition are the recommendations carriers issue most often."
         }
       }
     },
     {
       "id": "clm_reporting_protocol",
       "category": "claims",
-      "topic": "Incident reporting",
-      "prompt": "What happens when an incident or potential claim occurs?",
+      "topic": "Claim intake & reporting",
+      "prompt": "What policies and procedures make sure incidents at the properties (injuries, fires, water losses, tenant claims) are reported and managed properly?",
       "options": [
         {
           "value": 0,
-          "label": "It is reported when someone thinks of it, sometimes weeks later"
+          "label": "No policies or protocols; the property manager reports claims directly to the carrier when they think of it"
         },
         {
           "value": 1,
-          "label": "Supervisors know to report, but timing and format vary"
+          "label": "Supervisors and managers know to report, but timing and format vary; we check in with the broker when we need an update"
         },
         {
           "value": 2,
-          "label": "A written protocol defines who reports, how, and within what timeframe"
+          "label": "A written protocol defines who reports, how, and within what timeframe, with an incident form for every event"
         },
         {
           "value": 3,
-          "label": "Written protocol, reporting within 24–48 hours, an incident form, and tracking of every report"
+          "label": "Written protocol, reporting within 24–48 hours, incident forms, and formal meetings with broker and adjusters on a predetermined timeline"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 3,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 3
       },
       "critical": {
         "atOrBelow": 0,
-        "message": "Incidents appear to be reported inconsistently or late. Late reporting is a frequent driver of higher claim costs and coverage disputes."
+        "message": "Incidents appear to be reported inconsistently or late. Late reporting is a frequent driver of higher claim costs and coverage disputes, especially on liability claims."
       }
     },
     {
       "id": "clm_open_claim_review",
       "category": "claims",
-      "topic": "Open claim review",
-      "prompt": "How often are open claims and reserves reviewed with your broker or carrier?",
+      "topic": "Claims management & advocacy",
+      "prompt": "How are open claims, reserves, carrier-assigned counsel, and public adjusters managed?",
+      "help": "The workshop asks whether your broker has a systematic process: frequency of updates, claims positioning, policy review, legal guidance, and advocacy.",
       "options": [
         {
           "value": 0,
-          "label": "We do not review open claims"
+          "label": "We work directly with the carrier and adjuster; we do not focus on the liability claims process or communicate with assigned counsel"
         },
         {
           "value": 1,
-          "label": "Only when the carrier or broker raises something"
+          "label": "We engage the broker if we are not satisfied; the broker primarily deals with counsel while we monitor open claims"
         },
         {
           "value": 2,
-          "label": "Scheduled reviews at least twice a year"
+          "label": "Scheduled claim reviews at least twice a year with reserve discussion; we consider a public adjuster case by case"
         },
         {
           "value": 3,
-          "label": "Quarterly claim reviews with reserve challenges, adjuster accountability, and pre-renewal loss-run reconciliation"
+          "label": "A systematic process: quarterly reviews with reserve challenges, pre-assigned preferred defense counsel where possible, public-adjuster decisions made with the broker against policy wording, and pre-renewal loss-run reconciliation"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 3,
+        "cre_owner": 2,
+        "multifamily": 3,
         "other": 2
       }
     },
@@ -465,7 +465,7 @@
       "id": "clm_root_cause",
       "category": "claims",
       "topic": "Root cause & corrective action",
-      "prompt": "After an incident, how are root causes identified and corrective actions tracked?",
+      "prompt": "After an incident at a property, how are root causes identified and corrective actions tracked?",
       "options": [
         {
           "value": 0,
@@ -473,138 +473,128 @@
         },
         {
           "value": 1,
-          "label": "Supervisors discuss causes; actions are not tracked"
+          "label": "The property manager discusses causes; actions are not tracked"
         },
         {
           "value": 2,
-          "label": "Root-cause review for significant incidents with documented corrective actions"
+          "label": "Root-cause review for significant incidents with documented corrective actions and work orders"
         },
         {
           "value": 3,
-          "label": "Every incident gets a root-cause review, corrective actions are tracked to closure, and trends are reported to leadership"
+          "label": "Every incident gets a root-cause review, corrective actions are tracked to closure across the portfolio, and trends are reported to ownership"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 3,
+        "cre_owner": 2,
+        "multifamily": 3,
         "other": 2
       }
     },
     {
       "id": "crt_signed_contracts",
       "category": "contractual_risk_transfer",
-      "topic": "Signed contracts",
-      "prompt": "Before work begins with customers, vendors, or subcontractors, how consistently are written contracts in place?",
-      "variants": {
-        "logistics_3pl": {
-          "prompt": "Before goods are received or work begins, how consistently are written warehousing agreements, customer contracts, and carrier/vendor agreements in place?",
-          "help": "Warehouse receipts and customer contracts define your legal liability for goods in your care. Unsigned or inconsistent terms are a common gap."
-        },
-        "light_manufacturing": {
-          "prompt": "How consistently are written supply agreements, customer purchase terms, and vendor contracts in place before production or shipment begins?",
-          "help": "Customer terms often carry product warranty, recall, and indemnity obligations that shape your liability program."
-        }
-      },
+      "topic": "Vendor & contractor contracts",
+      "prompt": "Tell us about the contracts you use with vendors and contractors at the properties (snow and ice, landscaping, security, renovations). Are master agreements in place with key vendors?",
       "options": [
         {
           "value": 0,
-          "label": "Often work starts on a handshake or PO alone"
+          "label": "We don't always get contracts signed; work often starts on a proposal or a call"
         },
         {
           "value": 1,
-          "label": "Contracts exist for major relationships; smaller ones vary"
+          "label": "An attorney reviews or writes contracts and we make sure they are signed"
         },
         {
           "value": 2,
-          "label": "Signed contracts are required before work begins"
+          "label": "Attorney-reviewed contracts plus broker review for insurance and risk-transfer terms; signed before work starts"
         },
         {
           "value": 3,
-          "label": "Signed contracts required, with standard indemnity and insurance language reviewed by counsel and tracked centrally"
+          "label": "Attorney and broker review, signed before work starts, master agreements with key vendors, and payment blocked when contract or insurance terms are missing"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 3,
         "other": 2
       }
     },
     {
       "id": "crt_insurance_requirements",
       "category": "contractual_risk_transfer",
-      "topic": "Insurance requirements",
-      "prompt": "How do you determine what insurance to require from the parties you work with, and what they require from you?",
-      "variants": {
-        "logistics_3pl": {
-          "help": "Customers commonly require warehouse legal liability, cargo, and auto limits. Carriers and subcontracted haulers should be held to defined requirements in return."
-        },
-        "light_manufacturing": {
-          "help": "Large customers often specify product liability limits and vendor endorsements; suppliers should be held to defined requirements for the components they provide."
-        }
-      },
+      "topic": "Insurance requirements in leases & contracts",
+      "prompt": "How are insurance requirements set for tenants in leases and for vendors in contracts, and how are lender and management-agreement requirements on you tracked?",
       "options": [
         {
           "value": 0,
-          "label": "We do not set requirements; we accept whatever the other party proposes"
+          "label": "We do not set requirements; we accept whatever the tenant, vendor, or lender proposes"
         },
         {
           "value": 1,
-          "label": "We use a generic requirement list without reviewing it"
+          "label": "We use generic lease and contract language without reviewing it"
         },
         {
           "value": 2,
-          "label": "Requirements are defined by relationship type and reviewed by broker or counsel"
+          "label": "Requirements are defined by relationship type (tenant, vendor, contractor) and reviewed by broker or counsel"
         },
         {
           "value": 3,
-          "label": "Requirements are defined, reviewed annually, and cross-checked against our own policies and customer demands"
+          "label": "Requirements are defined, reviewed annually, cross-checked against our own policies and every lender and management-agreement obligation, and enforced"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 2,
+        "cre_owner": 3,
+        "multifamily": 2,
         "other": 2
+      },
+      "variants": {
+        "cre_owner": {
+          "help": "Commercial leases typically require tenant liability and property coverage with the owner as additional insured; lenders require specific limits, mortgagee clauses, and flood where applicable."
+        },
+        "multifamily": {
+          "help": "Vendor requirements matter most here: snow and ice, security, and renovation contractors should indemnify and name the owner and manager as additional insureds."
+        }
       }
     },
     {
       "id": "crt_coi_verification",
       "category": "contractual_risk_transfer",
-      "topic": "Certificate verification",
-      "prompt": "How are certificates of insurance and endorsements (additional insured, waiver of subrogation) verified?",
+      "topic": "Certificate tracking",
+      "prompt": "What is your process for vetting vendors and contractors who work at the properties, and how are certificates of insurance and endorsements tracked?",
       "options": [
         {
           "value": 0,
-          "label": "We collect certificates when asked but do not review them"
+          "label": "We don't; certificates are collected when asked and not reviewed"
         },
         {
           "value": 1,
-          "label": "Someone checks that a certificate exists; endorsements are rarely verified"
+          "label": "We obtain certificates with additional-insured status and check coverage and limit adequacy, but tracking is manual and infrequent"
         },
         {
           "value": 2,
-          "label": "Certificates and required endorsements are verified before work and on expiration"
+          "label": "Certificates and required endorsements are verified before work and on expiration, in a tracking system"
         },
         {
           "value": 3,
-          "label": "Verification is tracked in a system, endorsements are matched to contract terms, and non-compliance is escalated"
+          "label": "Software tracks every vendor's insurance in real time, the broker reviews complete policies for key contractors, endorsements are matched to contract terms, and non-compliant vendors are stopped from working"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 2,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 2
       },
       "critical": {
         "atOrBelow": 0,
-        "message": "Certificates of insurance are collected but not reviewed, so contractual risk transfer may not be operating when a loss occurs."
+        "message": "Vendor certificates of insurance are collected but not reviewed, so the indemnity and additional-insured protection in your contracts may not be operating when a loss occurs."
       }
     },
     {
       "id": "emr_annual_review",
       "category": "emerging_risk",
-      "topic": "Annual risk review",
-      "prompt": "Does leadership conduct a structured risk review outside of the insurance renewal?",
-      "help": "A risk review looks at operations, contracts, and controls, not just the policies being renewed.",
+      "topic": "Frequent risk assessment",
+      "prompt": "How often is a thorough risk assessment of the portfolio performed outside of an insurance policy renewal?",
+      "help": "A risk review looks at operations, contracts, properties, and controls, not just the policies being renewed.",
       "options": [
         {
           "value": 0,
@@ -612,32 +602,32 @@
         },
         {
           "value": 1,
-          "label": "More than 18 months ago, or only when a new broker or agent first came on board"
+          "label": "More than 18 months ago, or only when a new agent first came on board"
         },
         {
           "value": 2,
-          "label": "An annual risk review with a documented risk list"
+          "label": "Annually, with a documented list of risks by property"
         },
         {
           "value": 3,
-          "label": "Annual review with owners, action plans, and quarterly progress updates to leadership"
+          "label": "Annually with owners and action plans, reviewed with the broker so prevention, mitigation, and insurance stay aligned"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 2,
         "other": 2
       }
     },
     {
       "id": "emr_regulatory",
       "category": "emerging_risk",
-      "topic": "Regulatory monitoring",
-      "prompt": "How are regulatory and compliance changes affecting your operations monitored?",
+      "topic": "Regulatory & compliance monitoring",
+      "prompt": "How are regulatory and compliance changes affecting the properties monitored (fair housing, ADA, local habitability and safety ordinances, energy and benchmarking rules)?",
       "options": [
         {
           "value": 0,
-          "label": "We learn about changes when we are notified of a violation or audit"
+          "label": "We learn about changes when we are notified of a violation, complaint, or audit"
         },
         {
           "value": 1,
@@ -645,32 +635,30 @@
         },
         {
           "value": 2,
-          "label": "A defined owner monitors regulations and briefs leadership"
+          "label": "A defined owner monitors regulations, and required training and postings are documented"
         },
         {
           "value": 3,
-          "label": "Defined owner, documented compliance calendar, and periodic compliance audits"
+          "label": "Defined owner, documented compliance calendar, annual training with records, and periodic compliance audits with counsel"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 3,
+        "cre_owner": 2,
+        "multifamily": 3,
         "other": 2
+      },
+      "variants": {
+        "multifamily": {
+          "help": "Fair-housing training records, required postings, and consistent screening criteria are the first things asked about in a discrimination claim."
+        }
       }
     },
     {
       "id": "emr_new_activity_review",
       "category": "emerging_risk",
-      "topic": "New activity review",
-      "prompt": "When you add a new location, product, service, technology, or major customer, is risk and insurance impact reviewed beforehand?",
-      "variants": {
-        "logistics_3pl": {
-          "prompt": "When you take on a new commodity, temperature-controlled or hazardous storage, a new customer contract, or a new facility, is risk and insurance impact reviewed beforehand?"
-        },
-        "light_manufacturing": {
-          "prompt": "When you launch a new product, add a production line or process, or enter a new market, is product liability, recall, and business-interruption impact reviewed beforehand?"
-        }
-      },
+      "topic": "New exposure review",
+      "prompt": "When you acquire a property, add a new property type, allow short-term rentals, or add EV charging or lithium-battery storage, is the risk and insurance impact reviewed beforehand?",
+      "help": "The workshop found owners who had never heard of the lithium-battery exposure and were about to add car chargers.",
       "options": [
         {
           "value": 0,
@@ -678,20 +666,20 @@
         },
         {
           "value": 1,
-          "label": "Sometimes, for very large changes"
+          "label": "Sometimes, for very large acquisitions"
         },
         {
           "value": 2,
-          "label": "A review step is included in the launch process"
+          "label": "A review step with the broker is part of acquisition due diligence and major operational changes"
         },
         {
           "value": 3,
-          "label": "Documented pre-launch review with operations, finance, broker input, and follow-up after launch"
+          "label": "Documented pre-acquisition and pre-launch review (environmental due diligence, valuation, lender requirements, new exposures) with follow-up after closing"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 2,
         "other": 2
       }
     },
@@ -699,124 +687,124 @@
       "id": "br_property_valuation",
       "category": "market_readiness",
       "branch": "ownsBuildings",
-      "topic": "Property valuation & building updates",
-      "prompt": "For the buildings you own, how are replacement values, business-interruption values, flood exposure, building updates (roof, sprinklers, electrical), and carrier loss-control recommendations documented and tracked?",
-      "help": "Carriers issue recommendations after inspections. How you respond to them is part of the underwriting story.",
+      "topic": "Carrier recommendations & building updates",
+      "prompt": "What is your procedure for dealing with insurance company recommendations (sprinklers, wiring, boilers, roofs), and how are building updates and flood exposure documented?",
+      "help": "Carriers issue recommendations after inspections. Owners who track and close them, and show the carrier, negotiate from strength.",
       "options": [
         {
           "value": 0,
-          "label": "Values are carried forward; building updates and carrier recommendations are not tracked"
+          "label": "We do as little as possible; updates and flood zones are not documented"
         },
         {
           "value": 1,
-          "label": "Values were reviewed a few years ago; we do the minimum needed to stay compliant with carrier recommendations"
+          "label": "We do the bare minimum to stay compliant with the insurer; updates are partially documented"
         },
         {
           "value": 2,
-          "label": "Replacement and BI values are reviewed annually; update history and recommendation responses are documented"
+          "label": "An active protocol responds to and tracks recommendations; roof, sprinkler, electrical, and boiler updates are documented with dates"
         },
         {
           "value": 3,
-          "label": "Professional valuation within three years, BI worksheet, flood zone determination, documented inspections and update history, and an active protocol for responding to and tracking every carrier recommendation"
+          "label": "Active protocol for every recommendation with completion shown to the carrier, documented update history per building, flood zone determinations, and a professional valuation within three years"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 3,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 2
       }
     },
     {
-      "id": "br_fleet_controls",
-      "category": "operational_controls",
-      "branch": "hasVehicles",
-      "topic": "Fleet & driver controls",
-      "prompt": "How are drivers screened and vehicles managed (MVRs, telematics, hired and non-owned auto)?",
+      "id": "br_management_agreement",
+      "category": "contractual_risk_transfer",
+      "branch": "usesThirdPartyManager",
+      "topic": "Management agreements",
+      "prompt": "How do your management agreements address insurance and indemnification obligations between you and the third-party property manager?",
       "options": [
         {
           "value": 0,
-          "label": "We do not run MVRs consistently; personal vehicle use is not addressed"
+          "label": "We do not review these requirements in agreements with our property managers"
         },
         {
           "value": 1,
-          "label": "MVRs at hire only; no written fleet policy"
+          "label": "We accept the terms and conditions in the manager's boilerplate agreement"
         },
         {
           "value": 2,
-          "label": "Written fleet policy, annual MVRs, and a defined hired/non-owned auto approach"
+          "label": "Counsel reviewed the agreement; we know who insures what and hold the manager's certificate"
         },
         {
           "value": 3,
-          "label": "Written policy, annual MVRs with disqualification criteria, telematics or cameras, and driver training records"
+          "label": "We actively review and dictate the insurance and indemnity terms, require adequate limits and coverages from the manager, and regularly request updated certificates to confirm they are in place"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 2,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 2
       },
       "critical": {
         "atOrBelow": 0,
-        "message": "Motor vehicle records do not appear to be run consistently, which commercial auto underwriters treat as a primary control."
+        "message": "Insurance and indemnification terms in the property-management agreement have not been reviewed, so it is unclear who is covered for a loss at a managed property."
       }
     },
     {
-      "id": "br_subcontractor_transfer",
-      "category": "contractual_risk_transfer",
+      "id": "br_vendor_transfer",
+      "category": "operational_controls",
       "branch": "usesSubcontractors",
-      "topic": "Subcontractor & vendor risk transfer",
-      "prompt": "For subcontractors and vendors, how consistently are indemnity terms, additional-insured status, and waivers of subrogation obtained and enforced?",
+      "topic": "Snow & ice, security, and site vendors",
+      "prompt": "For snow and ice removal, security patrols, and other on-site vendors, how consistently are procedures documented and risk transferred (logs, cameras, indemnity, additional-insured status)?",
       "options": [
         {
           "value": 0,
-          "label": "We rely on the vendor's own paperwork"
+          "label": "Employees or vendors handle it informally; no logs and contracts have not been reviewed"
         },
         {
           "value": 1,
-          "label": "Our agreement includes the terms, but we rarely confirm the endorsements"
+          "label": "Employees are trained or contractors are hired, but snow logs, security procedures, and contract terms are inconsistent"
         },
         {
           "value": 2,
-          "label": "Terms are standard and endorsements are confirmed before work"
+          "label": "Every snow removal and patrol is documented, and vendors indemnify and name us as additional insured"
         },
         {
           "value": 3,
-          "label": "Terms are standard, endorsements confirmed, non-compliant vendors are stopped from working, and exceptions are approved in writing"
+          "label": "Documented logs visible on cameras, written security and snow procedures, contracts reviewed for indemnity and additional-insured terms, and vendor insurance tracked in a compliance system"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 2,
+        "cre_owner": 2,
+        "multifamily": 3,
         "other": 2
       }
     },
     {
-      "id": "br_data_security",
+      "id": "br_residential_programs",
       "category": "operational_controls",
-      "branch": "storesSensitiveData",
-      "topic": "Sensitive data handling",
-      "prompt": "For the sensitive customer, employee, or payment data you hold, how are access, vendor security, and incident response managed?",
+      "branch": "hasResidentialTenants",
+      "topic": "Leasing, renters insurance & fair housing",
+      "prompt": "For residential tenants, how are leasing and screening, renters-insurance verification, anti-discrimination training, and short-term-rental monitoring handled?",
       "options": [
         {
           "value": 0,
-          "label": "Access is broad; we have not reviewed vendor security or an incident plan"
+          "label": "No formal process; renters insurance is not tracked and fair-housing training is informal"
         },
         {
           "value": 1,
-          "label": "Access is limited informally; incident response is undocumented"
+          "label": "Application with employment verification and some screening; renters insurance tracked manually and updated infrequently; handbook statement only"
         },
         {
           "value": 2,
-          "label": "Role-based access, vendor security review, and a written incident response plan"
+          "label": "Attorney-vetted application and lease, background checks, renters insurance required and tracked, annual fair-housing training, lease prohibits short-term rentals"
         },
         {
           "value": 3,
-          "label": "All of the prior plus annual tabletop exercises, data inventory, and breach-notification readiness"
+          "label": "All of the prior plus software that monitors renters insurance in real time and force-places when missing, documented annual training with counsel consultation, and active monitoring for short-term rental use"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 2,
+        "cre_owner": 1,
+        "multifamily": 3,
         "other": 2
       }
     },
@@ -825,7 +813,7 @@
       "category": "operational_controls",
       "branch": "employeesAboveThreshold",
       "topic": "Workforce programs",
-      "prompt": "With a workforce of this size, how are workers' compensation return-to-work, employment practices (handbook, training, documentation), and benefits data protection handled?",
+      "prompt": "With on-site and corporate staff of this size, how are workers' compensation return-to-work, employment practices (handbook, training, documentation), and manager training handled?",
       "options": [
         {
           "value": 0,
@@ -841,12 +829,12 @@
         },
         {
           "value": 3,
-          "label": "All of the prior plus experience-mod review, claims-trend analysis, and annual employment-practices training"
+          "label": "All of the prior plus experience-mod review, claims-trend analysis, and annual employment-practices training with records"
         }
       ],
       "weights": {
-        "logistics_3pl": 3,
-        "light_manufacturing": 3,
+        "cre_owner": 2,
+        "multifamily": 3,
         "other": 2
       }
     },
@@ -854,59 +842,59 @@
       "id": "br_governance_investors",
       "category": "governance",
       "branch": "hasOutsideInvestors",
-      "topic": "Board & investor governance",
-      "prompt": "With outside investors or a board, how are directors & officers, fiduciary, and governance-related exposures reviewed?",
+      "topic": "Investors, funds & lenders",
+      "prompt": "With outside investors, funds, or lenders, how are investor reporting, fund and entity E&O and D&O exposures, and lender insurance requirements managed?",
       "options": [
         {
           "value": 0,
-          "label": "They have not been reviewed"
+          "label": "Updates are provided on demand; entity coverages and lender requirements have not been reviewed"
         },
         {
           "value": 1,
-          "label": "Coverage was placed at the time of investment and not revisited"
+          "label": "Annual performance updates; coverage was placed at the time of the raise and not revisited"
         },
         {
           "value": 2,
-          "label": "Reviewed annually with the broker against bylaws, investor agreements, and benefit plans"
+          "label": "Quarterly reporting on performance and key metrics; E&O and D&O reviewed annually with the broker against fund documents; lender requirements tracked"
         },
         {
           "value": 3,
-          "label": "Annual review plus board reporting on limits, indemnification agreements, and fiduciary controls"
+          "label": "Quarterly reporting with online access, annual review of entity coverages, every legal entity confirmed as a named insured, and lender requirements reconciled at each closing"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 2,
+        "cre_owner": 3,
+        "multifamily": 2,
         "other": 2
       }
     },
     {
-      "id": "br_regulated_materials",
+      "id": "br_environmental",
       "category": "emerging_risk",
-      "branch": "regulatedMaterials",
-      "topic": "Regulated materials & environmental",
-      "prompt": "For regulated materials or processes, how are environmental permits, storage practices, and pollution exposure managed?",
+      "branch": "environmentalExposures",
+      "topic": "Environmental risks",
+      "prompt": "What are your practices for environmental risks at the properties (lead, mold, asbestos, oil tanks, legionella, soil contamination), including due diligence on acquisitions?",
       "options": [
         {
           "value": 0,
-          "label": "We are not sure what permits apply; storage practices are informal"
+          "label": "I don't know; we have not looked at it"
         },
         {
           "value": 1,
-          "label": "Permits are in place; documentation of storage and disposal is inconsistent"
+          "label": "We depend on what we read and hear from industry groups; we may purchase environmental insurance"
         },
         {
           "value": 2,
-          "label": "Permits, storage, and disposal are documented with a compliance owner"
+          "label": "An environmental specialist has reviewed the portfolio and surveys; environmental due diligence is part of acquisitions"
         },
         {
           "value": 3,
-          "label": "Documented compliance program, periodic environmental audits, and pollution exposure reviewed with the broker"
+          "label": "Specialist reviews the portfolio routinely, moisture and mold procedures are written, lender environmental conditions are tracked, and environmental insurance is reviewed with the broker"
         }
       ],
       "weights": {
-        "logistics_3pl": 2,
-        "light_manufacturing": 3,
+        "cre_owner": 3,
+        "multifamily": 3,
         "other": 2
       }
     }
@@ -915,9 +903,9 @@
     {
       "id": "renewal_starts_late",
       "category": "governance",
-      "title": "Your renewal process may begin too late to fully document your risk controls.",
-      "body": "Renewal preparation appears to begin with limited runway. Controls that are not documented in time rarely make it into the submission carriers evaluate.",
-      "detail": "Benchmark indication: high-impact underwriting strengths were identified elsewhere in your answers, but they may not be incorporated consistently into carrier submissions.",
+      "title": "Your renewal process may begin too late to fully document the portfolio.",
+      "body": "Renewal preparation appears to begin with limited runway. Updated values, building improvements, and closed carrier recommendations that are not documented in time rarely make it into the submission carriers evaluate.",
+      "detail": "Benchmark indication: strengths were identified elsewhere in your answers, but they may not be incorporated consistently into what carriers see.",
       "questionIds": [
         "gov_renewal_lead_time",
         "mkt_submission_visibility"
@@ -927,9 +915,9 @@
     {
       "id": "contracts_not_one_system",
       "category": "contractual_risk_transfer",
-      "title": "Your contracts and insurance-verification process may not be operating as one control system.",
-      "body": "Answers about signed contracts, insurance requirements, and certificate verification are uneven. Risk transfer only works when all three align.",
-      "detail": "Potential opportunity: review whether contractual requirements, certificates of insurance, and policy endorsements align for your largest customer and vendor relationships.",
+      "title": "Your leases, vendor contracts, and certificate tracking may not be operating as one control system.",
+      "body": "Answers about signed vendor contracts, insurance requirements, and certificate verification are uneven. Risk transfer only works when the requirement, the contract, and the certificate line up.",
+      "detail": "Potential opportunity: review whether lease and contract requirements, certificates of insurance, and endorsements align for your largest tenants and your snow, security, and renovation vendors.",
       "questionIds": [
         "crt_signed_contracts",
         "crt_insurance_requirements",
@@ -940,9 +928,9 @@
     {
       "id": "business_outpaced_governance",
       "category": "market_readiness",
-      "title": "Your business has changed faster than your insurance-governance process.",
-      "body": "You reported recent acquisitions or new locations, but operational changes reach the insurance program late or inconsistently.",
-      "detail": "Areas to investigate: new locations, increased payroll, new services, and updated property values, and whether each is reflected in current schedules.",
+      "title": "Your portfolio has changed faster than your insurance-governance process.",
+      "body": "You reported recent acquisitions, dispositions, or major renovations, but portfolio changes reach the insurance program late or inconsistently.",
+      "detail": "Areas to investigate: newly acquired properties, updated replacement values, lender requirements at each closing, and whether renovations are reflected in schedules.",
       "questionIds": [
         "mkt_business_changes",
         "emr_new_activity_review"
@@ -953,8 +941,8 @@
       "id": "claims_reactive",
       "category": "claims",
       "title": "Your claims process appears reactive rather than managed to a defined cadence.",
-      "body": "Incident reporting, open-claim review, or corrective-action tracking appear informal. Claims that are not managed tend to cost more and stay open longer.",
-      "detail": "Potential opportunity: evaluate reporting timelines, reserve review, adjuster accountability, and how corrective actions are tracked to closure.",
+      "body": "Incident reporting, open-claim review, or corrective-action tracking appear informal, and there is no systematic broker process for advocacy, counsel, or public adjusters.",
+      "detail": "Potential opportunity: evaluate reporting timelines, reserve review, carrier-assigned counsel, public-adjuster decisions, and how corrective actions are tracked across properties.",
       "questionIds": [
         "clm_reporting_protocol",
         "clm_open_claim_review",
@@ -965,9 +953,9 @@
     {
       "id": "exposure_data_limits_markets",
       "category": "market_readiness",
-      "title": "Incomplete exposure data or a weak underwriting narrative could limit your market options.",
-      "body": "Exposure values appear to be carried forward without reconciliation, or you have limited visibility into what carriers receive.",
-      "detail": "Pricing cannot be assessed from this questionnaire alone. However, carriers generally offer their best terms to accounts that present validated data and a clear narrative, subject to policy, loss, and underwriting review.",
+      "title": "A statement of values that carriers do not trust, or a story they never hear, could limit your market options.",
+      "body": "Replacement costs appear to be dictated by the insurer or carried forward, or you have limited visibility into what carriers receive about the portfolio.",
+      "detail": "Pricing cannot be assessed from this questionnaire alone. However, carriers generally offer their best terms to portfolios that present validated values, documented building updates, and a clear narrative, subject to policy, loss, and underwriting review.",
       "questionIds": [
         "mkt_exposure_data",
         "mkt_submission_visibility"
@@ -977,9 +965,9 @@
     {
       "id": "social_engineering_path",
       "category": "operational_controls",
-      "title": "Payment-change and wire controls may leave a path open for social-engineering losses.",
-      "body": "Vendor bank-detail changes or wires may be released without callback verification and dual approval. This is the most common route for funds-transfer fraud.",
-      "detail": "Potential opportunity: confirm callback procedures, approval thresholds, and whether crime or cyber coverage includes social-engineering terms, subject to policy review.",
+      "title": "Funds-transfer controls may leave a path open for social-engineering losses.",
+      "body": "Wires, vendor bank-detail changes, or security-deposit returns may be released without callback verification and dual approval. This is the most common route for funds-transfer fraud in property operations.",
+      "detail": "Potential opportunity: confirm callback procedures, approval thresholds, controls at the property-management company, and whether crime or cyber coverage includes social-engineering terms, subject to policy review.",
       "questionIds": [
         "ops_payment_authorization"
       ],
@@ -988,21 +976,20 @@
     {
       "id": "cyber_minimums",
       "category": "operational_controls",
-      "title": "Cyber controls may not meet the minimums that most carriers now require.",
-      "body": "Multi-factor authentication, tested backups, and a written incident plan are the controls cyber underwriters ask about first.",
-      "detail": "Potential opportunity: document current controls, close gaps before the next cyber application, and confirm which controls are attested on existing applications.",
+      "title": "Protection of tenant, applicant, and investor data may not meet the minimums cyber carriers now require.",
+      "body": "Multi-factor authentication, encryption, tested backups, and a written incident plan are the controls cyber underwriters ask about first, along with the security of your property-management platform.",
+      "detail": "Potential opportunity: document current controls, review the property-management and payment vendors' security, and confirm which controls are attested on existing applications.",
       "questionIds": [
-        "ops_cyber_controls",
-        "br_data_security"
+        "ops_cyber_controls"
       ],
       "priority": 83
     },
     {
       "id": "no_program_owner",
       "category": "governance",
-      "title": "Insurance program ownership appears informal.",
-      "body": "Without a named owner and defined responsibilities, renewal tasks, certificate requests, and mid-term changes tend to fall through the cracks.",
-      "detail": "Potential opportunity: assign an owner and backup, and define the touchpoints with finance, operations, and HR/safety.",
+      "title": "Insurance program ownership appears informal or split with the property manager.",
+      "body": "Without a named owner and a defined split of duties, certificate requests, mid-term acquisitions, and lender requirements tend to fall through the cracks.",
+      "detail": "Potential opportunity: assign an owner and backup, and define who handles certificates, closings, and claims between ownership and the manager.",
       "questionIds": [
         "gov_internal_owner"
       ],
@@ -1011,9 +998,9 @@
     {
       "id": "limits_not_reasoned",
       "category": "governance",
-      "title": "Limits and deductibles appear to be renewed without a documented rationale.",
-      "body": "This diagnostic does not assess whether limits are adequate. It does note that limits which are never revisited may not track contract requirements or asset growth.",
-      "detail": "Potential opportunity: document the basis for each limit and deductible with a licensed advisor and revisit it when contracts or assets change.",
+      "title": "Limits and deductibles appear to follow the budget rather than a documented rationale.",
+      "body": "This diagnostic does not assess whether limits are adequate. It does note that limits which are never revisited may not track lender covenants, lease requirements, or portfolio growth.",
+      "detail": "Potential opportunity: document the basis for each limit and deductible with a licensed advisor, including key liability cases and lender requirements, and revisit it as the portfolio changes.",
       "questionIds": [
         "gov_limit_rationale"
       ],
@@ -1022,9 +1009,9 @@
     {
       "id": "safety_undocumented",
       "category": "operational_controls",
-      "title": "Safety and training practices may exist but are not documented in a form underwriters can credit.",
-      "body": "Written programs, training records, and inspection logs are what carriers use to distinguish a well-run operation from an average one.",
-      "detail": "Potential opportunity: assemble a safety documentation package before the next submission.",
+      "title": "Inspection, life-safety, and maintenance practices may exist but are not documented in a form underwriters can credit.",
+      "body": "Inspection schedules, life-safety testing records, lighting logs, and preventive maintenance plans are what carriers use to distinguish a well-run portfolio from an average one.",
+      "detail": "Potential opportunity: assemble an inspection and maintenance documentation package per property before the next submission.",
       "questionIds": [
         "ops_safety_training"
       ],
@@ -1033,41 +1020,52 @@
     {
       "id": "property_values_stale",
       "category": "market_readiness",
-      "title": "Owned-property values and building updates may be undocumented.",
-      "body": "Replacement cost, business-interruption values, flood exposure, and building-system updates drive both coverage terms and pricing conversations.",
-      "detail": "Areas to investigate: date of last valuation, BI worksheet, flood zone determination, and documented roof, sprinkler, and electrical updates.",
+      "title": "Carrier recommendations and building updates may not be tracked or shown to the market.",
+      "body": "How you respond to sprinkler, wiring, boiler, and roof recommendations, and whether updates and flood exposure are documented, drives both coverage terms and pricing conversations.",
+      "detail": "Areas to investigate: open recommendations by property, completion evidence, roof and system update dates, flood zone determinations, and the date of the last professional valuation.",
       "questionIds": [
         "br_property_valuation"
       ],
-      "priority": 78
+      "priority": 80
     },
     {
-      "id": "fleet_controls",
-      "category": "operational_controls",
-      "title": "Fleet and driver controls may not be documented to the level auto underwriters expect.",
-      "body": "MVR practices, fleet policy, and hired/non-owned auto handling are primary controls for commercial auto.",
-      "detail": "Potential opportunity: adopt a written fleet policy with annual MVRs and disqualification criteria.",
-      "questionIds": [
-        "br_fleet_controls"
-      ],
-      "priority": 76
-    },
-    {
-      "id": "subcontractor_transfer_gap",
+      "id": "management_agreement_gap",
       "category": "contractual_risk_transfer",
-      "title": "Subcontractor and vendor risk transfer may not be enforced.",
-      "body": "Indemnity terms and endorsements that are not confirmed before work begins may not respond when a loss occurs.",
-      "detail": "Potential opportunity: confirm additional-insured and waiver endorsements for active vendors.",
+      "title": "The insurance and indemnity terms in your property-management agreement may not have been reviewed.",
+      "body": "Boilerplate management agreements often leave it unclear who insures what and who indemnifies whom when a loss occurs at a managed property.",
+      "detail": "Potential opportunity: have counsel and the broker review the agreement, dictate required limits and coverages, and hold current certificates from the manager.",
       "questionIds": [
-        "br_subcontractor_transfer"
+        "br_management_agreement"
+      ],
+      "priority": 79
+    },
+    {
+      "id": "site_vendor_gap",
+      "category": "operational_controls",
+      "title": "Snow and ice, security, and site-vendor procedures may not be documented or transferring risk.",
+      "body": "Slip-and-fall and premises claims turn on logs, cameras, and whether the vendor's contract indemnifies and insures you.",
+      "detail": "Potential opportunity: require documented snow logs and patrol procedures, and confirm indemnity and additional-insured terms for every site vendor.",
+      "questionIds": [
+        "br_vendor_transfer"
       ],
       "priority": 77
     },
     {
+      "id": "residential_programs_gap",
+      "category": "operational_controls",
+      "title": "Leasing, renters-insurance, and fair-housing practices may be informal for the size of the residential portfolio.",
+      "body": "Renters insurance that is not tracked, screening that is not consistent, and training that is not documented all show up in liability and discrimination claims.",
+      "detail": "Potential opportunity: evaluate real-time renters-insurance monitoring, attorney-vetted lease and screening criteria, and documented annual fair-housing training.",
+      "questionIds": [
+        "br_residential_programs"
+      ],
+      "priority": 78
+    },
+    {
       "id": "workforce_programs_gap",
       "category": "operational_controls",
-      "title": "Workforce programs (return-to-work, handbook, manager training) may be informal for a company of your size.",
-      "body": "These programs influence workers' compensation experience and employment-practices exposure.",
+      "title": "Workforce programs (return-to-work, handbook, manager training) may be informal for a staff of your size.",
+      "body": "These programs influence workers' compensation experience and employment-practices exposure across on-site teams.",
       "detail": "Potential opportunity: document return-to-work procedures and update the employee handbook.",
       "questionIds": [
         "br_workforce_programs"
@@ -1077,31 +1075,31 @@
     {
       "id": "investor_governance_gap",
       "category": "governance",
-      "title": "Board and investor-related exposures may not have been reviewed since the investment.",
-      "body": "Directors & officers, fiduciary, and indemnification arrangements are typically revisited as ownership and boards change.",
-      "detail": "Potential opportunity: review governance-related exposures with a licensed advisor against current bylaws and investor agreements.",
+      "title": "Investor, fund, and lender-related exposures may not have been reviewed since the last capital event.",
+      "body": "Fund and entity E&O and D&O, named-insured completeness across every LLC, and lender requirements are typically revisited as deals close and boards change.",
+      "detail": "Potential opportunity: review entity coverages with a licensed advisor against fund documents and confirm every legal entity is scheduled as a named insured.",
       "questionIds": [
         "br_governance_investors"
       ],
-      "priority": 69
+      "priority": 74
     },
     {
       "id": "environmental_gap",
       "category": "emerging_risk",
-      "title": "Environmental compliance and pollution exposure may not be documented.",
-      "body": "Permits, storage practices, and disposal records are the starting point for any environmental conversation with carriers.",
-      "detail": "Areas to investigate: applicable permits, storage documentation, and whether pollution exposure has been reviewed.",
+      "title": "Environmental exposures at the properties may not have been reviewed.",
+      "body": "Lead, mold, asbestos, oil tanks, legionella, and soil conditions are the starting point for any environmental conversation with carriers and lenders.",
+      "detail": "Areas to investigate: environmental surveys on file, acquisition due diligence, moisture and mold procedures, lender environmental conditions, and whether pollution exposure has been reviewed.",
       "questionIds": [
-        "br_regulated_materials"
+        "br_environmental"
       ],
-      "priority": 75
+      "priority": 76
     },
     {
       "id": "emerging_risk_unmanaged",
       "category": "emerging_risk",
-      "title": "New activities and regulatory changes may reach the insurance program after the fact.",
-      "body": "Without a pre-launch review step, new locations, products, and technology can create exposures that are not reflected until the next renewal.",
-      "detail": "Potential opportunity: add a risk and insurance checkpoint to your launch process.",
+      "title": "Acquisitions, regulatory changes, and new exposures may reach the insurance program after the fact.",
+      "body": "Without a pre-acquisition and pre-launch review step, new properties, short-term rentals, EV charging, and lithium-battery storage can create exposures that are not reflected until the next renewal.",
+      "detail": "Potential opportunity: add a risk and insurance checkpoint to acquisition due diligence and to operational changes at the properties.",
       "questionIds": [
         "emr_new_activity_review",
         "emr_regulatory",
@@ -1114,9 +1112,9 @@
     {
       "id": "marketready",
       "name": "MarketReady Risk Diagnostic",
-      "headline": "How ready is your company to be evaluated by the insurance market?",
+      "headline": "How ready is your real estate portfolio to be evaluated by the insurance market?",
       "subhead": "Receive a confidential, industry-specific assessment of your renewal process, risk controls, claims practices, and underwriting story—before speaking with anyone.",
-      "audience": "CFOs, COOs, and owners unsure whether the company is presenting an accurate, differentiated risk story.",
+      "audience": "Owners, asset managers, and CFOs unsure whether the portfolio is presenting an accurate, differentiated risk story.",
       "focusCategories": [],
       "focusTitle": "",
       "focusIntro": ""
@@ -1124,153 +1122,145 @@
     {
       "id": "renewal",
       "name": "Renewal Control Tower",
-      "headline": "Is your next renewal on a timeline, or on autopilot?",
-      "subhead": "A confidential check of your renewal runway, the data carriers will ask for, and the changes that need to be documented before submissions go out.",
-      "audience": "CFOs and risk managers facing a renewal within three to nine months.",
+      "headline": "Is your property renewal on a timeline, or on autopilot?",
+      "subhead": "A confidential check of your renewal runway, the statement of values carriers will scrutinize, and the acquisitions and updates that need to be documented before submissions go out.",
+      "audience": "Owners, asset managers, and CFOs facing a property renewal within three to nine months.",
       "focusCategories": [
         "governance",
         "market_readiness"
       ],
       "focusTitle": "Your renewal readiness",
-      "focusIntro": "Timing, data, and the story carriers receive. These answers determine whether preparation starts early enough to matter."
+      "focusIntro": "Timing, values, and the story carriers receive. These answers determine whether preparation starts early enough to matter."
     },
     {
       "id": "contracts",
       "name": "Hidden Risk Transfer Scan",
-      "headline": "Are your contracts actually transferring risk, or just describing it?",
-      "subhead": "A confidential scan of how signed contracts, insurance requirements, certificates, and subcontractor terms work together as one control system.",
-      "audience": "COOs and CFOs in construction, manufacturing, real estate, and logistics who rely on vendors and subcontractors.",
+      "headline": "Are your leases and vendor contracts actually transferring risk, or just describing it?",
+      "subhead": "A confidential scan of how leases, vendor and snow-removal contracts, management agreements, insurance requirements, and certificate tracking work together as one control system.",
+      "audience": "Owners and property managers who rely on tenants' insurance and on-site vendors.",
       "focusCategories": [
         "contractual_risk_transfer"
       ],
-      "focusTitle": "Your contract-risk workflow",
-      "focusIntro": "Requirements that are never verified, and certificates that are never matched to contracts, do not transfer risk when a loss occurs."
+      "focusTitle": "Your lease and vendor risk-transfer workflow",
+      "focusIntro": "Requirements that are never verified, and certificates that are never matched to leases and contracts, do not transfer risk when a loss occurs."
     },
     {
       "id": "claims",
       "name": "Claims Friction Index",
-      "headline": "Are claims being managed, or just reported?",
-      "subhead": "A confidential look at reporting speed, open-claim cadence, return-to-work practices, and how corrective actions are tracked.",
-      "audience": "CFO, HR, and operations leaders frustrated by recurring or poorly managed claims.",
+      "headline": "Are claims at your properties being managed, or just reported?",
+      "subhead": "A confidential look at reporting speed, open-claim cadence, public-adjuster and counsel practices, and how corrective actions are tracked across the portfolio.",
+      "audience": "Owners, asset managers, and property managers frustrated by recurring or poorly managed claims.",
       "focusCategories": [
         "claims",
         "operational_controls"
       ],
       "focusTitle": "Your claims-governance practices",
-      "focusIntro": "Late reporting, unreviewed reserves, and untracked corrective actions are the most common reasons claims cost more and stay open longer."
+      "focusIntro": "Late reporting, unreviewed reserves, unmanaged counsel, and untracked corrective actions are the most common reasons property claims cost more and stay open longer."
     }
   ],
   "niches": [
     {
-      "id": "logistics_3pl",
-      "label": "3PL / warehousing / distribution",
-      "industry": "logistics_3pl",
-      "whyAttractive": "Fleet, property, cargo, labor, contracts",
-      "dynamicModule": "Cargo, auto, warehouse legal liability, fire protection",
-      "hasModule": true
-    },
-    {
-      "id": "food_cold_storage",
-      "label": "Food distribution / cold storage",
-      "industry": "logistics_3pl",
-      "whyAttractive": "Spoilage and temperature dependency",
-      "dynamicModule": "Refrigeration breakdown, recall, contamination",
-      "hasModule": false
-    },
-    {
-      "id": "light_manufacturing",
-      "label": "Light / advanced manufacturing",
-      "industry": "light_manufacturing",
-      "whyAttractive": "Property, machinery, products, WC",
-      "dynamicModule": "Business interruption, machine guarding, product liability",
-      "hasModule": true
-    },
-    {
-      "id": "life_sciences",
-      "label": "Life-sciences supplier",
-      "industry": "light_manufacturing",
-      "whyAttractive": "High-value inventory and regulated work",
-      "dynamicModule": "Clinical/product liability, cold chain, cyber, E&O",
-      "hasModule": false
-    },
-    {
-      "id": "contractors",
-      "label": "Contractor / trades",
-      "industry": "other",
-      "whyAttractive": "Subcontracting and contractual risk",
-      "dynamicModule": "Wrap-ups, fleet, jobsite safety, certificates",
-      "hasModule": false
-    },
-    {
-      "id": "cre_owners",
-      "label": "Commercial real estate owner",
-      "industry": "other",
-      "whyAttractive": "Property values and vendor dependence",
-      "dynamicModule": "SOV quality, flood, BI, leases, management agreements",
-      "hasModule": false
-    },
-    {
       "id": "multifamily",
-      "label": "Multifamily / property manager",
-      "industry": "other",
+      "label": "Multifamily / apartment communities",
+      "industry": "multifamily",
       "whyAttractive": "Tenant, premises, discrimination",
       "dynamicModule": "Renters insurance, habitability, EPLI, vendor controls",
-      "hasModule": false
+      "hasModule": true
     },
     {
-      "id": "healthcare",
-      "label": "Healthcare practice / MSO",
+      "id": "office",
+      "label": "Office",
+      "industry": "cre_owner",
+      "whyAttractive": "Property values and tenant improvements",
+      "dynamicModule": "SOV quality, lease requirements, BI, life safety",
+      "hasModule": true
+    },
+    {
+      "id": "industrial_flex",
+      "label": "Industrial / flex / warehouse",
+      "industry": "cre_owner",
+      "whyAttractive": "Large replacement values and tenant operations",
+      "dynamicModule": "SOV quality, sprinkler and roof condition, tenant contracts, environmental",
+      "hasModule": true
+    },
+    {
+      "id": "retail_mixed_use",
+      "label": "Retail / mixed-use",
+      "industry": "cre_owner",
+      "whyAttractive": "Premises liability and vendor dependence",
+      "dynamicModule": "Snow and ice, security, lease requirements, liquor tenants",
+      "hasModule": true
+    },
+    {
+      "id": "net_lease",
+      "label": "Net-lease / single-tenant",
+      "industry": "cre_owner",
+      "whyAttractive": "Lease-driven insurance obligations",
+      "dynamicModule": "Tenant compliance tracking, lender requirements, named insureds",
+      "hasModule": true
+    },
+    {
+      "id": "self_storage",
+      "label": "Self-storage",
       "industry": "other",
-      "whyAttractive": "Professional, privacy, employment",
-      "dynamicModule": "Medical professional, cyber, regulatory, credentialing",
+      "whyAttractive": "Property, customer goods, access control",
+      "dynamicModule": "Customer goods legal liability, security, tenant insurance programs",
       "hasModule": false
     },
     {
-      "id": "senior_living",
-      "label": "Senior living / home care",
-      "industry": "other",
-      "whyAttractive": "Severe liability and workforce exposure",
-      "dynamicModule": "Abuse controls, auto, professional liability, staffing",
-      "hasModule": false
-    },
-    {
-      "id": "professional_services",
-      "label": "Professional services",
-      "industry": "other",
-      "whyAttractive": "E&O, cyber, executive risk",
-      "dynamicModule": "Contract scope, client concentration, privacy",
-      "hasModule": false
-    },
-    {
-      "id": "technology_msp",
-      "label": "Technology / MSP",
-      "industry": "other",
-      "whyAttractive": "Contractual and cyber aggregation",
-      "dynamicModule": "Tech E&O, ransomware, dependent business interruption",
-      "hasModule": false
-    },
-    {
-      "id": "auto_dealers",
-      "label": "Auto dealer / fleet business",
-      "industry": "other",
-      "whyAttractive": "Inventory, garage, drivers",
-      "dynamicModule": "Garage liability, false pretense, cyber, weather",
-      "hasModule": false
-    },
-    {
-      "id": "hospitality_clubs",
-      "label": "Hospitality / country club",
+      "id": "hospitality",
+      "label": "Hospitality / hotel assets",
       "industry": "other",
       "whyAttractive": "Property, liquor, events, seasonal labor",
-      "dynamicModule": "Liquor, golf carts, pools, events, D&O",
+      "dynamicModule": "Liquor, pools, events, management agreements, D&O",
       "hasModule": false
     },
     {
-      "id": "nonprofit",
-      "label": "Nonprofit / social services",
+      "id": "senior_housing",
+      "label": "Senior housing / assisted living",
       "industry": "other",
-      "whyAttractive": "Governance, volunteers, vulnerable clients",
-      "dynamicModule": "D&O, abuse/molestation controls, professional liability",
+      "whyAttractive": "Severe liability and workforce exposure",
+      "dynamicModule": "Abuse controls, professional liability, staffing, auto",
+      "hasModule": false
+    },
+    {
+      "id": "student_housing",
+      "label": "Student housing",
+      "industry": "multifamily",
+      "whyAttractive": "Turnover, premises, parental guarantees",
+      "dynamicModule": "Renters insurance, security, event and alcohol exposure",
+      "hasModule": true
+    },
+    {
+      "id": "association",
+      "label": "Condo / HOA association",
+      "industry": "other",
+      "whyAttractive": "Governance, common areas, D&O",
+      "dynamicModule": "D&O, master policy allocation, vendor controls, reserves",
+      "hasModule": false
+    },
+    {
+      "id": "third_party_manager",
+      "label": "Third-party property manager",
+      "industry": "multifamily",
+      "whyAttractive": "Management-agreement exposure across many owners",
+      "dynamicModule": "Management agreements, E&O, tenant discrimination, funds handling",
+      "hasModule": true
+    },
+    {
+      "id": "developer",
+      "label": "Developer / owner-builder",
+      "industry": "cre_owner",
+      "whyAttractive": "Construction and lease-up risk",
+      "dynamicModule": "Builders risk, wrap-ups, contractor certificates, lender requirements",
+      "hasModule": true
+    },
+    {
+      "id": "land",
+      "label": "Land / agricultural holdings",
+      "industry": "other",
+      "whyAttractive": "Premises and environmental",
+      "dynamicModule": "Environmental, premises, trespass",
       "hasModule": false
     },
     {

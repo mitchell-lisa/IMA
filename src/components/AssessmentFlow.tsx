@@ -18,6 +18,8 @@ import {
 } from "@/lib/diagnostic/labels";
 import { QUESTIONS, resolveQuestion } from "@/lib/diagnostic/questions";
 import { CATEGORY_IDS, BRANCH_TRIGGERS } from "@/lib/diagnostic/types";
+import { UNITS_BAND_LABELS } from "@/lib/diagnostic/labels";
+import type { UnitsBand } from "@/lib/diagnostic/types";
 import type {
   AnswerValue,
   Answers,
@@ -43,6 +45,7 @@ interface StartForm {
   niche: NicheId | "";
   employeeBand: EmployeeBand | "";
   revenueBand: RevenueBand | "";
+  unitsBand: UnitsBand | "";
   website_confirm: string;
 }
 
@@ -64,13 +67,13 @@ type ProfileExtras = Pick<
 >;
 
 const BRANCH_PROMPTS: Record<BranchTrigger, string> = {
-  ownsBuildings: "Do you own any of the buildings you operate from?",
-  hasVehicles: "Do employees drive company vehicles, or their own vehicles for work?",
-  usesSubcontractors: "Do you use subcontractors or outside vendors on site or for customer work?",
-  storesSensitiveData: "Do you store sensitive customer, employee, or payment data?",
+  ownsBuildings: "Do you own the properties (as opposed to managing them only for other owners)?",
+  usesThirdPartyManager: "Is a third-party property manager responsible for any of the properties?",
+  usesSubcontractors: "Do outside vendors handle snow and ice removal, security, landscaping, or renovations at the properties?",
+  hasResidentialTenants: "Do any of the properties have residential tenants?",
   employeesAboveThreshold: "", // computed from employee band; not asked
-  hasOutsideInvestors: "Do you have outside investors or a board of directors?",
-  regulatedMaterials: "Do you handle regulated materials or processes (chemicals, hazardous waste, food safety, environmental permits)?",
+  hasOutsideInvestors: "Do you have outside investors, a fund structure, or lenders with insurance requirements?",
+  environmentalExposures: "Do any properties have known environmental conditions or age-related exposures (lead, asbestos, mold history, oil tanks, cooling towers)?",
 };
 
 type StepId = "start" | "operations" | CategoryId | "profile";
@@ -85,10 +88,11 @@ export function AssessmentFlow() {
     companyName: "",
     website: "",
     zip: "",
-    industry: "logistics_3pl",
+    industry: "cre_owner",
     niche: "",
     employeeBand: "",
     revenueBand: "",
+    unitsBand: "",
     website_confirm: "",
   });
   const [busy, setBusy] = useState(false);
@@ -158,6 +162,7 @@ export function AssessmentFlow() {
       const s = await post<Session & { profile: AssessmentProfile }>("/api/assessment/start", {
         ...start,
         niche: start.niche || undefined,
+        unitsBand: start.unitsBand || undefined,
         startedAt: openedAt.current,
       });
       setSession({ assessmentId: s.assessmentId, resultsToken: s.resultsToken });
@@ -232,11 +237,11 @@ export function AssessmentFlow() {
 
       {step === "start" ? (
         <Card>
-          <h1 className="text-2xl font-semibold text-navy">Tell us about your company</h1>
-          <p className="mt-1 text-sm text-muted">Bands only. We never ask for exact premium or revenue figures.</p>
+          <h1 className="text-2xl font-semibold text-navy">Tell us about your portfolio</h1>
+          <p className="mt-1 text-sm text-muted">Bands only. We never ask for exact premium, revenue, or property values.</p>
           <form onSubmit={handleStart} className="mt-6 grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <Field label="Company name" required>
+              <Field label="Company or portfolio name" required>
                 <input className={inputClass} required maxLength={120} value={start.companyName} onChange={(e) => setStart({ ...start, companyName: e.target.value })} />
               </Field>
             </div>
@@ -247,7 +252,7 @@ export function AssessmentFlow() {
               <input className={inputClass} required inputMode="numeric" pattern="\d{5}(-\d{4})?" placeholder="08034" value={start.zip} onChange={(e) => setStart({ ...start, zip: e.target.value })} />
             </Field>
             <div className="sm:col-span-2">
-              <Field label="Which best describes your business?" hint="Optional. Helps us tailor follow-up; it does not change your score.">
+              <Field label="Which best describes your portfolio?" hint="Optional. Helps us tailor follow-up; it does not change your score.">
                 <select
                   className={inputClass}
                   value={start.niche}
@@ -278,7 +283,17 @@ export function AssessmentFlow() {
                 </div>
               </Field>
             </div>
-            <Field label="Employees" required>
+            <Field label="Portfolio size" hint="Properties or units, whichever you count by">
+              <select className={inputClass} value={start.unitsBand} onChange={(e) => setStart({ ...start, unitsBand: e.target.value as UnitsBand | "" })}>
+                <option value="">Select…</option>
+                {(Object.keys(UNITS_BAND_LABELS) as UnitsBand[]).map((k) => (
+                  <option key={k} value={k}>
+                    {UNITS_BAND_LABELS[k]}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Employees (corporate and on-site)" required>
               <select className={inputClass} required value={start.employeeBand} onChange={(e) => setStart({ ...start, employeeBand: e.target.value as EmployeeBand })}>
                 <option value="">Select…</option>
                 {(Object.keys(EMPLOYEE_BAND_LABELS) as EmployeeBand[]).map((k) => (
@@ -305,7 +320,7 @@ export function AssessmentFlow() {
                 <input tabIndex={-1} autoComplete="off" value={start.website_confirm} onChange={(e) => setStart({ ...start, website_confirm: e.target.value })} />
               </label>
             </div>
-            <div className="sm:col-span-2 flex items-center justify-between gap-4 pt-2">
+            <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-3 pt-2">
               <p className="text-xs text-muted">Your answers are stored so you can return to your results. See what we store on the privacy page.</p>
               <Button type="submit" disabled={busy}>
                 {busy ? "Starting…" : "Continue"}
@@ -317,14 +332,14 @@ export function AssessmentFlow() {
 
       {step === "operations" ? (
         <Card>
-          <h1 className="text-2xl font-semibold text-navy">How your business operates</h1>
+          <h1 className="text-2xl font-semibold text-navy">How the portfolio operates</h1>
           <p className="mt-1 text-sm text-muted">These answers add a few follow-up questions where they apply.</p>
           <div className="mt-6 space-y-4">
             {BRANCH_TRIGGERS.filter((t) => t !== "employeesAboveThreshold").map((t) => (
               <YesNo key={t} label={BRANCH_PROMPTS[t]} value={extras[t]} onChange={(v) => setExtras({ ...extras, [t]: v })} />
             ))}
             <YesNo
-              label="Have you acquired a business, opened a new location, or added a major new service in the last 24 months?"
+              label="Have you acquired or sold a property, or completed a major renovation, in the last 24 months?"
               value={extras.recentAcquisitionOrNewLocation}
               onChange={(v) => setExtras({ ...extras, recentAcquisitionOrNewLocation: v })}
             />
@@ -379,7 +394,7 @@ export function AssessmentFlow() {
           <h1 className="text-2xl font-semibold text-navy">A few details that shape your results</h1>
           <p className="mt-1 text-sm text-muted">All optional, but renewal month makes the timing guidance specific to you.</p>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
-            <Field label="Policy renewal month" hint="The month most of your program renews">
+            <Field label="Policy renewal month" hint="The month most of the portfolio's program renews">
               <select className={inputClass} value={extras.renewalMonth ?? ""} onChange={(e) => setExtras({ ...extras, renewalMonth: e.target.value ? Number(e.target.value) : undefined })}>
                 <option value="">Select…</option>
                 {MONTH_LABELS.map((m, i) => (
@@ -444,7 +459,7 @@ export function AssessmentFlow() {
               </select>
             </Field>
             <div className="sm:col-span-2">
-              <Field label="If you chose to meet with an advisor, would you be willing to share policies or loss runs during a workshop?">
+              <Field label="If you chose to meet with an advisor, would you be willing to share policies, loss runs, or the statement of values during a workshop?">
                 <div className="flex flex-wrap gap-2">
                   {(["yes", "maybe", "no"] as const).map((v) => (
                     <label key={v} className={`cursor-pointer rounded-md border px-4 py-2 text-sm capitalize ${extras.willingToSharePolicies === v ? "border-navy bg-navy/5" : "border-line"}`}>
@@ -532,7 +547,7 @@ function NavButtons({
   backLabel?: string;
 }) {
   return (
-    <div className="mt-8 flex items-center justify-between border-t border-line pt-5">
+    <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
       <Button variant="ghost" onClick={onBack} disabled={busy}>
         {backLabel}
       </Button>

@@ -1,25 +1,25 @@
 import type { IndustryId } from "./types";
 
 /**
- * Niches from the product plan's target-industry table. Only the first two
- * have dedicated question variants today; the rest are captured at intake so
- * the dashboard shows demand by niche before any module is built.
+ * Real estate sub-niches. Those mapped to cre_owner or multifamily use the
+ * dedicated question variants; the rest fall back to generic weighting and
+ * are captured at intake so the dashboard shows demand before a module is
+ * built.
  */
 export type NicheId =
-  | "logistics_3pl"
-  | "food_cold_storage"
-  | "light_manufacturing"
-  | "life_sciences"
-  | "contractors"
-  | "cre_owners"
   | "multifamily"
-  | "healthcare"
-  | "senior_living"
-  | "professional_services"
-  | "technology_msp"
-  | "auto_dealers"
-  | "hospitality_clubs"
-  | "nonprofit"
+  | "office"
+  | "industrial_flex"
+  | "retail_mixed_use"
+  | "net_lease"
+  | "self_storage"
+  | "hospitality"
+  | "senior_housing"
+  | "student_housing"
+  | "association"
+  | "third_party_manager"
+  | "developer"
+  | "land"
   | "other";
 
 export interface NicheDefinition {
@@ -34,20 +34,19 @@ export interface NicheDefinition {
 }
 
 export const NICHES: NicheDefinition[] = [
-  { id: "logistics_3pl", label: "3PL / warehousing / distribution", industry: "logistics_3pl", whyAttractive: "Fleet, property, cargo, labor, contracts", dynamicModule: "Cargo, auto, warehouse legal liability, fire protection", hasModule: true },
-  { id: "food_cold_storage", label: "Food distribution / cold storage", industry: "logistics_3pl", whyAttractive: "Spoilage and temperature dependency", dynamicModule: "Refrigeration breakdown, recall, contamination", hasModule: false },
-  { id: "light_manufacturing", label: "Light / advanced manufacturing", industry: "light_manufacturing", whyAttractive: "Property, machinery, products, WC", dynamicModule: "Business interruption, machine guarding, product liability", hasModule: true },
-  { id: "life_sciences", label: "Life-sciences supplier", industry: "light_manufacturing", whyAttractive: "High-value inventory and regulated work", dynamicModule: "Clinical/product liability, cold chain, cyber, E&O", hasModule: false },
-  { id: "contractors", label: "Contractor / trades", industry: "other", whyAttractive: "Subcontracting and contractual risk", dynamicModule: "Wrap-ups, fleet, jobsite safety, certificates", hasModule: false },
-  { id: "cre_owners", label: "Commercial real estate owner", industry: "other", whyAttractive: "Property values and vendor dependence", dynamicModule: "SOV quality, flood, BI, leases, management agreements", hasModule: false },
-  { id: "multifamily", label: "Multifamily / property manager", industry: "other", whyAttractive: "Tenant, premises, discrimination", dynamicModule: "Renters insurance, habitability, EPLI, vendor controls", hasModule: false },
-  { id: "healthcare", label: "Healthcare practice / MSO", industry: "other", whyAttractive: "Professional, privacy, employment", dynamicModule: "Medical professional, cyber, regulatory, credentialing", hasModule: false },
-  { id: "senior_living", label: "Senior living / home care", industry: "other", whyAttractive: "Severe liability and workforce exposure", dynamicModule: "Abuse controls, auto, professional liability, staffing", hasModule: false },
-  { id: "professional_services", label: "Professional services", industry: "other", whyAttractive: "E&O, cyber, executive risk", dynamicModule: "Contract scope, client concentration, privacy", hasModule: false },
-  { id: "technology_msp", label: "Technology / MSP", industry: "other", whyAttractive: "Contractual and cyber aggregation", dynamicModule: "Tech E&O, ransomware, dependent business interruption", hasModule: false },
-  { id: "auto_dealers", label: "Auto dealer / fleet business", industry: "other", whyAttractive: "Inventory, garage, drivers", dynamicModule: "Garage liability, false pretense, cyber, weather", hasModule: false },
-  { id: "hospitality_clubs", label: "Hospitality / country club", industry: "other", whyAttractive: "Property, liquor, events, seasonal labor", dynamicModule: "Liquor, golf carts, pools, events, D&O", hasModule: false },
-  { id: "nonprofit", label: "Nonprofit / social services", industry: "other", whyAttractive: "Governance, volunteers, vulnerable clients", dynamicModule: "D&O, abuse/molestation controls, professional liability", hasModule: false },
+  { id: "multifamily", label: "Multifamily / apartment communities", industry: "multifamily", whyAttractive: "Tenant, premises, discrimination", dynamicModule: "Renters insurance, habitability, EPLI, vendor controls", hasModule: true },
+  { id: "office", label: "Office", industry: "cre_owner", whyAttractive: "Property values and tenant improvements", dynamicModule: "SOV quality, lease requirements, BI, life safety", hasModule: true },
+  { id: "industrial_flex", label: "Industrial / flex / warehouse", industry: "cre_owner", whyAttractive: "Large replacement values and tenant operations", dynamicModule: "SOV quality, sprinkler and roof condition, tenant contracts, environmental", hasModule: true },
+  { id: "retail_mixed_use", label: "Retail / mixed-use", industry: "cre_owner", whyAttractive: "Premises liability and vendor dependence", dynamicModule: "Snow and ice, security, lease requirements, liquor tenants", hasModule: true },
+  { id: "net_lease", label: "Net-lease / single-tenant", industry: "cre_owner", whyAttractive: "Lease-driven insurance obligations", dynamicModule: "Tenant compliance tracking, lender requirements, named insureds", hasModule: true },
+  { id: "self_storage", label: "Self-storage", industry: "other", whyAttractive: "Property, customer goods, access control", dynamicModule: "Customer goods legal liability, security, tenant insurance programs", hasModule: false },
+  { id: "hospitality", label: "Hospitality / hotel assets", industry: "other", whyAttractive: "Property, liquor, events, seasonal labor", dynamicModule: "Liquor, pools, events, management agreements, D&O", hasModule: false },
+  { id: "senior_housing", label: "Senior housing / assisted living", industry: "other", whyAttractive: "Severe liability and workforce exposure", dynamicModule: "Abuse controls, professional liability, staffing, auto", hasModule: false },
+  { id: "student_housing", label: "Student housing", industry: "multifamily", whyAttractive: "Turnover, premises, parental guarantees", dynamicModule: "Renters insurance, security, event and alcohol exposure", hasModule: true },
+  { id: "association", label: "Condo / HOA association", industry: "other", whyAttractive: "Governance, common areas, D&O", dynamicModule: "D&O, master policy allocation, vendor controls, reserves", hasModule: false },
+  { id: "third_party_manager", label: "Third-party property manager", industry: "multifamily", whyAttractive: "Management-agreement exposure across many owners", dynamicModule: "Management agreements, E&O, tenant discrimination, funds handling", hasModule: true },
+  { id: "developer", label: "Developer / owner-builder", industry: "cre_owner", whyAttractive: "Construction and lease-up risk", dynamicModule: "Builders risk, wrap-ups, contractor certificates, lender requirements", hasModule: true },
+  { id: "land", label: "Land / agricultural holdings", industry: "other", whyAttractive: "Premises and environmental", dynamicModule: "Environmental, premises, trespass", hasModule: false },
   { id: "other", label: "Something else", industry: "other", whyAttractive: "", dynamicModule: "", hasModule: false },
 ];
 

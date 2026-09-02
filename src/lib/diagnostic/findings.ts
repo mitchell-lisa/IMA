@@ -51,11 +51,11 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "renewal_starts_late",
     category: "governance",
-    title: "Your renewal process may begin too late to fully document your risk controls.",
+    title: "Your renewal process may begin too late to fully document the portfolio.",
     body:
-      "Renewal preparation appears to begin with limited runway. Controls that are not documented in time rarely make it into the submission carriers evaluate.",
+      "Renewal preparation appears to begin with limited runway. Updated values, building improvements, and closed carrier recommendations that are not documented in time rarely make it into the submission carriers evaluate.",
     detail:
-      "Benchmark indication: high-impact underwriting strengths were identified elsewhere in your answers, but they may not be incorporated consistently into carrier submissions.",
+      "Benchmark indication: strengths were identified elsewhere in your answers, but they may not be incorporated consistently into what carriers see.",
     questionIds: ["gov_renewal_lead_time", "mkt_submission_visibility"],
     priority: 90,
     when: (ctx) => {
@@ -66,11 +66,11 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "contracts_not_one_system",
     category: "contractual_risk_transfer",
-    title: "Your contracts and insurance-verification process may not be operating as one control system.",
+    title: "Your leases, vendor contracts, and certificate tracking may not be operating as one control system.",
     body:
-      "Answers about signed contracts, insurance requirements, and certificate verification are uneven. Risk transfer only works when all three align.",
+      "Answers about signed vendor contracts, insurance requirements, and certificate verification are uneven. Risk transfer only works when the requirement, the contract, and the certificate line up.",
     detail:
-      "Potential opportunity: review whether contractual requirements, certificates of insurance, and policy endorsements align for your largest customer and vendor relationships.",
+      "Potential opportunity: review whether lease and contract requirements, certificates of insurance, and endorsements align for your largest tenants and your snow, security, and renovation vendors.",
     questionIds: ["crt_signed_contracts", "crt_insurance_requirements", "crt_coi_verification"],
     priority: 85,
     when: (ctx) => {
@@ -84,11 +84,11 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "business_outpaced_governance",
     category: "market_readiness",
-    title: "Your business has changed faster than your insurance-governance process.",
+    title: "Your portfolio has changed faster than your insurance-governance process.",
     body:
-      "You reported recent acquisitions or new locations, but operational changes reach the insurance program late or inconsistently.",
+      "You reported recent acquisitions, dispositions, or major renovations, but portfolio changes reach the insurance program late or inconsistently.",
     detail:
-      "Areas to investigate: new locations, increased payroll, new services, and updated property values, and whether each is reflected in current schedules.",
+      "Areas to investigate: newly acquired properties, updated replacement values, lender requirements at each closing, and whether renovations are reflected in schedules.",
     questionIds: ["mkt_business_changes", "emr_new_activity_review"],
     priority: 88,
     when: (ctx) =>
@@ -100,9 +100,9 @@ export const FINDING_RULES: FindingRule[] = [
     category: "claims",
     title: "Your claims process appears reactive rather than managed to a defined cadence.",
     body:
-      "Incident reporting, open-claim review, or corrective-action tracking appear informal. Claims that are not managed tend to cost more and stay open longer.",
+      "Incident reporting, open-claim review, or corrective-action tracking appear informal, and there is no systematic broker process for advocacy, counsel, or public adjusters.",
     detail:
-      "Potential opportunity: evaluate reporting timelines, reserve review, adjuster accountability, and how corrective actions are tracked to closure.",
+      "Potential opportunity: evaluate reporting timelines, reserve review, carrier-assigned counsel, public-adjuster decisions, and how corrective actions are tracked across properties.",
     questionIds: ["clm_reporting_protocol", "clm_open_claim_review", "clm_root_cause"],
     priority: 84,
     when: (ctx) => {
@@ -113,11 +113,11 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "exposure_data_limits_markets",
     category: "market_readiness",
-    title: "Incomplete exposure data or a weak underwriting narrative could limit your market options.",
+    title: "A statement of values that carriers do not trust, or a story they never hear, could limit your market options.",
     body:
-      "Exposure values appear to be carried forward without reconciliation, or you have limited visibility into what carriers receive.",
+      "Replacement costs appear to be dictated by the insurer or carried forward, or you have limited visibility into what carriers receive about the portfolio.",
     detail:
-      "Pricing cannot be assessed from this questionnaire alone. However, carriers generally offer their best terms to accounts that present validated data and a clear narrative, subject to policy, loss, and underwriting review.",
+      "Pricing cannot be assessed from this questionnaire alone. However, carriers generally offer their best terms to portfolios that present validated values, documented building updates, and a clear narrative, subject to policy, loss, and underwriting review.",
     questionIds: ["mkt_exposure_data", "mkt_submission_visibility"],
     priority: 82,
     when: (ctx) => (lowest(ctx, ["mkt_exposure_data", "mkt_submission_visibility"]) ?? 3) <= 1,
@@ -125,11 +125,11 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "social_engineering_path",
     category: "operational_controls",
-    title: "Payment-change and wire controls may leave a path open for social-engineering losses.",
+    title: "Funds-transfer controls may leave a path open for social-engineering losses.",
     body:
-      "Vendor bank-detail changes or wires may be released without callback verification and dual approval. This is the most common route for funds-transfer fraud.",
+      "Wires, vendor bank-detail changes, or security-deposit returns may be released without callback verification and dual approval. This is the most common route for funds-transfer fraud in property operations.",
     detail:
-      "Potential opportunity: confirm callback procedures, approval thresholds, and whether crime or cyber coverage includes social-engineering terms, subject to policy review.",
+      "Potential opportunity: confirm callback procedures, approval thresholds, controls at the property-management company, and whether crime or cyber coverage includes social-engineering terms, subject to policy review.",
     questionIds: ["ops_payment_authorization"],
     priority: 86,
     when: (ctx) => (val(ctx, "ops_payment_authorization") ?? 3) <= 1,
@@ -137,23 +137,23 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "cyber_minimums",
     category: "operational_controls",
-    title: "Cyber controls may not meet the minimums that most carriers now require.",
+    title: "Protection of tenant, applicant, and investor data may not meet the minimums cyber carriers now require.",
     body:
-      "Multi-factor authentication, tested backups, and a written incident plan are the controls cyber underwriters ask about first.",
+      "Multi-factor authentication, encryption, tested backups, and a written incident plan are the controls cyber underwriters ask about first, along with the security of your property-management platform.",
     detail:
-      "Potential opportunity: document current controls, close gaps before the next cyber application, and confirm which controls are attested on existing applications.",
-    questionIds: ["ops_cyber_controls", "br_data_security"],
+      "Potential opportunity: document current controls, review the property-management and payment vendors' security, and confirm which controls are attested on existing applications.",
+    questionIds: ["ops_cyber_controls"],
     priority: 83,
-    when: (ctx) => (lowest(ctx, ["ops_cyber_controls", "br_data_security"]) ?? 3) <= 1,
+    when: (ctx) => (val(ctx, "ops_cyber_controls") ?? 3) <= 1,
   },
   {
     id: "no_program_owner",
     category: "governance",
-    title: "Insurance program ownership appears informal.",
+    title: "Insurance program ownership appears informal or split with the property manager.",
     body:
-      "Without a named owner and defined responsibilities, renewal tasks, certificate requests, and mid-term changes tend to fall through the cracks.",
+      "Without a named owner and a defined split of duties, certificate requests, mid-term acquisitions, and lender requirements tend to fall through the cracks.",
     detail:
-      "Potential opportunity: assign an owner and backup, and define the touchpoints with finance, operations, and HR/safety.",
+      "Potential opportunity: assign an owner and backup, and define who handles certificates, closings, and claims between ownership and the manager.",
     questionIds: ["gov_internal_owner"],
     priority: 70,
     when: (ctx) => (val(ctx, "gov_internal_owner") ?? 3) <= 1,
@@ -161,11 +161,11 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "limits_not_reasoned",
     category: "governance",
-    title: "Limits and deductibles appear to be renewed without a documented rationale.",
+    title: "Limits and deductibles appear to follow the budget rather than a documented rationale.",
     body:
-      "This diagnostic does not assess whether limits are adequate. It does note that limits which are never revisited may not track contract requirements or asset growth.",
+      "This diagnostic does not assess whether limits are adequate. It does note that limits which are never revisited may not track lender covenants, lease requirements, or portfolio growth.",
     detail:
-      "Potential opportunity: document the basis for each limit and deductible with a licensed advisor and revisit it when contracts or assets change.",
+      "Potential opportunity: document the basis for each limit and deductible with a licensed advisor, including key liability cases and lender requirements, and revisit it as the portfolio changes.",
     questionIds: ["gov_limit_rationale"],
     priority: 68,
     when: (ctx) => (val(ctx, "gov_limit_rationale") ?? 3) <= 1,
@@ -173,10 +173,10 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "safety_undocumented",
     category: "operational_controls",
-    title: "Safety and training practices may exist but are not documented in a form underwriters can credit.",
+    title: "Inspection, life-safety, and maintenance practices may exist but are not documented in a form underwriters can credit.",
     body:
-      "Written programs, training records, and inspection logs are what carriers use to distinguish a well-run operation from an average one.",
-    detail: "Potential opportunity: assemble a safety documentation package before the next submission.",
+      "Inspection schedules, life-safety testing records, lighting logs, and preventive maintenance plans are what carriers use to distinguish a well-run portfolio from an average one.",
+    detail: "Potential opportunity: assemble an inspection and maintenance documentation package per property before the next submission.",
     questionIds: ["ops_safety_training"],
     priority: 72,
     when: (ctx) => (val(ctx, "ops_safety_training") ?? 3) <= 1,
@@ -184,40 +184,50 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "property_values_stale",
     category: "market_readiness",
-    title: "Owned-property values and building updates may be undocumented.",
+    title: "Carrier recommendations and building updates may not be tracked or shown to the market.",
     body:
-      "Replacement cost, business-interruption values, flood exposure, and building-system updates drive both coverage terms and pricing conversations.",
+      "How you respond to sprinkler, wiring, boiler, and roof recommendations, and whether updates and flood exposure are documented, drives both coverage terms and pricing conversations.",
     detail:
-      "Areas to investigate: date of last valuation, BI worksheet, flood zone determination, and documented roof, sprinkler, and electrical updates.",
+      "Areas to investigate: open recommendations by property, completion evidence, roof and system update dates, flood zone determinations, and the date of the last professional valuation.",
     questionIds: ["br_property_valuation"],
-    priority: 78,
+    priority: 80,
     when: (ctx) => (val(ctx, "br_property_valuation") ?? 3) <= 1,
   },
   {
-    id: "fleet_controls",
-    category: "operational_controls",
-    title: "Fleet and driver controls may not be documented to the level auto underwriters expect.",
-    body: "MVR practices, fleet policy, and hired/non-owned auto handling are primary controls for commercial auto.",
-    detail: "Potential opportunity: adopt a written fleet policy with annual MVRs and disqualification criteria.",
-    questionIds: ["br_fleet_controls"],
-    priority: 76,
-    when: (ctx) => (val(ctx, "br_fleet_controls") ?? 3) <= 1,
+    id: "management_agreement_gap",
+    category: "contractual_risk_transfer",
+    title: "The insurance and indemnity terms in your property-management agreement may not have been reviewed.",
+    body: "Boilerplate management agreements often leave it unclear who insures what and who indemnifies whom when a loss occurs at a managed property.",
+    detail: "Potential opportunity: have counsel and the broker review the agreement, dictate required limits and coverages, and hold current certificates from the manager.",
+    questionIds: ["br_management_agreement"],
+    priority: 79,
+    when: (ctx) => (val(ctx, "br_management_agreement") ?? 3) <= 1,
   },
   {
-    id: "subcontractor_transfer_gap",
-    category: "contractual_risk_transfer",
-    title: "Subcontractor and vendor risk transfer may not be enforced.",
-    body: "Indemnity terms and endorsements that are not confirmed before work begins may not respond when a loss occurs.",
-    detail: "Potential opportunity: confirm additional-insured and waiver endorsements for active vendors.",
-    questionIds: ["br_subcontractor_transfer"],
+    id: "site_vendor_gap",
+    category: "operational_controls",
+    title: "Snow and ice, security, and site-vendor procedures may not be documented or transferring risk.",
+    body: "Slip-and-fall and premises claims turn on logs, cameras, and whether the vendor's contract indemnifies and insures you.",
+    detail: "Potential opportunity: require documented snow logs and patrol procedures, and confirm indemnity and additional-insured terms for every site vendor.",
+    questionIds: ["br_vendor_transfer"],
     priority: 77,
-    when: (ctx) => (val(ctx, "br_subcontractor_transfer") ?? 3) <= 1,
+    when: (ctx) => (val(ctx, "br_vendor_transfer") ?? 3) <= 1,
+  },
+  {
+    id: "residential_programs_gap",
+    category: "operational_controls",
+    title: "Leasing, renters-insurance, and fair-housing practices may be informal for the size of the residential portfolio.",
+    body: "Renters insurance that is not tracked, screening that is not consistent, and training that is not documented all show up in liability and discrimination claims.",
+    detail: "Potential opportunity: evaluate real-time renters-insurance monitoring, attorney-vetted lease and screening criteria, and documented annual fair-housing training.",
+    questionIds: ["br_residential_programs"],
+    priority: 78,
+    when: (ctx) => (val(ctx, "br_residential_programs") ?? 3) <= 1,
   },
   {
     id: "workforce_programs_gap",
     category: "operational_controls",
-    title: "Workforce programs (return-to-work, handbook, manager training) may be informal for a company of your size.",
-    body: "These programs influence workers' compensation experience and employment-practices exposure.",
+    title: "Workforce programs (return-to-work, handbook, manager training) may be informal for a staff of your size.",
+    body: "These programs influence workers' compensation experience and employment-practices exposure across on-site teams.",
     detail: "Potential opportunity: document return-to-work procedures and update the employee handbook.",
     questionIds: ["br_workforce_programs"],
     priority: 71,
@@ -226,29 +236,29 @@ export const FINDING_RULES: FindingRule[] = [
   {
     id: "investor_governance_gap",
     category: "governance",
-    title: "Board and investor-related exposures may not have been reviewed since the investment.",
-    body: "Directors & officers, fiduciary, and indemnification arrangements are typically revisited as ownership and boards change.",
-    detail: "Potential opportunity: review governance-related exposures with a licensed advisor against current bylaws and investor agreements.",
+    title: "Investor, fund, and lender-related exposures may not have been reviewed since the last capital event.",
+    body: "Fund and entity E&O and D&O, named-insured completeness across every LLC, and lender requirements are typically revisited as deals close and boards change.",
+    detail: "Potential opportunity: review entity coverages with a licensed advisor against fund documents and confirm every legal entity is scheduled as a named insured.",
     questionIds: ["br_governance_investors"],
-    priority: 69,
+    priority: 74,
     when: (ctx) => (val(ctx, "br_governance_investors") ?? 3) <= 1,
   },
   {
     id: "environmental_gap",
     category: "emerging_risk",
-    title: "Environmental compliance and pollution exposure may not be documented.",
-    body: "Permits, storage practices, and disposal records are the starting point for any environmental conversation with carriers.",
-    detail: "Areas to investigate: applicable permits, storage documentation, and whether pollution exposure has been reviewed.",
-    questionIds: ["br_regulated_materials"],
-    priority: 75,
-    when: (ctx) => (val(ctx, "br_regulated_materials") ?? 3) <= 1,
+    title: "Environmental exposures at the properties may not have been reviewed.",
+    body: "Lead, mold, asbestos, oil tanks, legionella, and soil conditions are the starting point for any environmental conversation with carriers and lenders.",
+    detail: "Areas to investigate: environmental surveys on file, acquisition due diligence, moisture and mold procedures, lender environmental conditions, and whether pollution exposure has been reviewed.",
+    questionIds: ["br_environmental"],
+    priority: 76,
+    when: (ctx) => (val(ctx, "br_environmental") ?? 3) <= 1,
   },
   {
     id: "emerging_risk_unmanaged",
     category: "emerging_risk",
-    title: "New activities and regulatory changes may reach the insurance program after the fact.",
-    body: "Without a pre-launch review step, new locations, products, and technology can create exposures that are not reflected until the next renewal.",
-    detail: "Potential opportunity: add a risk and insurance checkpoint to your launch process.",
+    title: "Acquisitions, regulatory changes, and new exposures may reach the insurance program after the fact.",
+    body: "Without a pre-acquisition and pre-launch review step, new properties, short-term rentals, EV charging, and lithium-battery storage can create exposures that are not reflected until the next renewal.",
+    detail: "Potential opportunity: add a risk and insurance checkpoint to acquisition due diligence and to operational changes at the properties.",
     questionIds: ["emr_new_activity_review", "emr_regulatory", "emr_annual_review"],
     priority: 65,
     when: (ctx) => {
@@ -259,12 +269,12 @@ export const FINDING_RULES: FindingRule[] = [
 ];
 
 const STRENGTH_TEMPLATES: Record<CategoryId, string> = {
-  governance: "Program governance is documented and reviewed, which gives carriers confidence in how decisions are made.",
-  market_readiness: "Exposure data and business changes are well documented, which supports a credible underwriting story.",
-  operational_controls: "Operational controls are documented and monitored, which underwriters can credit directly.",
-  claims: "Claims are managed to a defined cadence, which typically supports better loss outcomes and carrier relationships.",
-  contractual_risk_transfer: "Contracts, requirements, and certificate verification appear to operate as one system.",
-  emerging_risk: "New activities and regulatory changes are reviewed before they create unplanned exposure.",
+  governance: "Program governance is documented and reviewed across the portfolio, which gives carriers confidence in how decisions are made.",
+  market_readiness: "The statement of values and portfolio changes are well documented, which supports a credible property submission.",
+  operational_controls: "Property operations, data, and payment controls are documented and monitored, which underwriters can credit directly.",
+  claims: "Claims are managed to a defined cadence with advocacy, which typically supports better loss outcomes and carrier relationships.",
+  contractual_risk_transfer: "Leases, vendor contracts, requirements, and certificate tracking appear to operate as one system.",
+  emerging_risk: "Acquisitions, regulatory changes, and new exposures are reviewed before they create unplanned exposure.",
 };
 
 function categoryFallbackFinding(ctx: FindingContext, c: CategoryId): Finding | null {

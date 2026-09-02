@@ -58,7 +58,6 @@ Runs once after `/api/assessment/complete` stores the result, so a slow or faili
 | `nri` | FEMA National Risk Index (county, ArcGIS feature service) | none | ZIP geocodes | Composite rating, expected annual loss, resilience, hazards rated relatively moderate or higher. Location context only. |
 | `echo` | EPA ECHO facility search (`get_facilities` → `get_qid`) | none | company name + ZIP | Up to 3 facilities matched by name in the ZIP with inspection/penalty counts and a registry link; skipped when the name is generic (>10 hits). |
 | `census` | Census County Business Patterns (ZIP × 3-digit NAICS) | `CENSUS_API_KEY` | NAICS known | Establishment and employment counts, cached 24h. |
-| `fmcsa` | FMCSA QCMobile carrier search by legal name | `FMCSA_WEB_KEY` | fleet reported or 3PL | Up to 3 carriers (same ZIP preferred) with power units, drivers, safety rating, and a SAFER link. |
 | `website` | Company homepage + Claude summary | AI settings | domain known | 2–4 factual sentences labeled with URL and fetch date. |
 
 Every external signal carries `sourceUrl` and a caveat. Signals appear only in the producer lead page and brief. `enrichment_completed` is emitted with the provider list.
