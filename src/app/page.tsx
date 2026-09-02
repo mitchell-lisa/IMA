@@ -18,7 +18,7 @@ export default async function LandingPage({ searchParams }: { searchParams: Prom
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:grid-cols-[1.2fr_1fr] md:py-24">
             <div>
               <p className="text-sm font-semibold uppercase tracking-wide text-teal">
-                South Jersey · Greater Philadelphia{mod.id !== "marketready" ? ` · ${mod.name}` : ""}
+                For real estate owners and operators{mod.id !== "marketready" ? ` · ${mod.name}` : ""}
               </p>
               <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-navy md:text-5xl">{mod.headline}</h1>
               <p className="mt-5 max-w-xl text-lg text-muted">{mod.subhead}</p>

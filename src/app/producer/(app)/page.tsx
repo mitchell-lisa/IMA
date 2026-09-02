@@ -61,7 +61,7 @@ export default async function ProducerDashboard() {
                 {[
                   "Company",
                   "Industry / NAICS",
-                  "Territory",
+                  "State",
                   "Size",
                   "Contact",
                   "Renewal",

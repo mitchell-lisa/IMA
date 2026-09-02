@@ -2,7 +2,7 @@
 
 An 18–25 question, industry-adaptive self-assessment that measures how ready a middle-market company is to be evaluated by the commercial insurance market: program governance, data and market readiness, operational controls, claims discipline, contractual risk transfer, and emerging risk.
 
-It is the MVP lead-generation system described in the product plan for South Jersey and Greater Philadelphia, launching for the **real estate vertical**: **commercial real estate owners** and **multifamily owners and managers**, with a pre-risk-workshop crosswalk built from the IMA real estate workshop workbook.
+It is the MVP lead-generation system described in the product plan, launching for the **real estate vertical**: **commercial real estate owners** and **multifamily owners and managers**, with a pre-risk-workshop crosswalk built from the IMA real estate workshop workbook.
 
 > Educational self-assessment; not a coverage opinion, audit, quotation, binder, or recommendation.
 
@@ -35,7 +35,7 @@ It is the MVP lead-generation system described in the product plan for South Jer
 | Anonymized per-question CSV export for scoring-distribution analysis | ✅ `/api/producer/export/answers` |
 | Excel workbook and JSON export of the question bank, findings, modules, niches (for the Copilot Excel agent) | ✅ `npm run docs:bank` → `docs/marketready-question-bank.xlsx` |
 | Agent knowledge pack: approved question logic, findings language, scoring, workshop methodology, runtime prompts | ✅ `npm run docs:pack` → `docs/agent-knowledge-pack.md` |
-| Unit tests for scoring, findings, lead score, territory, brief, enrichment parsers | ✅ `tests/` |
+| Unit tests for scoring, findings, lead score, ZIP-to-state, brief, enrichment parsers | ✅ `tests/` |
 
 Not built, by design (see the plan's "Do not build" list): quotes, "you are overpaying" conclusions, carrier comparisons, AI policy interpretation, coverage recommendations, public enforcement risk grades, prospect accounts, document upload, chatbot.
 

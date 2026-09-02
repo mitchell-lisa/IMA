@@ -1,5 +1,5 @@
 import "server-only";
-import { classifyZip, getIndustry, normalizeDomain, TERRITORY_LABELS } from "@/lib/diagnostic";
+import { classifyZip, getIndustry, normalizeDomain, territoryLabel } from "@/lib/diagnostic";
 import type { IndustryId } from "@/lib/diagnostic";
 import type { EnrichmentRecord, EnrichmentSignal } from "../repo/types";
 import { cached, fetchJson } from "./http";
@@ -27,13 +27,13 @@ export async function enrichCompany(input: EnrichmentInput): Promise<EnrichmentR
   const signals: EnrichmentSignal[] = [];
 
   if (domain) signals.push({ source: "website", label: "Normalized domain", value: domain });
-  signals.push({ source: "zip", label: "Territory", value: TERRITORY_LABELS[territory] });
+  signals.push({ source: "zip", label: "State", value: territoryLabel(territory) });
   if (industry && industry.naics.length) signals.push({ source: "industry", label: "Likely NAICS", value: industry.naics.join(", ") });
 
   return {
     domain,
     territory,
-    territoryLabel: TERRITORY_LABELS[territory],
+    territoryLabel: territoryLabel(territory),
     naics: industry?.naics ?? [],
     signals,
     providersRun: [],
