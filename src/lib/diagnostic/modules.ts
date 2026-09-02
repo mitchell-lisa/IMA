@@ -26,7 +26,7 @@ export const MODULES: Record<ModuleId, ModuleDefinition> = {
     name: "MarketReady Risk Diagnostic",
     headline: "How ready is your company to be evaluated by the insurance market?",
     subhead:
-      "Receive a confidential, industry-specific assessment of your renewal process, risk controls, claims practices, and underwriting story, before speaking with anyone.",
+      "Receive a confidential, industry-specific assessment of your renewal process, risk controls, claims practices, and underwriting story—before speaking with anyone.",
     audience: "CFOs, COOs, and owners unsure whether the company is presenting an accurate, differentiated risk story.",
     focusCategories: [],
     focusTitle: "",

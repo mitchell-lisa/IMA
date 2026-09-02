@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s · MarketReady Risk Diagnostic",
   },
   description:
-    "A confidential, industry-specific self-assessment of your renewal process, risk controls, claims practices, and underwriting story.",
+    "Receive a confidential, industry-specific assessment of your renewal process, risk controls, claims practices, and underwriting story—before speaking with anyone.",
   robots: { index: true, follow: true },
 };
 
