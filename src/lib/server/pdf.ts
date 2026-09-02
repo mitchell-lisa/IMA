@@ -146,11 +146,11 @@ export async function renderResultsPdf(assessment: AssessmentRecord, opts: { res
   const rawBrand = process.env.NEXT_PUBLIC_BRAND_NAME?.trim();
   const brand = rawBrand === "none" ? "" : rawBrand || "IMA Financial Group";
   if (brand === "IMA Financial Group") {
-    // Wordmark top-right; 1000x500 source scaled to 96pt wide.
+    // Wordmark top-right in the header band, beside the title only (above the subtitle line).
     const logo = await doc.embedJpg(Buffer.from(IMA_LOGO_JPG_BASE64, "base64"));
-    const lw = 96;
+    const lw = 72;
     const lh = (logo.height / logo.width) * lw;
-    w.page.drawImage(logo, { x: PAGE_W - MARGIN - lw, y: PAGE_H - MARGIN - lh + 6, width: lw, height: lh });
+    w.page.drawImage(logo, { x: PAGE_W - MARGIN - lw, y: PAGE_H - 30 - lh, width: lw, height: lh });
   }
   w.text("MarketReady Risk Diagnostic", { size: 20, bold: true, color: NAVY, gap: 0 });
   w.text(`${brand ? `${brand} | ` : ""}Confidential self-assessment report | For discussion purposes only`, { size: 11, color: MUTED, gap: 10 });
