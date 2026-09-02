@@ -6,8 +6,8 @@
   --foreground: #1a1d23;
   --muted: #5b6470;
   --line: #e2e6eb;
-  --navy: #0f3d5e;
-  --navy-deep: #0a2a42;
+  --navy: #003367; /* IMA blue, from the brand mark */
+  --navy-deep: #002448;
   --teal: #1b7f8c;
   --sand: #f2ede4;
   --good: #1f7a4d;

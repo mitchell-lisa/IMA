@@ -67,10 +67,11 @@ export function prospectResultEmail(opts: {
   const checklistHtml = opts.checklist.map((c) => `<li>${escapeHtml(c)}</li>`).join("");
   const html = `
 <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#1f2937">
-  <h2 style="margin:0 0 8px">Your results are ready</h2>
+  <p style="margin:0 0 4px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#6b7280">IMA Financial Group</p>
+  <h2 style="margin:0 0 8px;color:#003367">Your results are ready</h2>
   <p>Thank you for completing the MarketReady Risk Diagnostic for <strong>${escapeHtml(opts.companyName)}</strong>.</p>
   <p>Overall readiness score: <strong>${opts.overall ?? "n/a"}</strong> / 100. Your detailed report is attached, and you can revisit the results at any time:</p>
-  <p><a href="${opts.resultsUrl}" style="display:inline-block;padding:10px 16px;background:#0f3d5e;color:#fff;text-decoration:none;border-radius:6px">View your results</a></p>
+  <p><a href="${opts.resultsUrl}" style="display:inline-block;padding:10px 16px;background:#003367;color:#fff;text-decoration:none;border-radius:6px">View your results</a></p>
   <h3>Three areas to investigate</h3><ol>${findingsHtml}</ol>
   <h3>Your preparation checklist</h3><ul>${checklistHtml}</ul>
   <p style="font-size:12px;color:#6b7280;margin-top:24px">Educational self-assessment; not a coverage opinion, audit, quotation, binder, or recommendation.</p>

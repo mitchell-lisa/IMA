@@ -3,9 +3,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "MarketReady Risk Diagnostic",
-    template: "%s · MarketReady Risk Diagnostic",
+    default: "MarketReady Risk Diagnostic | IMA Financial Group",
+    template: "%s · MarketReady Risk Diagnostic | IMA",
   },
+  icons: { icon: "/brand/ima-mark.svg" },
   description:
     "Receive a confidential, industry-specific assessment of your renewal process, risk controls, claims practices, and underwriting story—before speaking with anyone.",
   robots: { index: true, follow: true },

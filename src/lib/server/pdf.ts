@@ -12,6 +12,7 @@ import {
   getIndustry,
 } from "@/lib/diagnostic";
 import type { AssessmentRecord } from "./repo/types";
+import { IMA_LOGO_JPG_BASE64 } from "./brandAssets";
 
 /**
  * Standard PDF fonts only support WinAnsi. Map common typographic characters
@@ -35,7 +36,7 @@ const PDF_BAND_SHORT: Record<string, string> = { strong: "Stronger practices", i
 const PAGE_W = 612;
 const PAGE_H = 792;
 const MARGIN = 54;
-const NAVY = rgb(0.06, 0.24, 0.37);
+const NAVY = rgb(0, 0.2, 0.404); // IMA blue #003367
 const INK = rgb(0.12, 0.14, 0.18);
 const MUTED = rgb(0.42, 0.45, 0.5);
 const RULE = rgb(0.85, 0.87, 0.9);
@@ -142,7 +143,15 @@ export async function renderResultsPdf(assessment: AssessmentRecord, opts: { res
   const r = assessment.result;
   const industry = getIndustry(p.industry);
 
-  const brand = process.env.NEXT_PUBLIC_BRAND_NAME?.trim();
+  const rawBrand = process.env.NEXT_PUBLIC_BRAND_NAME?.trim();
+  const brand = rawBrand === "none" ? "" : rawBrand || "IMA Financial Group";
+  if (brand === "IMA Financial Group") {
+    // Wordmark top-right; 1000x500 source scaled to 96pt wide.
+    const logo = await doc.embedJpg(Buffer.from(IMA_LOGO_JPG_BASE64, "base64"));
+    const lw = 96;
+    const lh = (logo.height / logo.width) * lw;
+    w.page.drawImage(logo, { x: PAGE_W - MARGIN - lw, y: PAGE_H - MARGIN - lh + 6, width: lw, height: lh });
+  }
   w.text("MarketReady Risk Diagnostic", { size: 20, bold: true, color: NAVY, gap: 0 });
   w.text(`${brand ? `${brand} | ` : ""}Confidential self-assessment report | For discussion purposes only`, { size: 11, color: MUTED, gap: 10 });
   w.text(`${p.companyName}`, { size: 14, bold: true, gap: 0 });

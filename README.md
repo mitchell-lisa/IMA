@@ -26,6 +26,8 @@ It is the MVP lead-generation system described in the product plan for South Jer
 | Partner attribution and UTM capture | ✅ `src/middleware.ts` |
 | Entry modules (Renewal Control Tower, Hidden Risk Transfer Scan, Claims Friction Index) reusing the same engine with different framing, recorded per lead | ✅ `src/lib/diagnostic/modules.ts`, `/?module=renewal|contracts|claims` |
 | Supabase schema with RLS, retention purge, deletion function | ✅ `supabase/migrations/0001_init.sql` |
+| Reporting schema matching the plan's data model (organizations, contacts, assessments, answers, questions, scores, findings, enrichments, leads, events) as views over the operational tables, plus a generated `questions` seed | ✅ `supabase/migrations/0002_reporting_schema.sql`, `supabase/seed/questions.sql` |
+| IMA branding: name, mark, favicon, IMA blue, wordmark on the PDF | ✅ default on; `NEXT_PUBLIC_BRAND_NAME=none` for an unbranded build |
 | Analytics events for every funnel step | ✅ `events` table |
 | Optional AI plain-English summary for the brief (structured findings only) | ✅ off by default, `src/lib/server/ai.ts` |
 | Public-data enrichment, opt-in per source: FEMA NRI, EPA ECHO (no keys), Census CBP, FMCSA (keyed), website summary | ✅ `src/lib/server/enrichment/`, producer-facing only |
@@ -70,7 +72,7 @@ See `.env.example`. Production requires `SESSION_SECRET`, the Supabase settings,
 
 ## Deploying
 
-1. Create a Supabase project and run `supabase/migrations/0001_init.sql`.
+1. Create a Supabase project and run `supabase/migrations/0001_init.sql`, then `0002_reporting_schema.sql` and `supabase/seed/questions.sql`.
 2. Insert producers into `public.producers` (user id from Supabase Auth after their first magic-link sign-in) and partner codes into `public.partners`.
 3. Schedule `select public.purge_anonymous_assessments(90);` (Supabase cron) for retention.
 4. Deploy to Vercel with the environment variables from `.env.example`.
@@ -79,6 +81,6 @@ See `.env.example`. Production requires `SESSION_SECRET`, the Supabase settings,
 ## Compliance notes
 
 - Copy that requires approval is centralized in `src/lib/diagnostic/disclaimers.ts` and the findings library.
-- IMA branding is intentionally absent pending compliance/marketing approval.
+- IMA branding is on by default (approved 2026-09-02). Set `NEXT_PUBLIC_BRAND_NAME=none` for an unbranded build.
 - Every qualified lead is flagged "Awaiting review" until a licensed professional marks it reviewed in the dashboard.
 - Consent text is versioned (`CONSENT_TEXT_VERSION`) and stored with each lead.

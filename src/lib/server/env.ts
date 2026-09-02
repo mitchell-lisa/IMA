@@ -26,7 +26,7 @@ export const env = {
     .filter(Boolean),
 
   resendApiKey: opt("RESEND_API_KEY"),
-  emailFrom: opt("EMAIL_FROM") ?? "MarketReady Diagnostic <no-reply@example.com>",
+  emailFrom: opt("EMAIL_FROM") ?? "IMA MarketReady Diagnostic <no-reply@example.com>",
   producerAlertEmail: opt("PRODUCER_ALERT_EMAIL"),
   emailWebhookSecret: opt("EMAIL_WEBHOOK_SECRET"),
 

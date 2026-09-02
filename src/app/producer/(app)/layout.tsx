@@ -15,7 +15,7 @@ export default async function ProducerLayout({ children }: { children: React.Rea
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3">
           <div className="flex items-center gap-6">
             <Link href="/producer" className="text-sm font-semibold tracking-tight">
-              MarketReady · Producer dashboard
+              IMA · MarketReady Producer dashboard
             </Link>
             <nav className="flex gap-4 text-sm text-white/80">
               <Link href="/producer" className="hover:text-white">

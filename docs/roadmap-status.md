@@ -75,7 +75,7 @@ Mapped to the plan's four-week roadmap. "Built" means it is in this repository a
 3. Configure email (`RESEND_API_KEY`, `EMAIL_FROM`, `PRODUCER_ALERT_EMAIL`).
 4. Decide on CRM: webhook now, or CSV export until Salesforce is approved.
 5. Choose enrichment providers (`ENRICHMENT_PROVIDERS=nri,echo` needs no keys).
-6. Compliance sign-off on disclaimers, consent text, findings library, and privacy notice. Then set branding variables.
+6. Compliance sign-off on disclaimers, consent text, findings library, and privacy notice. Branding is already on.
 7. Deploy to Vercel; run the smoke flow once against production; schedule the retention purge.
 8. Create partner codes and send the first invitations.
 
