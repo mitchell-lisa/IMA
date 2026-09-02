@@ -45,6 +45,13 @@ export class MemoryRepository implements Repository {
     return structuredClone(next);
   }
 
+  async listAssessments(opts?: { limit?: number }) {
+    return Array.from(this.store.assessments.values())
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, opts?.limit ?? 500)
+      .map((a) => structuredClone(a));
+  }
+
   async createLead(input: Omit<LeadRecord, "id" | "createdAt" | "updatedAt">) {
     const now = new Date().toISOString();
     const rec: LeadRecord = { ...input, id: randomUUID(), createdAt: now, updatedAt: now };

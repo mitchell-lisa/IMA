@@ -183,6 +183,16 @@ export class SupabaseRepository implements Repository {
     return assessmentFromRow(data);
   }
 
+  async listAssessments(opts?: { limit?: number }) {
+    const { data, error } = await this.client
+      .from("assessments")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(opts?.limit ?? 500);
+    if (error) this.fail("listAssessments", error);
+    return ((data ?? []) as AssessmentRow[]).map(assessmentFromRow);
+  }
+
   async createLead(input: Omit<LeadRecord, "id" | "createdAt" | "updatedAt">) {
     const { data, error } = await this.client.from("leads").insert(leadToRow(input)).select("*").single<LeadRow>();
     if (error || !data) this.fail("createLead", error);

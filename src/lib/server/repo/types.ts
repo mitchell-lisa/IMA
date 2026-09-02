@@ -99,6 +99,7 @@ export interface Repository {
   getAssessment(id: string): Promise<AssessmentRecord | null>;
   getAssessmentByToken(token: string): Promise<AssessmentRecord | null>;
   updateAssessment(id: string, patch: Partial<AssessmentRecord>): Promise<AssessmentRecord>;
+  listAssessments(opts?: { limit?: number }): Promise<AssessmentRecord[]>;
 
   createLead(input: Omit<LeadRecord, "id" | "createdAt" | "updatedAt">): Promise<LeadRecord>;
   getLead(id: string): Promise<LeadRecord | null>;

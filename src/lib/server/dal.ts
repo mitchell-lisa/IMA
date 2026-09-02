@@ -465,6 +465,103 @@ function toDashboardRow({ lead, assessment }: LeadListItem): DashboardRow {
   };
 }
 
+// ---------------------------------------------------------------- all submissions + funnel (week 4: inspect every submission)
+
+export interface SubmissionRow {
+  assessmentId: string;
+  createdAt: string;
+  completedAt: string | null;
+  status: AssessmentRecord["status"];
+  company: string;
+  industry: string;
+  niche: string | null;
+  territory: string | null;
+  zip: string;
+  module: string;
+  partner: string | null;
+  source: string | null;
+  answered: number;
+  applicable: number;
+  overall: number | null;
+  confidence: number | null;
+  criticalFlags: number;
+  findings: string[];
+  hasLead: boolean;
+  leadId: string | null;
+  leadTier: string | null;
+}
+
+export interface FunnelMetrics {
+  started: number;
+  completed: number;
+  captured: number;
+  workshopRequested: number;
+  completionRate: number | null;
+  captureRate: number | null;
+  byModule: Record<string, { started: number; completed: number; captured: number }>;
+  byPartner: Record<string, { started: number; completed: number; captured: number }>;
+  byIndustry: Record<string, { started: number; completed: number; captured: number }>;
+}
+
+export async function listSubmissions(): Promise<{ rows: SubmissionRow[]; funnel: FunnelMetrics }> {
+  const repo = getRepository();
+  const [assessments, leads] = await Promise.all([repo.listAssessments({ limit: 1000 }), repo.listLeads({ limit: 1000 })]);
+  const leadByAssessment = new Map(leads.map((l) => [l.assessment.id, l.lead]));
+  const rows: SubmissionRow[] = assessments.map((a) => {
+    const lead = leadByAssessment.get(a.id) ?? null;
+    const applicable = a.result?.scores.applicableQuestionIds.length ?? Object.keys(a.answers).length;
+    return {
+      assessmentId: a.id,
+      createdAt: a.createdAt,
+      completedAt: a.completedAt,
+      status: a.status,
+      company: a.profile.companyName,
+      industry: getIndustry(a.profile.industry).shortLabel,
+      niche: nicheLabel(a.profile.niche),
+      territory: a.enrichment?.territoryLabel ?? null,
+      zip: a.profile.zip,
+      module: a.attribution.module ?? "marketready",
+      partner: a.attribution.partnerCode ?? null,
+      source: a.attribution.source ?? null,
+      answered: Object.keys(a.answers).length,
+      applicable,
+      overall: a.result?.scores.overall ?? null,
+      confidence: a.result?.scores.confidence ?? null,
+      criticalFlags: a.result?.scores.criticalFlags.length ?? 0,
+      findings: (a.result?.findings ?? []).map((f) => f.title),
+      hasLead: Boolean(lead),
+      leadId: lead?.id ?? null,
+      leadTier: lead?.leadScore.tier ?? null,
+    };
+  });
+
+  const bump = (rec: Record<string, { started: number; completed: number; captured: number }>, key: string, r: SubmissionRow) => {
+    rec[key] ??= { started: 0, completed: 0, captured: 0 };
+    rec[key].started += 1;
+    if (r.status === "completed") rec[key].completed += 1;
+    if (r.hasLead) rec[key].captured += 1;
+  };
+  const funnel: FunnelMetrics = {
+    started: rows.length,
+    completed: rows.filter((r) => r.status === "completed").length,
+    captured: rows.filter((r) => r.hasLead).length,
+    workshopRequested: leads.filter((l) => l.lead.workshopRequested).length,
+    completionRate: null,
+    captureRate: null,
+    byModule: {},
+    byPartner: {},
+    byIndustry: {},
+  };
+  funnel.completionRate = funnel.started ? Math.round((funnel.completed / funnel.started) * 100) : null;
+  funnel.captureRate = funnel.completed ? Math.round((funnel.captured / funnel.completed) * 100) : null;
+  for (const r of rows) {
+    bump(funnel.byModule, r.module, r);
+    bump(funnel.byPartner, r.partner ?? "direct", r);
+    bump(funnel.byIndustry, r.industry, r);
+  }
+  return { rows, funnel };
+}
+
 export interface LeadDetail {
   lead: LeadRecord;
   assessment: AssessmentRecord;
