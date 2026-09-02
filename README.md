@@ -24,6 +24,7 @@ It is the MVP lead-generation system described in the product plan for South Jer
 | Lead-quality score (sales prioritization, not risk) | ✅ `src/lib/diagnostic/leadScore.ts` |
 | CRM-ready payload via signed webhook, CSV fallback, inbound CRM + email webhooks | ✅ `src/lib/server/crm.ts`, `src/app/api/webhooks` |
 | Partner attribution and UTM capture | ✅ `src/middleware.ts` |
+| Entry modules (Renewal Control Tower, Hidden Risk Transfer Scan, Claims Friction Index) reusing the same engine with different framing, recorded per lead | ✅ `src/lib/diagnostic/modules.ts`, `/?module=renewal|contracts|claims` |
 | Supabase schema with RLS, retention purge, deletion function | ✅ `supabase/migrations/0001_init.sql` |
 | Analytics events for every funnel step | ✅ `events` table |
 | Optional AI plain-English summary for the brief (structured findings only) | ✅ off by default, `src/lib/server/ai.ts` |

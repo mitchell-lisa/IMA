@@ -5,6 +5,8 @@ export type AssessmentStatus = "in_progress" | "completed";
 
 export interface Attribution {
   partnerCode?: string | null;
+  /** Entry module (marketready | renewal | contracts | claims). */
+  module?: string | null;
   source?: string | null;
   campaign?: string | null;
   medium?: string | null;

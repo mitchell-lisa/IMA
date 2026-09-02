@@ -32,6 +32,10 @@ All routes validate input with zod, run server-side only, and apply per-IP rate 
 | POST | `/api/webhooks/crm` | `X-MarketReady-Signature` HMAC-SHA256 of raw body with `CRM_WEBHOOK_SECRET` | CRM pushes disposition/owner/external id |
 | POST | `/api/webhooks/email` | `?secret=` or `X-Webhook-Secret` = `EMAIL_WEBHOOK_SECRET` | Delivery / bounce events |
 
+## Entry modules and attribution
+
+Any landing URL may carry `?module=renewal|contracts|claims` (default `marketready`), `?partner=<code>` and UTM parameters. The middleware stores them in a 30-day cookie; the start route copies them onto the assessment. The module changes landing-page framing and the results-page focus card only; scoring is identical. The CRM payload carries `entry_module` and `partner_code` so conversion can be compared by pitch and by referral partner.
+
 Outbound CRM dispatch (`CRM_WEBHOOK_URL`) sends the flat payload in `src/lib/server/crm.ts`, signed with the same header.
 
 ## Analytics events

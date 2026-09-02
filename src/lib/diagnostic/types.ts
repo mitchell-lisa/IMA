@@ -229,6 +229,8 @@ export interface ScoreResult {
   criticalFlags: CriticalFlag[];
   consistencyNotes: ConsistencyNote[];
   applicableQuestionIds: string[];
+  /** Applicable questions answered 0 or 1 (undocumented or inconsistent practices). */
+  lowPracticeIds: string[];
   answeredCount: number;
   unknownCount: number;
   unansweredCount: number;

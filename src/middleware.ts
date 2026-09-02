@@ -15,12 +15,15 @@ export function middleware(req: NextRequest) {
   const source = url.searchParams.get("utm_source");
   const campaign = url.searchParams.get("utm_campaign");
   const medium = url.searchParams.get("utm_medium");
+  const moduleParam = url.searchParams.get("module");
+  const entryModule = moduleParam && ["marketready", "renewal", "contracts", "claims"].includes(moduleParam) ? moduleParam : null;
 
   const res = NextResponse.next();
-  if (partner || source || campaign || medium) {
+  if (partner || source || campaign || medium || entryModule) {
     const existing = safeParse(req.cookies.get(ATTRIBUTION_COOKIE)?.value);
     const value = {
       partnerCode: clean(partner) ?? existing.partnerCode ?? null,
+      module: entryModule ?? existing.module ?? null,
       source: clean(source) ?? existing.source ?? null,
       campaign: clean(campaign) ?? existing.campaign ?? null,
       medium: clean(medium) ?? existing.medium ?? null,

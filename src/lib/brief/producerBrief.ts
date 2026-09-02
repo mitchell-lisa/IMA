@@ -33,6 +33,7 @@ export interface ProducerBrief {
     contact: { name: string | null; email: string; role: string | null; phone: string | null };
     partner: string | null;
     source: string | null;
+    module: string;
   };
   whyItMatters: string[];
   opportunities: Finding[];
@@ -315,6 +316,7 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
       contact: { name: lead.name, email: lead.email, role: lead.role ? ROLE_LABELS[lead.role] : null, phone: lead.phone },
       partner: assessment.attribution.partnerCode ?? null,
       source: assessment.attribution.source ?? null,
+      module: assessment.attribution.module ?? "marketready",
     },
     whyItMatters,
     opportunities: findings,
@@ -364,7 +366,7 @@ export function briefToMarkdown(b: ProducerBrief): string {
   lines.push(`- Location: ZIP ${b.snapshot.zip}${b.snapshot.territory ? `, ${b.snapshot.territory}` : ""}`);
   lines.push(`- Size: ${b.snapshot.employees} employees, ${b.snapshot.revenue} revenue`);
   lines.push(`- Contact: ${b.snapshot.contact.name ?? "n/a"}${b.snapshot.contact.role ? ` (${b.snapshot.contact.role})` : ""}, ${b.snapshot.contact.email}${b.snapshot.contact.phone ? `, ${b.snapshot.contact.phone}` : ""}`);
-  lines.push(`- Source: ${b.snapshot.partner ? `Partner ${b.snapshot.partner}` : b.snapshot.source ?? "direct"}`, "");
+  lines.push(`- Source: ${b.snapshot.partner ? `Partner ${b.snapshot.partner}` : b.snapshot.source ?? "direct"} · Entry module: ${b.snapshot.module}`, "");
   lines.push(`## 2. Why this lead matters`, ...b.whyItMatters.map((w) => `- ${w}`), "");
   lines.push(`## 3. Top potential opportunities`);
   b.opportunities.forEach((f, i) => {

@@ -4,8 +4,12 @@ import { CATEGORY_LABELS } from "@/lib/diagnostic/labels";
 import { DATA_STORAGE_NOTE } from "@/lib/diagnostic/disclaimers";
 import { CATEGORY_IDS } from "@/lib/diagnostic/types";
 import { INDUSTRY_IDS, INDUSTRIES } from "@/lib/diagnostic/industries";
+import { MODULES, MODULE_IDS, getModule } from "@/lib/diagnostic/modules";
 
-export default function LandingPage() {
+export default async function LandingPage({ searchParams }: { searchParams: Promise<{ module?: string }> }) {
+  const sp = await searchParams;
+  const mod = getModule(sp.module);
+  const assessHref = mod.id === "marketready" ? "/assess" : `/assess?module=${mod.id}`;
   return (
     <>
       <SiteHeader />
@@ -13,16 +17,13 @@ export default function LandingPage() {
         <section className="bg-surface">
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:grid-cols-[1.2fr_1fr] md:py-24">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-teal">South Jersey · Greater Philadelphia</p>
-              <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-navy md:text-5xl">
-                How ready is your company to be evaluated by the insurance market?
-              </h1>
-              <p className="mt-5 max-w-xl text-lg text-muted">
-                Receive a confidential, industry-specific assessment of your renewal process, risk controls, claims practices,
-                and underwriting story, before speaking with anyone.
+              <p className="text-sm font-semibold uppercase tracking-wide text-teal">
+                South Jersey · Greater Philadelphia{mod.id !== "marketready" ? ` · ${mod.name}` : ""}
               </p>
+              <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-navy md:text-5xl">{mod.headline}</h1>
+              <p className="mt-5 max-w-xl text-lg text-muted">{mod.subhead}</p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Button href="/assess">Start the assessment</Button>
+                <Button href={assessHref}>Start the assessment</Button>
                 <Button href="#how-it-works" variant="ghost">
                   See what it covers
                 </Button>
@@ -50,6 +51,23 @@ export default function LandingPage() {
                 Optional: enter a work email afterwards to receive the detailed PDF report and a personalized preparation checklist.
               </p>
             </Card>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-5 py-12">
+          <h2 className="text-lg font-semibold text-navy">Start with the question that is top of mind</h2>
+          <p className="mt-1 text-sm text-muted">Every entry point runs the same assessment. The framing and the first findings you see change.</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {MODULE_IDS.filter((id) => id !== "marketready").map((id) => (
+              <a
+                key={id}
+                href={`/?module=${id}`}
+                className={`rounded-lg border p-4 text-sm transition hover:border-navy ${mod.id === id ? "border-navy bg-navy/5" : "border-line bg-surface"}`}
+              >
+                <div className="font-semibold text-navy">{MODULES[id].name}</div>
+                <div className="mt-1 text-muted">{MODULES[id].audience}</div>
+              </a>
+            ))}
           </div>
         </section>
 
@@ -99,7 +117,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="mt-10">
-            <Button href="/assess">Start the assessment</Button>
+            <Button href={assessHref}>Start the assessment</Button>
           </div>
         </section>
       </main>

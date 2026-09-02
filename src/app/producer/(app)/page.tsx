@@ -136,7 +136,10 @@ export default async function ProducerDashboard() {
                       .join("; ") || "—"}
                   </td>
                   <td className="px-3 py-2 max-w-[160px]">{r.buyingSignals.join("; ") || "—"}</td>
-                  <td className="px-3 py-2">{r.partner ? `Partner: ${r.partner}` : r.source ?? "direct"}</td>
+                  <td className="px-3 py-2">
+                    {r.partner ? `Partner: ${r.partner}` : r.source ?? "direct"}
+                    {r.module !== "marketready" ? <div className="text-muted">{r.module}</div> : null}
+                  </td>
                   <td className="px-3 py-2">
                     Report ✓{r.consentMarketing ? " · Marketing ✓" : ""}
                     {r.workshopRequested ? " · Workshop ✓" : ""}

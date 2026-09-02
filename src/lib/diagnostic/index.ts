@@ -31,3 +31,4 @@ export * from "./questions";
 export * from "./industries";
 export * from "./labels";
 export * from "./disclaimers";
+export * from "./modules";

@@ -67,6 +67,7 @@ export function scoreAssessment(
   }
 
   const criticalFlags: CriticalFlag[] = [];
+  const lowPracticeIds: string[] = [];
   let answeredCount = 0;
   let unknownCount = 0;
   let unansweredCount = 0;
@@ -92,6 +93,7 @@ export function scoreAssessment(
     cat.earned += value * weight;
     cat.available += MAX_MATURITY * weight;
 
+    if (value <= 1) lowPracticeIds.push(q.id);
     if (q.critical && value <= q.critical.atOrBelow) {
       criticalFlags.push({ questionId: q.id, category: q.category, message: q.critical.message });
     }
@@ -125,6 +127,7 @@ export function scoreAssessment(
     criticalFlags,
     consistencyNotes: detectInconsistencies(answers),
     applicableQuestionIds: applicable.map((q) => q.id),
+    lowPracticeIds,
     answeredCount,
     unknownCount,
     unansweredCount,

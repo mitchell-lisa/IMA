@@ -5,6 +5,7 @@ import { BandPill, Button, Card, ScoreMeter } from "@/components/ui";
 import { CATEGORY_LABELS, CONFIDENCE_BAND_LABELS, SCORE_BAND_LABELS } from "@/lib/diagnostic/labels";
 import { NO_BENCHMARK_NOTE, PRICING_NOTE, RESULTS_DISCLAIMER } from "@/lib/diagnostic/disclaimers";
 import { QUESTION_BY_ID } from "@/lib/diagnostic/questions";
+import { getModule } from "@/lib/diagnostic/modules";
 import { getPublicResult } from "@/lib/server/dal";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +17,12 @@ export default async function ResultsPage({ params }: { params: Promise<{ token:
   if (!data) notFound();
   const { result } = data;
   const { scores } = result;
+  const mod = getModule(data.module);
+  const focusGaps = mod.focusCategories.length
+    ? (scores.lowPracticeIds ?? [])
+        .map((id) => QUESTION_BY_ID[id])
+        .filter((q) => q && mod.focusCategories.includes(q.category))
+    : [];
 
   return (
     <>
@@ -57,6 +64,29 @@ export default async function ResultsPage({ params }: { params: Promise<{ token:
             </div>
           </Card>
         </div>
+
+        {mod.focusCategories.length ? (
+          <Card className="mt-6 border-teal/40">
+            <p className="text-xs font-semibold uppercase tracking-wide text-teal">{mod.name}</p>
+            <h2 className="mt-1 text-lg font-semibold text-navy">{mod.focusTitle}</h2>
+            <p className="mt-1 text-sm text-muted">{mod.focusIntro}</p>
+            <div className="mt-3 divide-y divide-line">
+              {scores.categories
+                .filter((c) => mod.focusCategories.includes(c.category))
+                .map((c) => (
+                  <ScoreMeter key={c.category} label={CATEGORY_LABELS[c.category].label} score={c.score} band={c.band} />
+                ))}
+            </div>
+            <h3 className="mt-4 text-sm font-semibold">Practices in this area worth confirming first</h3>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+              {focusGaps.length ? (
+                focusGaps.map((q) => <li key={q.id}>{q.topic}</li>)
+              ) : (
+                <li className="text-muted">No practices in this area were flagged.</li>
+              )}
+            </ul>
+          </Card>
+        ) : null}
 
         {scores.criticalFlags.length ? (
           <Card className="mt-6 border-bad/30">

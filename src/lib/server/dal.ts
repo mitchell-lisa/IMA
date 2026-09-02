@@ -37,6 +37,8 @@ export interface PublicResultDto {
   result: DiagnosticResult;
   emailCaptured: boolean;
   workshopRequested: boolean;
+  /** Entry module the prospect came through; drives results-page emphasis. */
+  module: string;
 }
 
 export interface AssessmentSessionDto {
@@ -64,6 +66,7 @@ async function readAttribution(): Promise<Attribution> {
     const parsed = JSON.parse(raw) as Attribution;
     return {
       partnerCode: parsed.partnerCode ?? null,
+      module: parsed.module ?? null,
       source: parsed.source ?? null,
       campaign: parsed.campaign ?? null,
       medium: parsed.medium ?? null,
@@ -134,7 +137,7 @@ export async function startAssessment(input: StartProfileInput): Promise<Assessm
     userAgent: meta.userAgent,
     completedAt: null,
   });
-  await track("assessment_started", { industry: input.industry, partner: attribution.partnerCode ?? null }, { assessmentId: rec.id });
+  await track("assessment_started", { industry: input.industry, partner: attribution.partnerCode ?? null, module: attribution.module ?? "marketready" }, { assessmentId: rec.id });
   return toSession(rec);
 }
 
@@ -193,6 +196,7 @@ export async function getPublicResult(token: string): Promise<PublicResultDto | 
     result: rec.result,
     emailCaptured: Boolean(lead),
     workshopRequested: lead?.workshopRequested ?? false,
+    module: rec.attribution.module ?? "marketready",
   };
 }
 
@@ -361,6 +365,7 @@ export interface DashboardRow {
   buyingSignals: string[];
   partner: string | null;
   source: string | null;
+  module: string;
   consentMarketing: boolean;
   consentReport: boolean;
   workshopRequested: boolean;
@@ -420,6 +425,7 @@ function toDashboardRow({ lead, assessment }: LeadListItem): DashboardRow {
     buyingSignals: buying,
     partner: assessment.attribution.partnerCode ?? null,
     source: assessment.attribution.source ?? null,
+    module: assessment.attribution.module ?? "marketready",
     consentMarketing: lead.consentMarketing,
     consentReport: lead.consentReport,
     workshopRequested: lead.workshopRequested,
