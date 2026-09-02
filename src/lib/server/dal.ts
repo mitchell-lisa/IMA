@@ -134,6 +134,7 @@ export async function startAssessment(input: StartProfileInput): Promise<Assessm
     zip: input.zip,
     industry: input.industry,
     niche: input.niche,
+    unitsBand: input.unitsBand,
     employeeBand: input.employeeBand,
     revenueBand: input.revenueBand,
     employeesAboveThreshold: employeesAbove(input.employeeBand, getIndustry(input.industry).employeeThreshold),
@@ -207,7 +208,6 @@ async function enrichAfterCompletion(assessmentId: string, base: AssessmentRecor
       zip: profile.zip,
       industry: profile.industry,
       companyName: profile.companyName,
-      hasVehicles: profile.hasVehicles,
     });
     if (enriched !== start) {
       await getRepository().updateAssessment(assessmentId, { enrichment: enriched });

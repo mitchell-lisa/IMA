@@ -2,10 +2,10 @@ import { QUESTIONS } from "../src/lib/diagnostic/questions";
 import { CATEGORY_LABELS } from "../src/lib/diagnostic/labels";
 const lines: string[] = [];
 lines.push("# Question matrix", "", "Generated from `src/lib/diagnostic/questions.ts`. Regenerate with `npm run docs:matrix`.", "");
-lines.push("| # | ID | Category | Topic | Branch | Weight 3PL | Weight Mfg | Weight Other | Critical flag |");
+lines.push("| # | ID | Category | Topic | Branch | Weight CRE owner | Weight Multifamily | Weight Other | Critical flag |");
 lines.push("|---|---|---|---|---|---|---|---|---|");
 QUESTIONS.forEach((q, i) => {
-  lines.push(`| ${i + 1} | \`${q.id}\` | ${CATEGORY_LABELS[q.category].label} | ${q.topic} | ${q.branch ?? ""} | ${q.weights.logistics_3pl} | ${q.weights.light_manufacturing} | ${q.weights.other} | ${q.critical ? "yes (≤" + q.critical.atOrBelow + ")" : ""} |`);
+  lines.push(`| ${i + 1} | \`${q.id}\` | ${CATEGORY_LABELS[q.category].label} | ${q.topic} | ${q.branch ?? ""} | ${q.weights.cre_owner} | ${q.weights.multifamily} | ${q.weights.other} | ${q.critical ? "yes (≤" + q.critical.atOrBelow + ")" : ""} |`);
 });
 lines.push("", "## Prompts and maturity ladders", "");
 for (const q of QUESTIONS) {

@@ -20,7 +20,7 @@ export default async function LeadDetailPage({ params, searchParams }: { params:
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
-      <div className="space-y-6">
+      <div className="min-w-0 space-y-6">
         <div>
           <Link href="/producer" className="text-xs text-muted hover:text-navy">
             ← All leads
@@ -196,7 +196,7 @@ export default async function LeadDetailPage({ params, searchParams }: { params:
         </Card>
       </div>
 
-      <div className="space-y-6">
+      <div className="min-w-0 space-y-6">
         <Card>
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">Licensed review</h2>
           <p className="mt-1 text-xs text-muted">Record disposition and notes. Prospect-supplied fields are read-only.</p>

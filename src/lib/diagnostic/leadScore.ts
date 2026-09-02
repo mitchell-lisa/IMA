@@ -42,7 +42,7 @@ export function computeLeadScore(input: LeadInputs): LeadScoreBreakdown {
 
   // Company fit (25): industry focus 10, revenue band 10, territory 5.
   let companyFit = 0;
-  if (profile.industry === "logistics_3pl" || profile.industry === "light_manufacturing") companyFit += 10;
+  if (profile.industry === "cre_owner" || profile.industry === "multifamily") companyFit += 10;
   else if (profile.industry) companyFit += 4;
   switch (profile.revenueBand) {
     case "10m_25m":

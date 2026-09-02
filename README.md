@@ -2,7 +2,7 @@
 
 An 18–25 question, industry-adaptive self-assessment that measures how ready a middle-market company is to be evaluated by the commercial insurance market: program governance, data and market readiness, operational controls, claims discipline, contractual risk transfer, and emerging risk.
 
-It is the MVP lead-generation system described in the product plan for South Jersey and Greater Philadelphia, launching with **3PL / warehousing** and **light manufacturing**.
+It is the MVP lead-generation system described in the product plan for South Jersey and Greater Philadelphia, launching for the **real estate vertical**: **commercial real estate owners** and **multifamily owners and managers**, with a pre-risk-workshop crosswalk built from the IMA real estate workshop workbook.
 
 > Educational self-assessment; not a coverage opinion, audit, quotation, binder, or recommendation.
 
@@ -30,7 +30,7 @@ It is the MVP lead-generation system described in the product plan for South Jer
 | IMA branding: name, mark, favicon, IMA blue, wordmark on the PDF | ✅ default on; `NEXT_PUBLIC_BRAND_NAME=none` for an unbranded build |
 | Analytics events for every funnel step | ✅ `events` table |
 | Optional AI plain-English summary for the brief (structured findings only) | ✅ off by default, `src/lib/server/ai.ts` |
-| Public-data enrichment, opt-in per source: FEMA NRI, EPA ECHO (no keys), Census CBP, FMCSA (keyed), website summary | ✅ `src/lib/server/enrichment/`, producer-facing only |
+| Public-data enrichment, opt-in per source: FEMA NRI, EPA ECHO (no keys), Census CBP (keyed), website summary | ✅ `src/lib/server/enrichment/`, producer-facing only |
 | Microsoft Teams alert on qualified lead (incoming webhook) | ✅ optional, `src/lib/server/teams.ts` |
 | Anonymized per-question CSV export for scoring-distribution analysis | ✅ `/api/producer/export/answers` |
 | Excel workbook and JSON export of the question bank, findings, modules, niches (for the Copilot Excel agent) | ✅ `npm run docs:bank` → `docs/marketready-question-bank.xlsx` |

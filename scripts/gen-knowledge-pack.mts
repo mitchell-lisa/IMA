@@ -33,7 +33,7 @@ L.push(readFileSync("docs/scoring-spec.md", "utf8").replace(/^# Scoring specific
 
 h("## 4. Question bank (approved wording)");
 for (const q of QUESTIONS) {
-  L.push(`### ${q.topic} — \`${q.id}\``, `Category: ${CATEGORY_LABELS[q.category].label}${q.branch ? ` · Branch: ${q.branch}` : ""} · Weights (3PL/Mfg/Other): ${q.weights.logistics_3pl}/${q.weights.light_manufacturing}/${q.weights.other}${q.critical ? ` · Critical flag at ≤${q.critical.atOrBelow}` : ""}`, "", q.prompt);
+  L.push(`### ${q.topic} — \`${q.id}\``, `Category: ${CATEGORY_LABELS[q.category].label}${q.branch ? ` · Branch: ${q.branch}` : ""} · Weights (CRE owner/Multifamily/Other): ${q.weights.cre_owner}/${q.weights.multifamily}/${q.weights.other}${q.critical ? ` · Critical flag at ≤${q.critical.atOrBelow}` : ""}`, "", q.prompt);
   if (q.help) L.push("", `_${q.help}_`);
   L.push("");
   for (const o of q.options) L.push(`- ${o.value}: ${o.label}`);

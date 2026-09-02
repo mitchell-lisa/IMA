@@ -5,7 +5,8 @@
  * so that scoring can be unit-tested and reused server-side.
  */
 
-export type IndustryId = "logistics_3pl" | "light_manufacturing" | "other";
+/** Real estate verticals. `other` covers self-storage, hospitality assets, senior housing, associations, and mixed portfolios. */
+export type IndustryId = "cre_owner" | "multifamily" | "other";
 
 export type CategoryId =
   | "governance"
@@ -35,21 +36,21 @@ export type QuestionWeight = 1 | 2 | 3;
 /** Boolean profile flags that unlock branched questions. */
 export type BranchTrigger =
   | "ownsBuildings"
-  | "hasVehicles"
+  | "usesThirdPartyManager"
   | "usesSubcontractors"
-  | "storesSensitiveData"
+  | "hasResidentialTenants"
   | "employeesAboveThreshold"
   | "hasOutsideInvestors"
-  | "regulatedMaterials";
+  | "environmentalExposures";
 
 export const BRANCH_TRIGGERS: BranchTrigger[] = [
   "ownsBuildings",
-  "hasVehicles",
+  "usesThirdPartyManager",
   "usesSubcontractors",
-  "storesSensitiveData",
+  "hasResidentialTenants",
   "employeesAboveThreshold",
   "hasOutsideInvestors",
-  "regulatedMaterials",
+  "environmentalExposures",
 ];
 
 export type RevenueBand =
@@ -59,6 +60,9 @@ export type RevenueBand =
   | "50m_100m"
   | "100m_250m"
   | "over_250m";
+
+/** Portfolio size: units for multifamily, buildings/square footage proxies for commercial. */
+export type UnitsBand = "1_5" | "6_25" | "26_100" | "101_500" | "over_500";
 
 export type EmployeeBand = "1_24" | "25_49" | "50_99" | "100_249" | "250_499" | "500_plus";
 
@@ -82,9 +86,10 @@ export type Role =
 
 export type PrimaryConcern =
   | "premium_increases"
+  | "property_valuation"
   | "coverage_gaps"
   | "claims_handling"
-  | "contract_requirements"
+  | "vendor_tenant_requirements"
   | "cyber"
   | "growth_changes"
   | "broker_service"
@@ -92,6 +97,7 @@ export type PrimaryConcern =
 
 export type MajorLine =
   | "property"
+  | "flood"
   | "general_liability"
   | "umbrella"
   | "workers_comp"
@@ -99,10 +105,10 @@ export type MajorLine =
   | "cyber"
   | "epli"
   | "d_and_o"
-  | "inland_marine"
   | "environmental"
   | "professional"
-  | "crime";
+  | "crime"
+  | "builders_risk";
 
 /** The company / profile questions captured up front and during the flow. */
 export interface AssessmentProfile {
@@ -122,14 +128,16 @@ export interface AssessmentProfile {
   recentAcquisitionOrNewLocation?: boolean;
   primaryConcern?: PrimaryConcern;
   willingToSharePolicies?: "yes" | "maybe" | "no";
+  /** Portfolio profile */
+  unitsBand?: UnitsBand;
   /** Branch triggers */
   ownsBuildings?: boolean;
-  hasVehicles?: boolean;
+  usesThirdPartyManager?: boolean;
   usesSubcontractors?: boolean;
-  storesSensitiveData?: boolean;
+  hasResidentialTenants?: boolean;
   employeesAboveThreshold?: boolean;
   hasOutsideInvestors?: boolean;
-  regulatedMaterials?: boolean;
+  environmentalExposures?: boolean;
 }
 
 export interface QuestionOption {

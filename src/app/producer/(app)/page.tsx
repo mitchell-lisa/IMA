@@ -34,7 +34,7 @@ export default async function ProducerDashboard() {
           <h1 className="text-2xl font-semibold text-navy">Qualified leads</h1>
           <p className="mt-1 text-sm text-muted">Completed diagnostics with email capture. Lead quality is a sales-prioritization score, not an insurance-risk score.</p>
         </div>
-        <div className="grid grid-cols-4 gap-3 text-center">
+        <div className="grid grid-cols-2 gap-3 text-center sm:grid-cols-4">
           {[
             ["Leads", counts.total],
             ["Tier A", counts.tierA],

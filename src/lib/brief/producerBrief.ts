@@ -105,24 +105,24 @@ const WORKSHOP_CROSSWALK: Array<Pick<WorkshopCrosswalkRow, "workshopCategory" | 
     evaluates: "Replacement-cost methodology, carrier-submission quality, named-insured completeness, policy exclusions, liability-limit rationale, underwriting narrative",
     questionIds: ["gov_renewal_lead_time", "gov_internal_owner", "gov_limit_rationale", "mkt_exposure_data", "mkt_business_changes", "mkt_submission_visibility", "br_property_valuation"],
     reservedForWorkshop: [
-      "Replacement-cost methodology against actual schedules",
-      "Policy exclusions and whether all legal entities are scheduled as named insureds",
-      "Liability limit adequacy against contracts, balance sheet, and defensibility",
+      "Replacement-cost methodology against the actual statement of values and recent rebuilds",
+      "Policy exclusions and whether every ownership LLC is scheduled as a named insured",
+      "Liability limit adequacy against lender covenants, leases, balance sheet, and defensibility",
     ],
   },
   {
     workshopCategory: "Operational controls",
     evaluates: "Information security, wire-transfer procedures, technology systems, training, leasing/customer processes, third-party oversight",
-    questionIds: ["ops_cyber_controls", "ops_payment_authorization", "ops_safety_training", "br_data_security", "br_fleet_controls", "br_workforce_programs"],
-    reservedForWorkshop: ["Technology systems and third-party oversight in detail", "Customer-facing processes and employment-practices exposure"],
+    questionIds: ["ops_cyber_controls", "ops_payment_authorization", "ops_safety_training", "br_residential_programs", "br_vendor_transfer", "br_workforce_programs"],
+    reservedForWorkshop: ["Property-management technology and third-party manager oversight in detail", "Leasing process, website and online reputation, tenant discrimination exposure"],
   },
   {
     workshopCategory: "Property/maintenance",
     evaluates: "Carrier recommendations, documented inspections, snow and ice, security, emerging equipment exposures",
-    questionIds: ["br_property_valuation", "ops_safety_training"],
+    questionIds: ["br_property_valuation", "ops_safety_training", "br_vendor_transfer"],
     reservedForWorkshop: [
-      "Carrier recommendation history and responses",
-      "Security, snow and ice procedures, and emerging equipment exposures (lithium batteries, EV charging)",
+      "Carrier recommendation history by property and completion evidence",
+      "Security patrol and lighting programs, short-term rental monitoring, lithium-battery and EV-charging exposures",
     ],
   },
   {
@@ -134,14 +134,14 @@ const WORKSHOP_CROSSWALK: Array<Pick<WorkshopCrosswalkRow, "workshopCategory" | 
   {
     workshopCategory: "Emerging risk",
     evaluates: "Cyber/privacy, environmental issues, regulatory developments, frequency of formal risk assessments",
-    questionIds: ["emr_annual_review", "emr_regulatory", "emr_new_activity_review", "ops_cyber_controls", "br_regulated_materials"],
-    reservedForWorkshop: ["Environmental exposures and lender environmental conditions", "Cyber/privacy coverage alignment"],
+    questionIds: ["emr_annual_review", "emr_regulatory", "emr_new_activity_review", "ops_cyber_controls", "br_environmental"],
+    reservedForWorkshop: ["Environmental surveys, acquisition due diligence, and lender environmental conditions", "Cyber/privacy coverage alignment"],
   },
   {
     workshopCategory: "Contractual risk transfer",
     evaluates: "Signed contracts, indemnification, additional-insured requirements, COIs, vendor and management agreements",
-    questionIds: ["crt_signed_contracts", "crt_insurance_requirements", "crt_coi_verification", "br_subcontractor_transfer"],
-    reservedForWorkshop: ["Review of actual contracts, certificates, and endorsements", "Management, landlord, and lender agreement requirements"],
+    questionIds: ["crt_signed_contracts", "crt_insurance_requirements", "crt_coi_verification", "br_management_agreement"],
+    reservedForWorkshop: ["Review of actual leases, vendor contracts, certificates, and endorsements", "Management-agreement and lender requirements"],
   },
 ];
 
@@ -156,57 +156,60 @@ const WORKSHOP_PATH: ProducerBrief["workshopPath"] = [
 ];
 
 const SERVICE_PLAN_BY_CATEGORY: Record<CategoryId, string> = {
-  governance: "Pre-renewal strategy meeting 120+ days out, renewal calendar with named owners, and a documented limit and deductible rationale",
-  market_readiness: "Exposure-data reconciliation and submission review before marketing; quarterly business-change check-ins",
-  operational_controls: "Risk-control review (cyber controls, funds-transfer procedures, safety documentation) with carrier-creditable evidence",
-  claims: "Claims advocacy: contact adjusters on open claims, scheduled claim reviews, reporting protocol, and loss-run reconciliation before renewal",
-  contractual_risk_transfer: "Build a contractual risk transfer program: review contracts in force, requirement templates, and certificate tracking",
-  emerging_risk: "Annual risk assessment outside the renewal cycle, regulatory calendar, and a new-activity review checkpoint",
+  governance: "Pre-renewal strategy meeting 120+ days out, renewal calendar with named owners (including the property manager), and a documented limit and deductible rationale against lender and lease requirements",
+  market_readiness: "Statement-of-values rebuild and carrier-recommendation review before marketing; acquisition and disposition check-ins with values and lender requirements at each closing",
+  operational_controls: "Risk-control review of property operations: inspection and life-safety documentation, funds-transfer procedures, data security of the property-management platform",
+  claims: "Claims advocacy: contact adjusters on open claims, scheduled claim reviews with counsel and public-adjuster strategy, reporting protocol for managers, and loss-run reconciliation before renewal",
+  contractual_risk_transfer: "Build a contractual risk transfer program: review leases, vendor contracts, and the management agreement in force, requirement templates, and certificate tracking",
+  emerging_risk: "Annual portfolio risk assessment outside the renewal cycle, regulatory calendar (fair housing, ADA, local ordinances), environmental review, and an acquisition checkpoint",
 };
 
 const DECK_DIALOGUE_STARTERS = [
-  "Who is involved in insurance decisions today: CFO, ownership, operations, a board, or outside advisors?",
+  "Who is involved in insurance decisions today: ownership, asset management, the property manager, a CFO, or outside advisors?",
   "Do you use one broker or several advisors across different lines?",
   "What do you value most about the current broker relationship, and what could be better?",
   "Is the current broker proactive throughout the year, or primarily engaged around renewal?",
 ];
 
 const SPECIALIST_BY_CATEGORY: Record<CategoryId, string> = {
-  governance: "Account executive / program lead",
-  market_readiness: "Marketing & placement specialist",
-  operational_controls: "Risk control consultant",
+  governance: "Real estate practice leader / account executive",
+  market_readiness: "Property marketing & valuation specialist",
+  operational_controls: "Risk control consultant (property operations)",
   claims: "Claims advocate",
-  contractual_risk_transfer: "Contract review / certificate management specialist",
-  emerging_risk: "Industry practice leader",
+  contractual_risk_transfer: "Lease, contract & certificate management specialist",
+  emerging_risk: "Real estate practice leader",
 };
 
 const SPECIALIST_BY_LINE: Partial<Record<MajorLine, string>> = {
   cyber: "Cyber practice specialist",
   environmental: "Environmental practice specialist",
-  d_and_o: "Management liability specialist",
-  commercial_auto: "Fleet / transportation specialist",
+  d_and_o: "Management liability specialist (fund and entity coverages)",
+  flood: "Flood and catastrophe modeling specialist",
   workers_comp: "Workers' compensation & claims specialist",
   property: "Property valuation specialist",
+  epli: "Employment practices / fair-housing specialist",
+  builders_risk: "Construction risk specialist",
 };
 
 const OPENING_QUESTION_BY_FINDING: Record<string, string> = {
-  renewal_starts_late: "Walk me through what happened in the 90 days before your last renewal. Who was involved, and when did the first submission go out?",
-  contracts_not_one_system: "For your largest customer contract, who checks that the certificate and endorsements actually match what the contract requires?",
-  business_outpaced_governance: "What has changed in the business in the last 12 months, and how did each change reach your insurance program?",
-  claims_reactive: "When was the last time you reviewed open claims and reserves with someone outside the carrier?",
-  exposure_data_limits_markets: "How are the values on your current schedules validated, and have you seen the narrative that accompanied your last submission?",
-  social_engineering_path: "If a vendor emailed new bank details tomorrow, what would happen before the next payment went out?",
-  cyber_minimums: "Which cyber controls were attested on your last application, and who verified them?",
-  no_program_owner: "If your broker called with a question today, who would answer it, and who would if that person were out?",
-  limits_not_reasoned: "When were current limits last discussed against contracts and asset values, and what drove that conversation?",
-  safety_undocumented: "What safety documentation could you hand a carrier tomorrow, and what exists only in practice?",
-  property_values_stale: "When were replacement values last established, and what building updates have happened since?",
-  fleet_controls: "How are drivers screened today, and what happens when an MVR comes back with an issue?",
-  subcontractor_transfer_gap: "What happens when a subcontractor cannot produce the required endorsements?",
-  workforce_programs_gap: "How is an injured employee brought back to work today, and who owns that process?",
-  investor_governance_gap: "Has the board or investor group reviewed governance-related coverage since the last capital event?",
-  environmental_gap: "Which permits apply to your operations, and who is responsible for keeping them current?",
-  emerging_risk_unmanaged: "When you last added a location or product line, at what point did insurance come into the discussion?",
+  renewal_starts_late: "Walk me through the 90 days before your last property renewal. When did the statement of values get updated, and when did the first submission go out?",
+  contracts_not_one_system: "For your largest tenant and your snow-removal vendor, who checks that the certificate and endorsements match what the lease or contract requires?",
+  business_outpaced_governance: "What has been acquired, sold, or renovated in the last 12 months, and how did each reach your insurance program and lender?",
+  claims_reactive: "When was the last time you reviewed open claims and reserves with someone other than the carrier, and who chose defense counsel on your last liability claim?",
+  exposure_data_limits_markets: "How are replacement costs set today, and have you seen the narrative and statement of values that went to carriers last year?",
+  social_engineering_path: "If a vendor emailed new bank details to the property manager tomorrow, what would happen before the next payment went out?",
+  cyber_minimums: "What tenant and applicant data lives in your property-management platform, and who reviewed that vendor's security?",
+  no_program_owner: "If your broker called with a certificate request today, who would answer, and who would if that person were out?",
+  limits_not_reasoned: "When were current limits last discussed against lender covenants and lease requirements, and what drove that conversation?",
+  safety_undocumented: "What inspection and life-safety documentation could you hand a carrier tomorrow, and what exists only at the property?",
+  property_values_stale: "What carrier recommendations are open right now, and when were roofs, sprinklers, wiring, and boilers last updated?",
+  management_agreement_gap: "Who reviewed the insurance and indemnity terms in your management agreement, and do you hold the manager's current certificate?",
+  site_vendor_gap: "How is snow removal documented at each property, and does the vendor's contract name you as additional insured?",
+  residential_programs_gap: "How is renters insurance verified today, and how is fair-housing training documented for on-site staff?",
+  workforce_programs_gap: "How is an injured on-site employee brought back to work today, and who owns that process?",
+  investor_governance_gap: "Has every LLC been confirmed as a named insured, and have fund and entity coverages been reviewed since the last closing?",
+  environmental_gap: "What environmental surveys are on file, and what environmental due diligence happens on an acquisition?",
+  emerging_risk_unmanaged: "When you last acquired a property or added EV charging, at what point did insurance come into the discussion?",
 };
 
 export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecord): ProducerBrief {
@@ -237,7 +240,8 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
   if (typeof changes === "number" && changes <= 1) businessChangeSignals.push("Operational changes reach the insurance program late or inconsistently.");
   const newActivity = assessment.answers["emr_new_activity_review"];
   if (typeof newActivity === "number" && newActivity <= 1) businessChangeSignals.push("New activities are not reviewed for insurance impact before launch.");
-  if (p.employeesAboveThreshold) businessChangeSignals.push(`Workforce above ${industry.employeeThreshold} employees.`);
+  if (p.employeesAboveThreshold) businessChangeSignals.push(`Staff above ${industry.employeeThreshold} employees.`);
+  if (p.usesThirdPartyManager) businessChangeSignals.push("Uses a third-party property manager.");
   if (businessChangeSignals.length === 0) businessChangeSignals.push("No business-change signals reported.");
 
   const openingQuestions = findings
@@ -259,8 +263,8 @@ export function buildProducerBrief(lead: LeadRecord, assessment: AssessmentRecor
     { minutes: 5, item: "Introductions, confidentiality, and what the diagnostic can and cannot conclude" },
     { minutes: 10, item: `Business overview: operations, recent changes, and ${p.primaryConcern ? PRIMARY_CONCERN_LABELS[p.primaryConcern].toLowerCase() : "top concerns"}` },
     { minutes: 15, item: `Walk through the three investigation areas: ${findings.map((f) => CATEGORY_LABELS[f.category as CategoryId]?.short ?? "overall").join(", ")}` },
-    { minutes: 10, item: "Renewal timeline, incumbent relationship, and what a documented submission would include" },
-    { minutes: 5, item: "Agree on document requests and next steps (licensed review of policies and loss runs)" },
+    { minutes: 10, item: "Renewal timeline, incumbent relationship, and what a documented property submission (statement of values, updates, recommendations) would include" },
+    { minutes: 5, item: "Agree on document requests and next steps (licensed review of policies, loss runs, statement of values, leases, management agreement)" },
   ];
 
   const applicableIds = new Set(scores?.applicableQuestionIds ?? []);

@@ -7,14 +7,13 @@ import { activeProviders } from "./providers";
 import type { ProviderInput } from "./types";
 
 /** Provider id -> the `source` tag its signals carry. */
-const SIGNAL_SOURCE: Record<string, string> = { nri: "fema_nri", echo: "epa_echo", census: "census", fmcsa: "fmcsa", website: "website" };
+const SIGNAL_SOURCE: Record<string, string> = { nri: "fema_nri", echo: "epa_echo", census: "census", website: "website" };
 
 export interface EnrichmentInput {
   website?: string | null;
   zip?: string | null;
   industry?: IndustryId | null;
   companyName?: string | null;
-  hasVehicles?: boolean;
 }
 
 /**
@@ -77,7 +76,6 @@ export async function enrichExternal(base: EnrichmentRecord, input: EnrichmentIn
     zip: input.zip,
     industry: input.industry ?? null,
     naics: base.naics,
-    hasVehicles: input.hasVehicles,
     geo,
   };
   const applicable = providers.filter((p) => p.applies(pInput));

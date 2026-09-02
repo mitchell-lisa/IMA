@@ -32,12 +32,12 @@ describe("question bank", () => {
   });
   it("only shows branch questions when the trigger is true", () => {
     expect(getApplicableQuestions({} as never)).toHaveLength(18);
-    expect(getApplicableQuestions({ ownsBuildings: true, hasVehicles: true } as never)).toHaveLength(20);
+    expect(getApplicableQuestions({ ownsBuildings: true, usesThirdPartyManager: true } as never)).toHaveLength(20);
   });
 });
 
 describe("scoreAssessment", () => {
-  const industry: IndustryId = "logistics_3pl";
+  const industry: IndustryId = "cre_owner";
 
   it("scores 100 when every answer is 3 and 0 when every answer is 0", () => {
     const hi = scoreAssessment(answerAll(3), { industry });
@@ -72,7 +72,7 @@ describe("scoreAssessment", () => {
   });
 
   it("uses question weights: a heavy question moves the category more than a light one", () => {
-    // In logistics, gov_renewal_lead_time weight 3, gov_internal_owner weight 2.
+    // For CRE owners, gov_renewal_lead_time weight 3, gov_internal_owner weight 2.
     const base = answerAll(3);
     const a = { ...base, gov_renewal_lead_time: 0 as const };
     const b = { ...base, gov_internal_owner: 0 as const };
@@ -82,14 +82,14 @@ describe("scoreAssessment", () => {
   });
 
   it("includes branch questions only when the profile flag is set", () => {
-    const answers = { ...answerAll(3), br_fleet_controls: 0 as const };
+    const answers = { ...answerAll(3), br_management_agreement: 0 as const };
     const without = scoreAssessment(answers, { industry });
-    expect(without.applicableQuestionIds).not.toContain("br_fleet_controls");
+    expect(without.applicableQuestionIds).not.toContain("br_management_agreement");
     expect(without.overall).toBe(100);
-    const withFleet = scoreAssessment(answers, { industry, hasVehicles: true });
-    expect(withFleet.applicableQuestionIds).toContain("br_fleet_controls");
-    expect(withFleet.overall!).toBeLessThan(100);
-    expect(withFleet.criticalFlags.map((f) => f.questionId)).toContain("br_fleet_controls");
+    const withManager = scoreAssessment(answers, { industry, usesThirdPartyManager: true });
+    expect(withManager.applicableQuestionIds).toContain("br_management_agreement");
+    expect(withManager.overall!).toBeLessThan(100);
+    expect(withManager.criticalFlags.map((f) => f.questionId)).toContain("br_management_agreement");
   });
 
   it("is deterministic", () => {

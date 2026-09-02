@@ -16,7 +16,7 @@ flowchart LR
 
   subgraph Data["Supabase Postgres"]
     DB["assessments · answers · scores<br/>leads · events<br/>row-level security"]
-    ENR["External public-data enrichment<br/>(domain, territory, NAICS at start;<br/>opt-in FEMA NRI / EPA ECHO / Census / FMCSA / website after completion)"]
+    ENR["External public-data enrichment<br/>(domain, territory, NAICS at start;<br/>opt-in FEMA NRI / EPA ECHO / Census / website after completion)"]
   end
 
   AI["AI narrative generator<br/>structured findings & approved language<br/>(optional, off by default)"]
@@ -62,7 +62,7 @@ flowchart LR
 | Rate limiting | `src/lib/server/ratelimit.ts` (in-memory; swap for Redis when multi-instance) | Built |
 | Supabase Postgres: assessments, answers, scores, leads, events | `supabase/migrations/0001_init.sql`, `src/lib/server/repo/supabase.ts` | Built |
 | Row-level security | Same migration: anon denied, producers read + review-field update, trigger protects prospect columns | Built |
-| External public-data enrichment | `src/lib/server/enrichment/` — local signals at start; opt-in providers at completion: FEMA NRI, EPA ECHO (no keys), Census CBP, FMCSA (keyed), website AI summary. SEC/BLS/OSHA not yet | Built, opt-in |
+| External public-data enrichment | `src/lib/server/enrichment/` — local signals at start; opt-in providers at completion: FEMA NRI, EPA ECHO (no keys), Census CBP (keyed), website AI summary. SEC/BLS/OSHA not yet | Built, opt-in |
 | AI narrative generator | `src/lib/server/ai.ts` — plain-English summary of structured findings for the Producer Brief only; prospect-facing copy comes from the approved findings library without AI | Built, optional |
 | Category scorecard | `ScoreMeter` in `src/components/ui.tsx` on the results page and PDF | Built |
 | 3 areas to investigate | `generateFindings()` | Built |

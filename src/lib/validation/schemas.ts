@@ -2,7 +2,8 @@ import { z } from "zod";
 import { QUESTION_BY_ID } from "@/lib/diagnostic/questions";
 import { NICHE_IDS } from "@/lib/diagnostic/niches";
 
-export const industrySchema = z.enum(["logistics_3pl", "light_manufacturing", "other"]);
+export const industrySchema = z.enum(["cre_owner", "multifamily", "other"]);
+export const unitsBandSchema = z.enum(["1_5", "6_25", "26_100", "101_500", "over_500"]);
 export const revenueBandSchema = z.enum(["under_10m", "10m_25m", "25m_50m", "50m_100m", "100m_250m", "over_250m"]);
 export const employeeBandSchema = z.enum(["1_24", "25_49", "50_99", "100_249", "250_499", "500_plus"]);
 export const premiumBandSchema = z.enum(["under_50k", "50k_150k", "150k_500k", "500k_1m", "over_1m", "prefer_not"]);
@@ -10,9 +11,10 @@ export const incumbentTenureSchema = z.enum(["under_2", "2_5", "6_10", "over_10"
 export const roleSchema = z.enum(["owner_ceo", "cfo_finance", "coo_operations", "risk_hr", "controller_manager", "other"]);
 export const primaryConcernSchema = z.enum([
   "premium_increases",
+  "property_valuation",
   "coverage_gaps",
   "claims_handling",
-  "contract_requirements",
+  "vendor_tenant_requirements",
   "cyber",
   "growth_changes",
   "broker_service",
@@ -20,6 +22,7 @@ export const primaryConcernSchema = z.enum([
 ]);
 export const majorLineSchema = z.enum([
   "property",
+  "flood",
   "general_liability",
   "umbrella",
   "workers_comp",
@@ -27,10 +30,10 @@ export const majorLineSchema = z.enum([
   "cyber",
   "epli",
   "d_and_o",
-  "inland_marine",
   "environmental",
   "professional",
   "crime",
+  "builders_risk",
 ]);
 
 const trimmed = (max: number) => z.string().trim().min(1).max(max);
@@ -44,6 +47,7 @@ export const startProfileSchema = z.object({
     .regex(/^\d{5}(-\d{4})?$/, "Enter a 5-digit ZIP code"),
   industry: industrySchema,
   niche: z.enum(NICHE_IDS).optional(),
+  unitsBand: unitsBandSchema.optional(),
   employeeBand: employeeBandSchema,
   revenueBand: revenueBandSchema,
   // Anti-bot: honeypot must be empty; form must have been open for a minimum time.
@@ -61,12 +65,12 @@ export const profileUpdateSchema = z
     primaryConcern: primaryConcernSchema.optional(),
     willingToSharePolicies: z.enum(["yes", "maybe", "no"]).optional(),
     ownsBuildings: z.boolean().optional(),
-    hasVehicles: z.boolean().optional(),
+    usesThirdPartyManager: z.boolean().optional(),
     usesSubcontractors: z.boolean().optional(),
-    storesSensitiveData: z.boolean().optional(),
+    hasResidentialTenants: z.boolean().optional(),
     employeesAboveThreshold: z.boolean().optional(),
     hasOutsideInvestors: z.boolean().optional(),
-    regulatedMaterials: z.boolean().optional(),
+    environmentalExposures: z.boolean().optional(),
   })
   .strict();
 

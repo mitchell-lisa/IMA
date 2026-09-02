@@ -6,7 +6,7 @@ Mapped to the plan's four-week roadmap. "Built" means it is in this repository a
 
 | Deliverable (plan) | Status | Where / what remains |
 |---|---|---|
-| Choose two adjacent industries | Built | 3PL/warehousing and light manufacturing (`src/lib/diagnostic/industries.ts`); 12 more niches captured at intake, roadmap in `docs/industry-roadmap.md` |
+| Choose two adjacent industries | Built | Commercial real estate owners and multifamily owners/managers (`src/lib/diagnostic/industries.ts`); 11 more real estate niches captured at intake, roadmap in `docs/industry-roadmap.md` |
 | Question matrix | Built | 18 core + 7 branched, industry variants; generated `docs/question-matrix.md` |
 | Validate questions with IMA specialists | **Needs IMA** | Send `docs/question-matrix.md` and `docs/workshop-crosswalk.md` to the specialists who ran the example workshop; edits are wording changes in `questions.ts` |
 | Scoring specification | Built | `docs/scoring-spec.md`; deterministic, unit-tested |
@@ -21,7 +21,7 @@ Mapped to the plan's four-week roadmap. "Built" means it is in this repository a
 | Deliverable | Status | What remains |
 |---|---|---|
 | Responsive clickable flow | Built | Runs with zero configuration (`npm run dev`) |
-| Five complete test personas | Partially built | Automated smoke test covers a 3PL, a manufacturer, a contractor, and a module-entry persona. **Needs IMA**: five friendly CFO/owner contacts running the real flow; log completion time to set the estimate the landing page is deliberately not publishing yet |
+| Five complete test personas | Partially built | Automated smoke test covers a CRE owner, a multifamily operator, a self-storage owner, and a module-entry persona. **Needs IMA**: five friendly CFO/owner contacts running the real flow; log completion time to set the estimate the landing page is deliberately not publishing yet |
 | Contradiction tests | Built | Consistency checks in `scoring.ts` with tests |
 | Producer Brief mockup | Built as the real page | `/producer/leads/[id]`, plus JSON/Markdown via API |
 | Referral-partner landing page | Built | Any URL with `?partner=<code>` attributes the lead; module entry points at `/?module=renewal|contracts|claims`. **Needs IMA**: partner codes and a co-branded page per partner if desired |

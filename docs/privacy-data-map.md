@@ -8,12 +8,12 @@ Working document for compliance review. Describes every data element the MVP sto
 |---|---|---|---|---|
 | Company name, website, ZIP | `assessments.profile` | Scoring context, enrichment, dashboard | Business | 90 days if no lead; else per records policy |
 | Industry, employee band, revenue band | `assessments.profile` | Weighting, lead fit | Business | Same |
-| Renewal month, incumbent tenure, major lines, premium band, concern, willingness to share | `assessments.profile` | Timing guidance, producer brief | Business (premium band is a band only) | Same |
-| Branch flags (buildings, vehicles, subcontractors, data, investors, regulated materials) | `assessments.profile` | Question branching | Business | Same |
+| Renewal month, incumbent tenure, major lines, premium band, units band, concern, willingness to share | `assessments.profile` | Timing guidance, producer brief | Business (premium band is a band only) | Same |
+| Branch flags (owned buildings, third-party manager, site vendors, residential tenants, workforce size, outside investors, environmental exposures) | `assessments.profile` | Question branching | Business | Same |
 | Answers (0–3 / unknown) | `assessments.answers` | Scoring | Business | Same |
 | Computed result (scores, findings, checklist) | `assessments.result` | Display, PDF, brief | Derived | Same |
 | Enrichment (domain, territory, NAICS) | `assessments.enrichment` | Dashboard, CRM payload | Derived | Same |
-| External enrichment (opt-in): ZIP centroid, FEMA county hazard context, EPA facility matches by name + ZIP, Census business patterns for the ZIP/NAICS, FMCSA carrier registration by name, AI website summary | `assessments.enrichment.signals` | Producer Brief context only; never shown to the prospect; never a risk grade | Public record / derived | Same |
+| External enrichment (opt-in): ZIP centroid, FEMA county hazard context, EPA facility matches by name + ZIP, Census business patterns for the ZIP/NAICS, AI website summary | `assessments.enrichment.signals` | Producer Brief context only; never shown to the prospect; never a risk grade | Public record / derived | Same |
 | Attribution (partner code, UTM, referrer, landing path) | `assessments.attribution` | Partner attribution | Low | Same |
 | Hashed IP, user agent | `assessments.ip_hash`, `user_agent` | Abuse prevention, audit | Pseudonymous | Same |
 | Contact email, name, role, phone | `leads.*` | Deliver report, follow-up | Personal | Per records policy |

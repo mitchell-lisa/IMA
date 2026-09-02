@@ -8,28 +8,30 @@ const all = (v: 0 | 1 | 2 | 3) => Object.fromEntries(CORE_QUESTIONS.map((q) => [
 describe("resolveQuestion", () => {
   it("applies industry wording without touching scoring metadata", () => {
     const base = QUESTION_BY_ID["ops_safety_training"];
-    const mfg = resolveQuestion(base, "light_manufacturing");
-    expect(mfg.prompt).toMatch(/machine guarding/i);
-    expect(mfg.weights).toEqual(base.weights);
-    expect(mfg.options).toEqual(base.options);
-    expect(mfg.id).toBe(base.id);
+    const mf = resolveQuestion(base, "multifamily");
+    expect(mf.prompt).toMatch(/unit and common-area inspections/i);
+    expect(mf.weights).toEqual(base.weights);
+    expect(mf.options).toEqual(base.options);
+    expect(mf.id).toBe(base.id);
+    const cre = resolveQuestion(base, "cre_owner");
+    expect(cre.prompt).toMatch(/roof, sprinkler/i);
     const other = resolveQuestion(base, "other");
     expect(other.prompt).toBe(base.prompt);
   });
 
   it("scores identically regardless of variant wording", () => {
     const answers = all(2);
-    const a = scoreAssessment(answers, { industry: "logistics_3pl" });
-    const b = scoreAssessment(answers, { industry: "logistics_3pl" });
+    const a = scoreAssessment(answers, { industry: "cre_owner" });
+    const b = scoreAssessment(answers, { industry: "cre_owner" });
     expect(a).toEqual(b);
   });
 });
 
 function fixture(): { lead: LeadRecord; assessment: AssessmentRecord } {
   const profile = {
-    companyName: "Keystone Precision Fabrication",
+    companyName: "Keystone Residential Partners",
     zip: "19380",
-    industry: "light_manufacturing" as const,
+    industry: "multifamily" as const,
     employeeBand: "50_99" as const,
     revenueBand: "10m_25m" as const,
     renewalMonth: 3,

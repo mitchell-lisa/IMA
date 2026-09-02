@@ -1,7 +1,6 @@
 import type { EnrichmentProvider } from "../types";
 import { censusProvider } from "./census";
 import { echoProvider } from "./echo";
-import { fmcsaProvider } from "./fmcsa";
 import { nriProvider } from "./nri";
 import { websiteProvider } from "./website";
 
@@ -10,7 +9,7 @@ import { websiteProvider } from "./website";
  * (comma-separated ids, or "all") and reports enabled() (keys present).
  * Order is display order.
  */
-export const PROVIDERS: EnrichmentProvider[] = [nriProvider, censusProvider, echoProvider, fmcsaProvider, websiteProvider];
+export const PROVIDERS: EnrichmentProvider[] = [nriProvider, censusProvider, echoProvider, websiteProvider];
 
 export function activeProviders(): EnrichmentProvider[] {
   const wanted = (process.env.ENRICHMENT_PROVIDERS ?? "")

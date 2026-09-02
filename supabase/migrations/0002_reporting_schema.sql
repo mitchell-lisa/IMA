@@ -24,8 +24,8 @@ create table if not exists reporting.questions (
   topic         text not null,
   prompt        text not null,
   industry_rule text,              -- branch trigger, if any
-  weight_logistics_3pl int not null,
-  weight_light_manufacturing int not null,
+  weight_cre_owner int not null,
+  weight_multifamily int not null,
   weight_other  int not null,
   critical_flag boolean not null default false,
   critical_at_or_below int,
